@@ -45,7 +45,6 @@ yf = randn(Nhc, 1);
 yt = AFT(yf, h,N, :f2t);
 YF = AFT(yt, h,N, :t2f);
 
-
 @testset "AFT-2" begin
     @test isapprox(YF, yf)
 end
