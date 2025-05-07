@@ -508,17 +508,18 @@ function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     end
     Ny = size(yin, 2);
     C = size(h,2);
-    
+
+    Nt = 2N-2;    
+
     if cmp(dir, :t2f) == 0
-        Nt = 2N-2;
 
         rinds = Tuple([fill([1:N; N-1:-1:2], C); :]);
-        rNs = Tuple([fill(N, C); Ny]);
+        # rinds = Tuple([fill([1:N; 2:N-1], C); :]);
+        rNs = Tuple([fill(N, C); Ny]);            
         yin = reshape(reshape(yin, rNs)[rinds...], :, Ny);
         yout = AFT(yin, h, Nt, dir);
         yout = L*yout;
     elseif cmp(dir, :f2t) == 0
-        Nt = 2(N-1);
         yout = AFT(L'*yin, h, Nt, dir);
         
         tN = Tuple([fill(Nt, C); Ny]);
