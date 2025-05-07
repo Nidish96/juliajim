@@ -8,8 +8,8 @@ using DSP
 using NonlinearEigenproblems
 
 using Revise
-includet("../ROUTINES/HARMONIC.jl")
-includet("../ROUTINES/CONTINUATION.jl")
+includet("../src/HARMONIC.jl")
+includet("../src/CONTINUATION.jl")
 
 # * Residue Function
 function RESFUN!(R, dRdU, dRdws, Uws, Fl, pars, h, Nt)
@@ -76,7 +76,7 @@ xΩ = SOLVECONT((F,J,Jw,Uw)->RESFUN!(F, J, Jw, Uw, Fl * famp, pars, h, Nt),
 dRdU = zeros(Nhc, Nhc);
 λ1s = zeros(ComplexF64, Nhc, size(xΩ,2));
 λ2s = zeros(ComplexF64, 2*Nhc, size(xΩ,2));
-for i=1:size(xΩ,2)
+for i=eachindex(xΩ[1,:])
     RESFUN!(nothing, dRdU, nothing, xΩ[:, i], Fl * famp, pars, h, Nt);
     E1,_ = HARMONICSTIFFNESS(0, 2*pars.m, pars.c, [xΩ[end, i]], h);
     E2,_ = HARMONICSTIFFNESS(0, 0, pars.m, [xΩ[end, i]], h);
@@ -96,22 +96,34 @@ istab = istab[2:end-1].!=0;
 mrk = :none;
 lw = 3;
 
-p1 = plot(xΩ[end,:]./stab, abs.(xΩ[2,:]-im*xΩ[3,:]),
-          ls=:solid, lw=lw, markershape=mrk, ms=2,
-          label="stable", grid=true,
-          ylabel="H1 Response (m)")
-plot!(xΩ[end,:]./istab, abs.(xΩ[2,:]-im*xΩ[3,:]),
-      ls=:dash, lw=lw, markershape=mrk, ms=2,
-      label="unstable", grid=true)
+fsz = 18;
+fig = Figure(fontsize=fsz);
+if !isdefined(Main, :scr)
+   scr = GLMakie.Screen();
+end
 
-p2 = plot(xΩ[end,:]./stab, rad2deg.(angle.(xΩ[2,:]-im*xΩ[3,:])),
-          ls=:solid, lw=lw, markershape=mrk, ms=2,
-          label=false, grid=true, yticks=-180:45:0,
-          ylabel="H1 Phase (degs)")
-plot!(xΩ[end,:]./istab, rad2deg.(angle.(xΩ[2,:]-im*xΩ[3,:])),
-      ls=:dash, lw=lw, markershape=mrk, ms=2,
-      label=false, grid=true) 
+ax = Axis(fig[1, 1], xlabel="Excitation Frequency", ylabel="H1 Response (m)");
+lines(xΩ[end,:]./stab, abs.(xΩ[2,:]-im*xΩ[3,:]));
 
-plot(p1, p2, layout=(2,1), size=(600,600))
+display(scr, fig);
 
-# TODO: Make the continuation better!!
+
+# p1 = plot(xΩ[end,:]./stab, abs.(xΩ[2,:]-im*xΩ[3,:]),
+#           ls=:solid, lw=lw, markershape=mrk, ms=2,
+#           label="stable", grid=true,
+#           ylabel="H1 Response (m)")
+# plot!(xΩ[end,:]./istab, abs.(xΩ[2,:]-im*xΩ[3,:]),
+#       ls=:dash, lw=lw, markershape=mrk, ms=2,
+#       label="unstable", grid=true)
+
+# p2 = plot(xΩ[end,:]./stab, rad2deg.(angle.(xΩ[2,:]-im*xΩ[3,:])),
+#           ls=:solid, lw=lw, markershape=mrk, ms=2,
+#           label=false, grid=true, yticks=-180:45:0,
+#           ylabel="H1 Phase (degs)")
+# plot!(xΩ[end,:]./istab, rad2deg.(angle.(xΩ[2,:]-im*xΩ[3,:])),
+#       ls=:dash, lw=lw, markershape=mrk, ms=2,
+#       label=false, grid=true) 
+
+# plot(p1, p2, layout=(2,1), size=(600,600))
+
+# # TODO: Make the continuation better!!

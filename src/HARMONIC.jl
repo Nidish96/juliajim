@@ -119,9 +119,14 @@ Nhmax = 3;
 h = HSEL(Nhmax, 1:C)
 ```
 """
-function HSEL(Nhmax::Int64, ws::Union{Float64, Vector{Float64}, UnitRange{Int64}}=1.,
+function HSEL(Nhmax::Int64,
+              ws::Union{Nothing, Float64, Vector{Float64}, UnitRange{Int64}}=nothing,
               hcr::Int=1)
-    C = length(ws)
+    if ws === nothing
+        C = 1
+    else
+        C = length(ws)
+    end
     hall = Tuple(fill(-Nhmax:Nhmax, C))
     hall = Iterators.product(Tuple(fill(-Nhmax:Nhmax, C))...)
 
@@ -492,7 +497,7 @@ end
 - N::Int64         : 
 - dir::Symbol      : 
 """
-function ACT(yin, h::hTypes, N::Int64, dir::Symbol)
+function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     Nhc = sum(all(h.==0, dims=2) + 2*any(h.!=0, dims=2));
     # Chebyshev only uses cosines
     L = I(Nhc);
@@ -501,17 +506,29 @@ function ACT(yin, h::hTypes, N::Int64, dir::Symbol)
     else
         L = L[2:2:end, :];
     end
-
+    Ny = size(yin, 2);
+    C = size(h,2);
+    
     if cmp(dir, :t2f) == 0
-        Nt = size(yin, 1)*2-2;
-        yout = AFT([yin; yin[end-1:-1:2,:]], h, Nt, dir);
+        Nt = 2N-2;
+
+        rinds = Tuple([fill([1:N; N-1:-1:2], C); :]);
+        rNs = Tuple([fill(N, C); Ny]);
+        yin = reshape(reshape(yin, rNs)[rinds...], :, Ny);
+        yout = AFT(yin, h, Nt, dir);
         yout = L*yout;
     elseif cmp(dir, :f2t) == 0
-        Nt = 2*(N-1);
+        Nt = 2(N-1);
         yout = AFT(L'*yin, h, Nt, dir);
-        yout = yout[1:N, :];
+        
+        tN = Tuple([fill(Nt, C); Ny]);
+        tNs = Tuple([fill(1:N, C); :]);
+        yout = reshape(reshape(yout, tN)[tNs...], :, Ny);        
     else
         error("Unknown dir for ACT");
+    end
+    if size(yout,2)==1
+        yout = vec(yout);
     end
     return yout;
 end
@@ -528,6 +545,10 @@ end
 """
 function DCHEB(h::hTypes)
     H = size(h, 1);
+    C = size(h, 2);
+    if C!=1
+        error("DCHEB Currently only implemented for C=1.");
+    end
 
     D = zeros(H, H);
     for hi in h[h.!=0]
@@ -560,7 +581,7 @@ function PRODMAT_CHEB(U, h, Hmax=nothing, D=nothing, L=nothing)
 
     hfull = collect(0:Hmax);
     Lb = I(Hmax+1);
-    Lb = Lb[1+h, :];
+    Lb = Lb[1 .+ h, :];
 
     U = Lb'*U;
     h = hfull;
