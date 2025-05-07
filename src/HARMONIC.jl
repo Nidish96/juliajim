@@ -1,5 +1,5 @@
 # * Preamble
-using Base: nothing_sentinel
+using Base: nothing_sentinel, TupleOrBottom
 using FFTW
 using LinearAlgebra
 using SparseArrays
@@ -82,13 +82,13 @@ function AFT(yin::VecOrMat{Float64}, h::hTypes, N::Int, dir::Symbol)
             inds1 = Tuple([mod.(h[i, :], N).+1; :]);
             yf[inds1...] = yin[i0+(i-i0-1)*2+1, :] - im .* yin[i0+(i-i0-1)*2+2, :];
 
-            inds2 = [mod.(N .- h[i, :] .+ i0 .- 1, N) .+ 1; :];
+            inds2 = [mod.(-h[i, :], N).+1; :];
             inds2[1] = inds1[1];
             inds2 = Tuple(inds2);
-            if inds1 != inds2
+            if inds2[1] == 1
                 yf[inds2...] = yin[i0+(i-i0-1)*2+1, :] + im * yin[i0+(i-i0-1)*2+2, :];
             end
-        end
+        end        
         yout = reshape(irfft(yf .* (N^C / 2), N, 1:C), (N^C, Ny));
     else
         error("Unknown dir for AFT");
@@ -119,7 +119,7 @@ Nhmax = 3;
 h = HSEL(Nhmax, 1:C)
 ```
 """
-function HSEL(Nhmax::Int64, ws::Union{Float64, Vector{Float64}, UnitRange{Int64}},
+function HSEL(Nhmax::Int64, ws::Union{Float64, Vector{Float64}, UnitRange{Int64}}=1.,
               hcr::Int=1)
     C = length(ws)
     hall = Tuple(fill(-Nhmax:Nhmax, C))
@@ -143,14 +143,24 @@ end
 # **  Evaluate Fourier Series
 
 """
-  FSEVAL(U, h, t)
+FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}}, U::Union{Nothing,Matrix{Float64}}=nothing)
+# Description
+Evaluates the Fourier series at required time points. If Fourier coefficients
+are not provided, it returns the mapping matrix.
 
-  Evaluate Fourier series at given points t
+# Arguments
+- h::hTypes                      : 
+- t::Union{StepRangeLen{Float64} : 
+- VecOrMat{Float64}}             : 
+- U::Union{Nothing               : 
+- Matrix{Float64}}               : (default nothing)
 
-
+# Outputs
+- ut	: In case U is provided, this is outputted first.
+- J	: The mapping matrix such that J*U gives the desired temporal evaluates.
 """
 function FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}},
-                U::Union{Nothing,Matrix{Float64}}=nothing)
+                U::Union{Nothing,VecOrMat{Float64}}=nothing)
     Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
     Nt = size(t, 1);
 
@@ -399,16 +409,21 @@ end
 # **  Fourier Product Matrix
 
 """
+PRODMAT_FOUR(U::VecOrMat{Float64}, h::hTypes, Hmax=nothing, D=nothing, L=nothing)
 # Description
+Returns the Fourier product matrix. Currently only implemented for C=1.
 
 # Arguments
-- U    : 
-- h    : 
-- Hmax : (default nothing)
-- D    : (default nothing)
-- Lb   : (default nothing)
+- U::VecOrMat{Float64}		: 
+- h::hTypes    			: 
+- Hmax 				: (default nothing)
+- D    				: (default nothing)
+- Lb   				: (default nothing)
 """
-function PRODMAT_FOUR(U, h::hTypes, Hmax=nothing, D=nothing, L=nothing)
+function PRODMAT_FOUR(U::VecOrMat{Float64}, h::hTypes, Hmax=nothing, D=nothing, L=nothing)
+    if size(h,2)>1
+        error("PRODMAT is currently only implemented for Single Time Fourier Series.");
+    end
     if Hmax === nothing
         Hmax = maximum(h);
     end
@@ -494,7 +509,7 @@ function ACT(yin, h::hTypes, N::Int64, dir::Symbol)
     elseif cmp(dir, :f2t) == 0
         Nt = 2*(N-1);
         yout = AFT(L'*yin, h, Nt, dir);
-        yout = yout(1:N, :);
+        yout = yout[1:N, :];
     else
         error("Unknown dir for ACT");
     end
