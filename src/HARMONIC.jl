@@ -499,6 +499,12 @@ end
 """
 function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     Nhc = sum(all(h.==0, dims=2) + 2*any(h.!=0, dims=2));
+    Ny = size(yin, 2);
+    C = size(h,2);
+    if C>1
+        @warn "The implementation is incorrect for C>1. Need to incorporate more trickery.";
+    end
+    
     # Chebyshev only uses cosines
     L = I(Nhc);
     if all(h[1, :] .== 0)
@@ -506,24 +512,20 @@ function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     else
         L = L[2:2:end, :];
     end
-    Ny = size(yin, 2);
-    C = size(h,2);
 
-    Nt = 2N-2;    
+    Nt = 2N-2;
+    rinds = Tuple([fill([1:N; N-1:-1:2], C); :]);
+    # rinds = Tuple([fill([1:N; 2:N-1], C); :]);
+    rNs = Tuple([fill(N, C); Ny]);
+    tN = Tuple([fill(Nt, C); Ny]);
+    tNs = Tuple([fill(1:N, C); :]);    
 
     if cmp(dir, :t2f) == 0
-
-        rinds = Tuple([fill([1:N; N-1:-1:2], C); :]);
-        # rinds = Tuple([fill([1:N; 2:N-1], C); :]);
-        rNs = Tuple([fill(N, C); Ny]);            
         yin = reshape(reshape(yin, rNs)[rinds...], :, Ny);
         yout = AFT(yin, h, Nt, dir);
         yout = L*yout;
     elseif cmp(dir, :f2t) == 0
         yout = AFT(L'*yin, h, Nt, dir);
-        
-        tN = Tuple([fill(Nt, C); Ny]);
-        tNs = Tuple([fill(1:N, C); :]);
         yout = reshape(reshape(yout, tN)[tNs...], :, Ny);        
     else
         error("Unknown dir for ACT");
@@ -531,6 +533,7 @@ function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     if size(yout,2)==1
         yout = vec(yout);
     end
+
     return yout;
 end
 
