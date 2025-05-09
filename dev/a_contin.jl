@@ -1,8 +1,9 @@
 # * Preamble
 using NonlinearSolve
+using LinearAlgebra
 
 # * Duffing
-function duffresfun!(uOm, p; du=nothing, J=nothing, JOm=nothing)
+function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)
     (; z0, w0, al, F) = p;
     A0 = uOm[1];
     b0 = uOm[2];
@@ -14,8 +15,8 @@ function duffresfun!(uOm, p; du=nothing, J=nothing, JOm=nothing)
     if J !== nothing
         J[:,:] = [-z0*w0 -F/2w0*cos(b0); 3al/4w0*A0+F/2w0/A0^2*cos(b0) F/2w0/A0*sin(b0)];
     end
-    if JOm !== nothing
-    	JOm[:] = [0., -1.0];
+    if Jp !== nothing
+    	Jp[:] = [0., -1.0];
     end
     return nothing;
 end
@@ -58,10 +59,25 @@ function Base.:-(v1::myNLSoln, v2::myNLSoln)
     return myNLSoln(v1.u-v2.u, v1.J-v2.J, v1.Jp-v2.Jp, v1.dudp-v2.dudp);
 end
 
+# *** Extended Residual
+function ExtRes!(fun, up, sol0, res=nothing, jac=nothing)
+    if res === nothing && jac === nothing
+        return nothing;
+    elseif jac === nothing && res !== nothing
+        fun(up; du=res[1:end-1]);
+    elseif jac !== nothing && res === nothing
+        fun(up; J=jac[1:end-1,1:end-1], Jp=jac[1:end-1,end]);
+    end
+
+    z = [sol0.dudp; 1.0];
+    alfa = 1/norm(z);
+    
+end
+
 # ** Try out continuation
 
 # Temporary Variables
-J = zeros(2,2); JOm = zeros(2);
+J = zeros(2,2); Jp = zeros(2);
 
 # First 2 Omega values
 Om0 = 0.1; Om1 = 0.15;
@@ -69,11 +85,11 @@ Om0 = 0.1; Om1 = 0.15;
 # Compute first two points
 prob = remake(dprob; p=Om0);
 sol0 = solve(prob);
-duffresfun!([sol0.u;Om0], pars;J=J,JOm=JOm);
-sol0 = myNLSoln([sol0.u;Om0]; J=copy(J), Jp=copy(JOm));
+duffresfun!([sol0.u;Om0], pars;J=J,Jp=Jp);
+sol0 = myNLSoln([sol0.u;Om0]; J=copy(J), Jp=copy(Jp));
 prob = remake(prob; u0=sol0.u[1:2], p=Om1);
 sol1 = solve(prob);
-duffresfun!([sol1.u;Om1], pars;J=J, JOm=JOm);
-sol1 = myNLSoln([sol1.u;Om1]; J=copy(J), Jp=copy(JOm));
+duffresfun!([sol1.u;Om1], pars;J=J, Jp=Jp);
+sol1 = myNLSoln([sol1.u;Om1]; J=copy(J), Jp=copy(Jp));
 
 dsol1 = sol1-sol0;
