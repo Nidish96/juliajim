@@ -38,11 +38,6 @@ dprob = NonlinearProblem(funduff, Ab0, Om);
 
 sol = solve(dprob, show_trace=Val(true));
 
-# ** Iterator Interface
-nlcache = init(dprob; show_trace=Val(true));
-
-# step!(nlcache);
-
 # * Define a struct to store the solution point
 struct myNLSoln
     up::Union{Nothing, Vector{Float64}}
@@ -92,7 +87,7 @@ function EXTRESFUN2!(up, fun, sol0s; parm=:arclength, xi=1.0, dup=nothing, Jf=no
             ds = xi*norm(sol0s[end].up-sol0s[end-1].up);
             dup[end] = (up-sol0s[end].up)'*(up-sol0s[end].up)-ds^2;
         else
-            error("Unknown parm")            
+            error("Unknown parm")
         end
     end
     if Jf !== nothing
@@ -122,8 +117,8 @@ nmax = 1000;
 
 # TODO: adaptation - needs work.
 # XXX: Can maybe explore difference between predictor and correction  
-nxi = 0.5;  # exponent: 0 for riks, 0.5 for arclength with very tight upper bound
-xirng = (0.5, 1.01);
+nxi = 0.0;  # exponent: 0 for riks, 0.5 for arclength with very tight upper bound
+xirng = (0.5, 2.0);
 
 if parm==:riks 
     nxi = 0.0;  # don't adapt if riks
@@ -169,17 +164,21 @@ while sols[end].up[end]<Om1 && length(sols)<=nmax
     # Secant Predictor
     sec_ = (sols[end].up-sols[end-1].up);
     up0 = sols[end].up + xis[end]sign(sols[end-1].dupds'sec_)sec_;
+    up0 = sols[end].up + xis[end]sign(sols[end].dupds'sec_)sec_;
+
+    # tangent predictor
+    up0 = sols[end].up + xis[end]norm(sec_)sols[end].dupds;
     
     # Correct
     prob = NonlinearProblem(exfun, up0, (sols[end-1:end], xis[end]));
     solp = solve(prob);
     push!(ers, solp.u-up0);
+    push!(its, solp.stats.nsolve);
 
     # Get gradients
     exfun.jac(Jf,solp.u,(sols[end-1:end], xis[end]));
     push!(sols, myNLSoln(solp.u; J=Jf[1:end-1,1:end-1], Jp=Jf[1:end-1,end]));
     sols[end].dupds .*= sign(sols[end-1].dupds'sols[end].dupds);
-    push!(its, solp.stats.nsolve);
 
     println(@sprintf("%d. %.2f converged in %d iterations.",
                      length(sols), sols[end].up[end], its[end]))
