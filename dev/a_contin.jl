@@ -8,7 +8,7 @@ using GLMakie
 using LaTeXStrings
 
 # * Duffing
-function duffresfun!(uOm, p; du=nothing, J=nothing, JOm=nothing)
+function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)
     (; z0, w0, al, F) = p;
     A0 = uOm[1];
     b0 = uOm[2];
@@ -20,8 +20,8 @@ function duffresfun!(uOm, p; du=nothing, J=nothing, JOm=nothing)
     if J !== nothing
         J[:,:] = [-z0*w0 -F/2w0*cos(b0); 3al/4w0*A0+F/2w0/A0^2*cos(b0) F/2w0/A0*sin(b0)];
     end
-    if JOm !== nothing
-    	JOm[:] = [0., -1.0];
+    if Jp !== nothing
+    	Jp[:] = [0., -1.0];
     end
     return nothing;
 end
