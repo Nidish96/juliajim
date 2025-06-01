@@ -1,7 +1,4 @@
-using LinearAlgebra: switch_dim12
-using Base: nothing_sentinel
-# * Preamble
-using NonlinearSolve
+using NLsolve, NonlinearSolve
 using LinearAlgebra
 using Printf
 using GLMakie
@@ -36,7 +33,7 @@ funduff = NonlinearFunction((du,up,Om)->duffresfun!([up;Om],pars;du=du),
 Ab0 = [1., 0.];
 dprob = NonlinearProblem(funduff, Ab0, Om);
 
-sol = solve(dprob, show_trace=Val(true));
+sol = solve(dprob, show_trace=Val(true), store_trace=Val(true));
 
 # * Define a struct to store the solution point
 struct myNLSoln
@@ -64,7 +61,8 @@ end
 
 # * Two-Step Starting
 # ** Extended Residue Function 2
-function EXTRESFUN2!(up, fun, sol0s; parm=:arclength, xi=1.0, dup=nothing, Jf=nothing)
+function EXTRESFUN2!(up, fun, sol0s; deflate=false, parm=:arclength, xi=1.0, dup=nothing, Jf=nothing)
+    
     if dup !== nothing
         du = @view dup[1:end-1]
 
@@ -77,24 +75,48 @@ function EXTRESFUN2!(up, fun, sol0s; parm=:arclength, xi=1.0, dup=nothing, Jf=no
         fun.jac(J, up[1:end-1], up[end]);
         fun.paramjac(Jp, up[1:end-1], up[end]);
     end
+    if deflate
+        dist = norm(up-sol0s[end-1].up)^2;
+
+        if dup === nothing
+            Rp = zeros(length(up));
+            R = @view Rp[1:end-1]
+            fun.f(R, up[1:end-1], up[end]);
+        else
+            R = du;
+        end
+
+        if Jf !== nothing
+            J[:,:] = J/dist - 2R*((up-sol0s[end-1].up)[1:end-1])'/dist^2;
+            Jp[:] = Jp/dist - 2R*((up-sol0s[end-1].up)[end])'/dist^2;
+        end
+        if dup !== nothing
+    	    du[:] = du/dist;
+        end
+    end
 
     # Arc Parameterization
+    ur = 1.0./abs.(sols[end].up);
+    ur[@. !isfinite(ur)] .= 1.0;
+
+    # ur = ones(length(up));
     if dup !== nothing
     	if parm==:riks
-            ds = xi*sol0s[end-1].dupds'*(sol0s[end].up-sol0s[end-1].up);
-            dup[end] = sol0s[end].dupds'*(up-sol0s[end].up) - ds;
+            # ds = xi*(ur.*sol0s[end-1].dupds)'*(ur.*(sol0s[end].up-sol0s[end-1].up))/((ur.*sol0s[end-1].dupds)'sol0s[end-1].dupds);
+            ds = xi*(ur.*sol0s[end-1].dupds)'*(ur.*(sol0s[end].up-sol0s[end-1].up));            
+            dup[end] = (ur.*sol0s[end].dupds)'*(ur.*(up-sol0s[end].up)) - ds;
         elseif parm==:arclength
-            ds = xi*norm(sol0s[end].up-sol0s[end-1].up);
-            dup[end] = (up-sol0s[end].up)'*(up-sol0s[end].up)-ds^2;
+            ds = xi*norm(ur.*(sol0s[end].up-sol0s[end-1].up));
+            dup[end] = (ur.*(up-sol0s[end].up))'*(ur.*(up-sol0s[end].up))-ds^2;
         else
             error("Unknown parm")
         end
     end
     if Jf !== nothing
         if parm==:riks
-            Jf[end, :] = sol0s[end].dupds';
+            Jf[end, :] = (ur.*sol0s[end].dupds)'*diagm(ur);
         elseif parm==:arclength
-            Jf[end, :] = 2(up-sol0s[end].up)';
+            Jf[end, :] = 2(ur.*(up-sol0s[end].up))'*diagm(ur);
         else
             error("Unknown parm")
         end
@@ -111,18 +133,13 @@ J = zeros(2,2); JOm = zeros(2);
 Jf = zeros(3,3);
 
 # Continuation Parameters
-parm = :arclength;
-Nopt = 6;
+parm = :riks;
+Nopt = 5;
 nmax = 1000;
 
-# TODO: adaptation - needs work.
-# XXX: Can maybe explore difference between predictor and correction  
-nxi = 0.0;  # exponent: 0 for riks, 0.5 for arclength with very tight upper bound
+# TODO: adaptation - need to consider alternatives.
+nxi = 0.2;
 xirng = (0.5, 2.0);
-
-if parm==:riks 
-    nxi = 0.0;  # don't adapt if riks
-end
 
 # Storage Struct vecs
 sols = myNLSoln[];
@@ -136,6 +153,9 @@ Om1 = 1.15*pars.w0;
 
 Ab0 = [1., 0.];
 for Om in Om0s
+    Alin = pars.F/(pars.w0^2-Om^2+2im*pars.z0*pars.w0*Om);
+    Ab0 = [abs(Alin), angle(Alin)];
+        
     prob = NonlinearProblem(funduff, Ab0, Om);
     solp0 = solve(prob);
     if solp0.u[1]<0
@@ -147,7 +167,7 @@ for Om in Om0s
     funduff.paramjac(JOm, solp0.u, Om)
 
     sol0 = myNLSoln([solp0.u;Om]; J=copy(J), Jp=copy(JOm));
-    sol0.dupds .*= sign(Om1-Om);
+    sol0.dupds .*= sign((Om1-Om)*sol0.dupds[end]);
     push!(sols, sol0);
     push!(xis, 1.0);
     push!(its, solp0.stats.nsolve);
@@ -160,25 +180,37 @@ exfun = NonlinearFunction((du,up,p)->EXTRESFUN2!(up, funduff, p[1];
                           jac=(J,up,p)->EXTRESFUN2!(up, funduff, p[1];
                                                     xi=p[2], parm=parm, Jf=J));
 
+ur = 1.0./abs.(sols[end].up);
+ur[@. !isfinite(ur)] .= 1.0;
+
 while sols[end].up[end]<Om1 && length(sols)<=nmax
     # Secant Predictor
     sec_ = (sols[end].up-sols[end-1].up);
-    up0 = sols[end].up + xis[end]sign(sols[end-1].dupds'sec_)sec_;
-    up0 = sols[end].up + xis[end]sign(sols[end].dupds'sec_)sec_;
+    sgn = sign((ur.*sols[end-1].dupds)'*(ur.*sec_))
+    up0_s = sols[end].up + xis[end]sgn.*sec_;
 
     # tangent predictor
-    up0 = sols[end].up + xis[end]norm(sec_)sols[end].dupds;
+    ds = (ur.*sols[end-1].dupds)'*(ur.*(sols[end].up-sols[end-1].up))/((ur.*sols[end-1].dupds)'sols[end-1].dupds);
+    up0_t = sols[end].up + xis[end]ds*sols[end].dupds;
+
+    up0 = up0_t;
     
     # Correct
     prob = NonlinearProblem(exfun, up0, (sols[end-1:end], xis[end]));
-    solp = solve(prob);
+    solp = solve(prob, store_trace=Val(true));
     push!(ers, solp.u-up0);
     push!(its, solp.stats.nsolve);
 
     # Get gradients
     exfun.jac(Jf,solp.u,(sols[end-1:end], xis[end]));
     push!(sols, myNLSoln(solp.u; J=Jf[1:end-1,1:end-1], Jp=Jf[1:end-1,end]));
-    sols[end].dupds .*= sign(sols[end-1].dupds'sols[end].dupds);
+    # sols[end].dupds .*= sign(sols[end-1].dupds'sols[end].dupds);
+
+    ur0 = copy(ur);
+    
+    ur = 1.0./abs.(sols[end].up);
+    ur[@. !isfinite(ur)] .= 1.0;
+    sols[end].dupds .*= sign((ur.*sols[end-1].dupds)'*(ur.*sols[end].dupds));
 
     println(@sprintf("%d. %.2f converged in %d iterations.",
                      length(sols), sols[end].up[end], its[end]))

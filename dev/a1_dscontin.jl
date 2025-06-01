@@ -35,11 +35,6 @@ dprob = NonlinearProblem(funduff, Ab0, Om);
 
 sol = solve(dprob, show_trace=Val(true));
 
-# ** Iterator Interface
-nlcache = init(dprob; show_trace=Val(true));
-
-# step!(nlcache);
-
 # * Define a struct to store the solution point
 struct myNLSoln
     up::Union{Nothing, Vector{Float64}}
@@ -66,7 +61,8 @@ end
 
 # * Single Step Starting
 # ** Define the Extended Residue Function
-function EXTRESFUN!(up, fun, sol0, ds; parm=:riks, Dsc=1, dup=nothing, Jf=nothing)
+function EXTRESFUN!(up, fun, sol0, ds;
+                    parm=:riks, Dsc::Vector{Float64}, dup=nothing, Jf=nothing)
 
     if dup !== nothing
         du = @view dup[1:end-1]
@@ -84,128 +80,133 @@ function EXTRESFUN!(up, fun, sol0, ds; parm=:riks, Dsc=1, dup=nothing, Jf=nothin
     # Extension part
     if dup !== nothing
         if parm==:riks
-    	    dup[end] = (sol0.dupds)'diagm(Dsc.^2)*(up-sol0.up)-ds;
+            tgt = normalize(sol0.dupds./Dsc);
+    	    dup[end] = tgt'*((up-sol0.up)./Dsc)-ds;
         elseif parm==:arclength
-            dup[end] = (up-sol0.up)'diagm(Dsc.^2)*(up-sol0.up)-ds^2;
+            dup[end] = norm((up-sol0.up)./Dsc)^2-ds^2;
         end
     end
     if Jf !== nothing
         if parm==:riks
-    	    Jf[end, :] = sol0.dupds'diagm(Dsc.^2);
+            tgt = normalize(sol0.dupds./Dsc);
+    	    Jf[end, :] = (tgt./Dsc)';
         elseif parm==:arclength
-            Jf[end, :] = 2(up-sol0.up)'diagm(Dsc.^2);
+            Jf[end, :] = 2((up-sol0.up)./Dsc.^2)';
         end
     end
     return nothing;
     
 end
 
-# R = ones(3);
-# Jf = ones(3,3);
-# EXTRESFUN!(sol0.up, funduff, sol0, ds; dup=R, Jf=Jf);
-
 # ** Continuation
-funduff = NonlinearFunction((du,up,Om)->duffresfun!([up;Om],pars;du=du),
-                            jac=(J,up,Om)->duffresfun!([up;Om],pars;J=J),
-                            paramjac=(JOm,up,Om)->duffresfun!([up;Om],pars;JOm=JOm));
+funduff = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du),
+                            jac=(J,u,Om)->duffresfun!([u;Om],pars;J=J),
+                            paramjac=(JOm,u,Om)->duffresfun!([u;Om],pars;Jp=JOm));
 
-# Temporary Variables
-R = ones(2);
-J = zeros(2,2); JOm = zeros(2);
+# Continuation Input
+Om0 = 0.85pars.w0;
+Om1 = 1.15pars.w0;
 
-# Continuation Parameters
-ds0 = 0.01;
-Nopt = 6;
-dsmin = ds0/5;
-dsmax = ds0*5;
-nmax = 5000;
-parm = :arclength; # :riks, :arclength
+# Initial Guess
+Alin = pars.F/(pars.w0^2-Om0^2+2im*pars.z0*pars.w0*Om0);
+Ab0 = [abs(Alin), angle(Alin)];
 
-Om0 = 0.85*pars.w0;
-Om1 = 1.15*pars.w0;
+# Continuation Input Parameters
+dw0 = 0.025;  # This is in the units of Omega
+itopt = :auto;
+parm = :arclength;
+Dsc = max.(abs.([Ab0; Om0]), 100eps());
+nmax = 100;
+DynScale = true;
 
-Ab0 = [1., 0.];
+# Step Length Adaptation Parameters
+dwmin = dw0/5;
+dwmax = dw0*5;
+nxi = 0.5;
+ximin = 0.5;
+ximax = 2.0;
 
-# Storage Struct vecs
+# Continuation Routine ########################################################
+Rf = similar(Ab0, length(Ab0)+1);
+Jf = similar(Ab0, length(Ab0)+1,length(Ab0)+1);
+
+R = @view Rf[1:end-1];
+J = @view Jf[1:end-1,1:end-1];
+Jp = @view Jf[1:end-1,end];
+
+# Initialize Storers
 sols = myNLSoln[];
 dss = Float64[];
+its = Int[];
+xis = Float64[];
 
-# Starting Point
+# Converge to first point
 prob0 = NonlinearProblem(funduff, Ab0, Om0);
-solp0 = solve(prob0);
-if solp0.u[1]<0
-    solp0.u[1] = -solp0.u[1];
-    solp0.u[2] = mod2pi(π+solp0.u[2])-2π;
+solp0 = solve(prob0, show_trace=Val(true));
+funduff.jac(J, solp0.u, Om0);
+funduff.paramjac(Jp, solp0.u, Om0);
+
+push!(sols, myNLSoln([solp0.u;Om0]; J=copy(J), Jp=copy(Jp)));
+push!(its, solp0.stats.nsteps)
+
+# Recontextualize ds0 (such that first step is as requested)
+ds0 = dw0/Dsc[end]normalize(sols[end].dupds./Dsc)[end];
+push!(dss,  ds0);
+push!(xis,  1.0);
+dsmin = dwmin/dw0*ds0;
+dsmax = dwmax/dw0*ds0;
+
+# Setup Extended Problem
+exfun = NonlinearFunction((du,up,p)->EXTRESFUN!(up, funduff, p[1], p[2];
+                                                parm=parm, Dsc=p[3], dup=du),
+                          jac=(J,up,p)->EXTRESFUN!(up, funduff, p[1], p[2];
+                                                   parm=parm, Dsc=p[3], Jf=J));
+tgt = Dsc.*normalize(sols[end].dupds./Dsc);
+up0 = sols[end].up + dss[end]tgt;
+prob = NonlinearProblem(exfun, up0, (sols[end], dss[end], Dsc));
+
+if itopt == :auto # Automatic itopt
+    solp = solve(prob);
+    itopt = solp.stats.nsteps;
 end
-solp0.u[2] = mod2pi(solp0.u[2])-2π;
-duffresfun!([solp0.u;Om0], pars; J=J,Jp=JOm);
-sol0 = myNLSoln([solp0.u;Om0]; J=copy(J), Jp=copy(JOm));
-sol0.dupds .*= sign(Om1-Om0);
-push!(sols, sol0);
-push!(dss, ds0);
 
-# Setup Problem
-exfun= NonlinearFunction((du,up,p)->EXTRESFUN!(up, funduff, p[1],p[2];
-                                               Dsc=p[3], parm=parm, dup=du),
-                         jac=(J,up,p)->EXTRESFUN!(up, funduff, p[1],p[2];
-                                                  Dsc=p[3], parm=parm, Jf=J));
-Ab10 = sols[end].up + dss[end]*sols[end].dupds;
-prob1 = NonlinearProblem(exfun, Ab10, (sols[end], dss[end], ones(3)));
+while sols[end].up[end]*sign(Om1-Om0)<Om1*sign(Om1-Om0) && length(sols)<=nmax
+    # Tangent Predictor
+    tgt = Dsc.*normalize(sols[end].dupds./Dsc);
+    up0 = sols[end].up + dss[end]tgt;
 
-while sols[end].up[end]<Om1 && length(sols)<=nmax
+    # Constrained Corrector
+    prob_ = remake(prob; u0=up0, p=(sols[end], dss[end], Dsc));
 
-    # Unknowns Scaling
-    # Approach 0: No scaling
-    Dsc = ones(3);
-    # Dsc[1] = ξ;
-    # Dsc /= norm(Dsc.*sols[end].dupds);
+    solp = solve(prob_, store_trace=Val(true));
+    prob_.f.jac(Jf, solp.u, prob_.p);
+    push!(its, solp.stats.nsteps)
 
-    # Approach 1: Setting magnitudes to unity
-    # Dsc = 1.0./abs.(sols[end].up);
-    # Dsc[@. !isfinite(Dsc)] .= 1.0;
-    # Dsc ./= norm(Dsc.*sols[end].dupds);
+    # Push to sols
+    push!(sols, myNLSoln(solp.u; J=Jf[1:end-1,1:end-1], Jp=Jf[1:end-1,end]));
+    # Fix New Tangent Sign
+    sols[end].dupds .*= sign((tgt./Dsc)'normalize(sols[end].dupds./Dsc));
 
-    # # Approach 2: Based on secant magnitude 
-    # if length(sols)==1
-    #     dup = Dsc.*sols[end].dupds;
-    # else
-    #     dup = Dsc.*(sols[end].up-sols[end-1].up);
-    #     dup /= norm(dup);
-    # end
-    # dup ./= abs.(sols[end].up);
-    # sdup = sort(abs.(dup), rev=true);
-    # knee_id = argmax(abs.(diff(sdup)))+1;
-    # thresh = sdup[knee_id];
-
-    # # Dsc = ones(length(sols[end].up));
-    # Dsc[abs.(dup).<thresh] .= 0.0;
-    # Dsc /= norm(Dsc.*sols[end].dupds);
-    
-    # Make a Step
-    Ab10 = sols[end].up + dss[end]*sols[end].dupds;
-    prob1_ = remake(prob1; u0=Ab10, p=(sols[end], dss[end], Dsc) );
-
-    solp1 = solve(prob1_);
-    duffresfun!(solp1.u, pars;J=J, Jp=JOm);
-    push!(sols, myNLSoln(solp1.u; J=copy(J), Jp=copy(JOm)));
-    sols[end].dupds .*= sign(sols[end-1].dupds'diagm(Dsc)*sols[end].dupds);
-
+    # Print out Message
     println(@sprintf("%d. %.2f with %.4f converged in %d iterations.",
-                     length(sols), sols[end].up[end], dss[end], solp1.stats.nsolve))
+                     length(sols), sols[end].up[end], dss[end], its[end]))
 
-    # Step length adaptation
-    xi = clamp(Nopt/solp1.stats.nf, 0.5, 2.0);
-    push!(dss, clamp(dss[end]*xi, dsmin,dsmax));
-end
+    
+    # Step Length Adaptation
+    push!(xis, clamp((itopt/its[end])^nxi, ximin, ximax));
+    push!(dss, clamp(xis[end]dss[end], dsmin, dsmax));
 
-for s in sols
-    if s.up[1]<0
-        s.up[1] = -s.up[1];
-        s.up[2] = mod2pi(π+s.up[2])-2π;
+    if DynScale # Rescale
+    	Dsc_ = copy(Dsc);
+
+        rat = clamp.(abs.(sols[end].up)./Dsc_, 0.5, 2.0);
+
+        dAl = 1.0;    
+        Dsc = (1-dAl)Dsc_ + dAl*rat.*Dsc_;
     end
 end
 
-# *** Plots in 2D
+# Plots in 2D
 fsz = 18;
 fig = Figure(fontsize=fsz);
 if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
@@ -242,20 +243,3 @@ else
     fig   
 end
 
-# *** Plot in 3D
-fsz = 18;
-fig2 = Figure(fontsize=fsz);
-if !isdefined(Main, :scr2) && isdefined(Main, :GLMakie)
-   scr2 = GLMakie.Screen();
-end
-
-ax = Axis3(fig2[1, 1], xlabel=L"Frequency $\Omega$", ylabel=L"Amplitude $A_0$",
-           zlabel=L"Phase $\beta_0$");
-scatterlines!(ax, [s.up[3] for s in sols], [s.up[1] for s in sols],
-              [s.up[2] for s in sols]);
-
-if isdefined(Main, :GLMakie)
-   display(scr2, fig2);
-else
-    fig2
-end
