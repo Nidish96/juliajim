@@ -1,10 +1,9 @@
-using NonlinearSolve: ForwardDiff
 using NonlinearSolve
+using NonlinearSolve: ForwardDiff
 using LinearAlgebra
 using Printf
 using GLMakie
 using LaTeXStrings
-using ForwardDiff
 
 # * Duffing
 function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)
