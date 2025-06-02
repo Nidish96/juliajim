@@ -1,8 +1,10 @@
+using NonlinearSolve: ForwardDiff
 using NonlinearSolve
 using LinearAlgebra
 using Printf
 using GLMakie
 using LaTeXStrings
+using ForwardDiff
 
 # * Duffing
 function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)
@@ -30,7 +32,8 @@ Om = 0.1;
 funduff = NonlinearFunction((du,up,Om)->duffresfun!([up;Om],pars;du=du),
                             jac=(J,up,Om)->duffresfun!([up;Om],pars;J=J));
 
-Ab0 = [1., 0.];
+Alin = pars.F/(pars.w0^2-Om^2+2im*pars.z0*pars.w0*Om);
+Ab0 = [abs(Alin), angle(Alin)];
 dprob = NonlinearProblem(funduff, Ab0, Om);
 
 sol = solve(dprob, show_trace=Val(true));
@@ -73,8 +76,16 @@ function EXTRESFUN!(up, fun, sol0, ds;
         J = @view Jf[1:end-1, 1:end-1];
         Jp = @view Jf[1:end-1, end];
 
-        fun.jac(J, up[1:end-1], up[end]);
-        fun.paramjac(Jp, up[1:end-1], up[end]);
+        if fun.jac !== nothing
+            fun.jac(J, up[1:end-1], up[end]);
+        else
+            Jt = @view Jf[1:end-1, :];
+            R = similar(up[1:end-1]);
+            ForwardDiff.jacobian!(Jt, (du,up) -> fun.f(du,up[1:end-1], up[end]), R, up);
+        end
+        if fun.paramjac !== nothing
+            fun.paramjac(Jp, up[1:end-1], up[end]);
+        end
     end
 
     # Extension part
@@ -103,6 +114,8 @@ funduff = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du),
                             jac=(J,u,Om)->duffresfun!([u;Om],pars;J=J),
                             paramjac=(JOm,u,Om)->duffresfun!([u;Om],pars;Jp=JOm));
 
+# funduff = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du));
+
 # Continuation Input
 Om0 = 0.85pars.w0;
 Om1 = 1.15pars.w0;
@@ -112,11 +125,11 @@ Alin = pars.F/(pars.w0^2-Om0^2+2im*pars.z0*pars.w0*Om0);
 Ab0 = [abs(Alin), angle(Alin)];
 
 # Continuation Input Parameters
-dw0 = 0.025;  # This is in the units of Omega
+dw0 = 0.05;  # This is in the units of Omega
 itopt = :auto;
 parm = :arclength;
-Dsc = max.(abs.([Ab0; Om0]), 100eps());
-nmax = 100;
+Dsc = :auto;
+nmax = 1000;
 DynScale = true;
 
 # Step Length Adaptation Parameters
@@ -143,11 +156,24 @@ xis = Float64[];
 # Converge to first point
 prob0 = NonlinearProblem(funduff, Ab0, Om0);
 solp0 = solve(prob0, show_trace=Val(true));
-funduff.jac(J, solp0.u, Om0);
-funduff.paramjac(Jp, solp0.u, Om0);
+if funduff.jac !== nothing
+    funduff.jac(J, solp0.u, Om0);
+else
+    Jt = @view Jf[1:end-1, :];
+    ForwardDiff.jacobian!(Jt, (R,up)->funduff.f(R,up[1:end-1],up[end]), R,
+                          [solp0.u; Om0])
+end
+if funduff.paramjac !== nothing
+    funduff.paramjac(Jp, solp0.u, Om0);
+end
 
 push!(sols, myNLSoln([solp0.u;Om0]; J=copy(J), Jp=copy(Jp)));
 push!(its, solp0.stats.nsteps)
+
+if Dsc==:auto
+    Dsc = max.(abs.(sols[end].up), 100eps());
+end
+
 
 # Recontextualize ds0 (such that first step is as requested)
 ds0 = dw0/Dsc[end]normalize(sols[end].dupds./Dsc)[end];
@@ -161,6 +187,8 @@ exfun = NonlinearFunction((du,up,p)->EXTRESFUN!(up, funduff, p[1], p[2];
                                                 parm=parm, Dsc=p[3], dup=du),
                           jac=(J,up,p)->EXTRESFUN!(up, funduff, p[1], p[2];
                                                    parm=parm, Dsc=p[3], Jf=J));
+
+
 tgt = Dsc.*normalize(sols[end].dupds./Dsc);
 up0 = sols[end].up + dss[end]tgt;
 prob = NonlinearProblem(exfun, up0, (sols[end], dss[end], Dsc));
@@ -172,14 +200,14 @@ end
 
 while sols[end].up[end]*sign(Om1-Om0)<Om1*sign(Om1-Om0) && length(sols)<=nmax
     # Tangent Predictor
-    tgt = Dsc.*normalize(sols[end].dupds./Dsc);
-    up0 = sols[end].up + dss[end]tgt;
+    global tgt = Dsc.*normalize(sols[end].dupds./Dsc);
+    global up0 = sols[end].up + dss[end]tgt;
 
     # Constrained Corrector
-    prob_ = remake(prob; u0=up0, p=(sols[end], dss[end], Dsc));
+    global prob = remake(prob; u0=up0, p=(sols[end], dss[end], Dsc));
 
-    solp = solve(prob_, store_trace=Val(true));
-    prob_.f.jac(Jf, solp.u, prob_.p);
+    global solp = solve(prob, store_trace=Val(true));
+    prob.f.jac(Jf, solp.u, prob.p);
     push!(its, solp.stats.nsteps)
 
     # Push to sols
@@ -202,11 +230,11 @@ while sols[end].up[end]*sign(Om1-Om0)<Om1*sign(Om1-Om0) && length(sols)<=nmax
         rat = clamp.(abs.(sols[end].up)./Dsc_, 0.5, 2.0);
 
         dAl = 1.0;    
-        Dsc = (1-dAl)Dsc_ + dAl*rat.*Dsc_;
+        global Dsc = (1-dAl)Dsc_ + dAl*rat.*Dsc_;
     end
 end
 
-# Plots in 2D
+# ** Plots in 2D
 fsz = 18;
 fig = Figure(fontsize=fsz);
 if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
@@ -242,4 +270,3 @@ if isdefined(Main, :GLMakie)
 else
     fig   
 end
-
