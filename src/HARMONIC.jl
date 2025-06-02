@@ -18,7 +18,7 @@ const hTypes = Union{Int,VecOrMat{Int},UnitRange{Int}};
 Routine to conduct Time-to-Frequency and Frequency-to-Time transforms
 for the general Multi frequency case.
 # Arguments
-+ `yin`: (N^C, Ny) if time data, and (Nhc, Ny) if frequency data.
++ `yin::VecOrMat{Float64}`: (N^C, Ny) if time data, and (Nhc, Ny) if frequency data.
 + `h::hTypes`: (Nh, C) list of harmonics.
 + `N::Int64`: Number of time samples for AFT.
 + `dir::Symbol`: :t2f for time-to-frequency, and :f2t for frequency-to-time.

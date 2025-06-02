@@ -25,7 +25,7 @@ function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)
 end
 
 # pars = (z0 = 0.5e-2, w0 = 2., al = 0.1, F = 0.1);
-ξ = 1e0;
+ξ = 1e-3;
 pars = (z0 = 0.5e-2, w0 = 2., al = 0.1*ξ^2, F = 0.1/ξ);
 Om = 0.1;
 funduff = NonlinearFunction((du,up,Om)->duffresfun!([up;Om],pars;du=du),
@@ -232,6 +232,20 @@ while sols[end].up[end]*sign(Om1-Om0)<Om1*sign(Om1-Om0) && length(sols)<=nmax
         global Dsc = (1-dAl)Dsc_ + dAl*rat.*Dsc_;
     end
 end
+
+# * Routinized Version
+funduff = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du),
+                            jac=(J,u,Om)->duffresfun!([u;Om],pars;J=J),
+                            paramjac=(JOm,u,Om)->duffresfun!([u;Om],pars;Jp=JOm));
+
+Om0 = 0.85pars.w0;
+Om1 = 1.15pars.w0;
+
+Alin = pars.F/(pars.w0^2-Om0^2+2im*pars.z0*pars.w0*Om0);
+Ab0 = [abs(Alin), angle(Alin)];
+
+dOm = 0.05;
+sols, its, dss, xis = CONTINUATE(Ab0, funduff, [Om0, Om1], dOm);
 
 # ** Plots in 2D
 fsz = 18;
