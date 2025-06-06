@@ -5,6 +5,10 @@ using ForwardDiff
 using Markdown
 using Infiltrator
 
+# * Exports
+export myNLSoln, EXTRESFUN!, EXTRESFUN_scaled!
+export CONTINUATE
+
 # * Custom Abstract Types
 const nvTypes = Union{Nothing, Vector{Float64}};
 const nmTypes = Union{Nothing, Matrix{Float64}};
