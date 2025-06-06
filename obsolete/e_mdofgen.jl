@@ -17,7 +17,7 @@ L = [0.0 1.0];
 
 MDL = ADDNL(MDL, :Inst, fnl, L);
 
-### Trial
+# * Trial
 h = HSEL(3, 1);
 N = 128;
 t = (0:N-1)*2π/N;
@@ -36,13 +36,13 @@ HARMONICSTIFFNESS!(E, dEdw, MDL.M, MDL.C, MDL.K, [Wst], h);
 
 Uw0 = [E\Fl; Wst];
 
-###
+# *
 FNL = spzeros(MDL.Ndofs*Nhc,1);
 dFNLdU = spzeros(MDL.Ndofs*Nhc,MDL.Ndofs*Nhc);
 dFNLdw = spzeros(MDL.Ndofs*Nhc,1);
 NLEVAL!(FNL, dFNLdU, dFNLdw, MDL, Uw0, h, N, 1e-6);
 
-###
+# *
 R = spzeros(MDL.Ndofs*Nhc,1);
 dRdU = spzeros(MDL.Ndofs*Nhc,MDL.Ndofs*Nhc);
 dRdw = spzeros(MDL.Ndofs*Nhc,1);

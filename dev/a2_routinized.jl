@@ -39,7 +39,7 @@ Alin = pars.F/(pars.w0^2-Om^2+2im*pars.z0*pars.w0*Om);
 Ab0 = [abs(Alin), angle(Alin)];
 dprob = NonlinearProblem(funduff, Ab0, Om);
 
-sol = solve(dprob, show_trace=Val(true));
+sol = solve(dprob, show_trace=Val(true), store_trace=Val(true));
 
 # * Routinized Version
 Om0 = 0.85pars.w0;
@@ -48,10 +48,15 @@ Om1 = 1.15pars.w0;
 Alin = pars.F/(pars.w0^2-Om0^2+2im*pars.z0*pars.w0*Om0);
 Ab0 = [abs(Alin), angle(Alin)];
 
-dOm = 0.05;
-sols, its, dss, xis = CONTINUATE(Ab0, funduff, [Om0, Om1], dOm; parm=:arclength);
+funduff = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du));
+funduffJ = NonlinearFunction((du,u,Om)->duffresfun!([u;Om],pars;du=du),
+                            jac=(J,u,Om)->duffresfun!([u;Om],pars;J=J),
+                            paramjac=(JOm,u,Om)->duffresfun!([u;Om],pars;Jp=JOm));
 
-# ** Plots in 2D
+dOm = 0.05pars.w0;
+sols, its, dss, xis, Dsc = CONTINUATE(Ab0, funduff, [Om0, Om1], dOm);
+
+# Plots in 2D
 fsz = 18;
 fig = Figure(fontsize=fsz);
 if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
@@ -87,3 +92,42 @@ if isdefined(Main, :GLMakie)
 else
     fig   
 end
+
+# * Analytical Solution
+
+Om1_f(A0) = -(sqrt(pars.F^2-4A0^2*pars.w0^4*pars.z0^2)/(2A0*pars.w0))+pars.w0+(3A0^2*pars.al)/8pars.w0;
+Om2_f(A0) = sqrt(pars.F^2-4A0^2*pars.w0^4*pars.z0^2)/(2A0*pars.w0)+pars.w0+(3A0^2*pars.al)/8pars.w0
+
+impfun(A0,Om) = -(A0^2*pars.w0^2*pars.z0^2)-(A0*(pars.w0-Om)+(3A0^3*pars.al)/8pars.w0)^2+pars.F^2/4pars.w0^2;
+
+isapprox.([impfun.(s.up[1], s.up[3]) for s in sols], 0.0; atol=eps())
+
+aex = extrema([s.up[1] for s in sols]);
+Na = 100;
+as = exp10.(range(log10(aex[1]/10), log10(10aex[2]), Na))
+b1 = [Om1_f.(Complex.(as)) as];
+b2 = [Om2_f.(Complex.(as)) as];
+b1 = real(b1[isreal.(b1[:,1]), :]);
+b2 = real(b2[isreal.(b2[:,1]), :]);
+
+ansol = [b1; b2[end:-1:1,:]];
+
+fsz = 18;
+fig2 = Figure(fontsize=fsz);
+if !isdefined(Main, :scr2) && isdefined(Main, :GLMakie)
+   scr2 = GLMakie.Screen();
+end
+
+ax = Axis(fig2[1, 1], xlabel="Excitation Frequency (rad/s)", ylabel="Response (m)");
+lines!(ax, ansol[:,1], ansol[:,2], color=:blue, label="Analytical")
+scatterlines!(ax, [s.up[end] for s in sols], [s.up[1] for s in sols], color=:red, label="Numerical");
+xlims!(ax, Om0, Om1)
+
+axislegend(ax);
+
+if isdefined(Main, :GLMakie)
+   display(scr2, fig2);
+else
+    fig2   
+end
+   

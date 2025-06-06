@@ -17,8 +17,8 @@ Ue = ACT(u, h,N, :t2f);
 ue = ACT(Ue, h,N, :f2t);
 
 @testset "ACT-1" begin
-    @test Ue ≈ U
-    @test ue ≈ u
+    @test Ue ≈ U;
+    @test ue ≈ u;
 end
 
 # ** Differentiation
@@ -30,7 +30,7 @@ duan = 2 .+ 3*2sin.(2acos.(x))./sqrt.(1 .-x.^2) .+ 4*3sin.(3acos.(x))./sqrt.(1 .
 dun = ACT(D1*ACT(u, h,N, :t2f), h,N, :f2t);
 
 @testset "DCHEB - 1" begin
-    @test dun[2:end-1] ≈ duan[2:end-1]
+    @test dun[2:end-1] ≈ duan[2:end-1];
 end
 
 # ** Product Matrix
@@ -46,7 +46,7 @@ pUr = ACT(prod(ACT(U, h,N, :f2t), dims=2), h,N, :t2f);
 pU = PRODMAT_CHEB(U[:,1], h)*U[:,2];
 
 @testset "PROD_CHEB - 1" begin
-    @test pU ≈ pUr
+    @test pU ≈ pUr;
 end
 
 # * Multi-Dimensional Tests
@@ -64,7 +64,7 @@ Ue = ACT(u, h,N, :t2f);
 ue = ACT(Ue, h,N, :f2t);
 
 @testset "ACT - 2" begin
-    @test Ue ≈ U
+    @test Ue ≈ U;
 end
 
 # ** Analytical Check for f2t
@@ -83,7 +83,7 @@ uan = sum([[U[hi].*cos.(h[hi,1].*acos.(x1)).*cos.(h[hi,2].*acos.(x2)) for (x1,x2
 u = ACT(U, h,N, :f2t);
 
 @testset "ACT - 2 - Analytical f2t" begin
-    @test u ≈ uan[:]
+    @test u ≈ uan[:];
 end
 
 # ** Analytical
@@ -106,5 +106,5 @@ uan = sum([[U[hi].*cos.(h[hi,1].*acos.(x1)+h[hi,2].*acos.(x2)) for (x1,x2) in xx
 Ue = ACT(uan[:], h,N, :t2f)
 
 @testset "ACT - 2 - Analytical t2f" begin
-    @test U ≈ Ue
+    @test U ≈ Ue;
 end

@@ -1,13 +1,16 @@
 # * Preamble
 using Base: nothing_sentinel, TupleOrBottom
 using FFTW
+using ForwardDiff
+using FastTransformsForwardDiff
 using LinearAlgebra
 using SparseArrays
 using ToeplitzMatrices
+using Infiltrator
 
 # * Custom Abstract Types
 const MxTypes = Union{Float64, Matrix{Float64}, Matrix{Int64}, AbstractMatrix{Bool}};
-const hTypes = Union{Int,VecOrMat{Int},UnitRange{Int}};
+const hTypes = Union{Int,VecOrMat{Int},AbstractRange{Int}};
 
 # * Fourier Routines ############################################################
 # ** Alternating Frequency-Time Transform
@@ -49,7 +52,8 @@ for the general Multi frequency case.
     YT = AFT(yf, h, N, :f2t);
 ```
 """
-function AFT(yin::VecOrMat{Float64}, h::hTypes, N::Int, dir::Symbol)
+function AFT(yin, h, N, dir)
+# function AFT(yin::AbstractArray{Float64}, h::hTypes, N::Int, dir::Symbol)
     C = size(h, 2);
     Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
     Ny = size(yin, 2);
@@ -58,38 +62,38 @@ function AFT(yin::VecOrMat{Float64}, h::hTypes, N::Int, dir::Symbol)
     tN = Tuple([fill(N, C); Ny]);
     fN = Tuple([Nf; fill(N, C - 1); Ny]);
     if cmp(dir, :t2f) == 0
-        yf = rfft(reshape(yin, tN), 1:C) ./ (N .^ C / 2);
-
-        yout = zeros(Nhc, Ny);
+        yf = rfft(reshape(yin, tN), 1:C) / (N^C/2);
+        
+        yout = zeros(eltype(yin), Nhc, Ny);
         i0 = 0;
         if all(h[1, :] .== 0)
-            yout[1, :] = yf[Tuple([fill(1, C); :])...] ./ 2;
+            yout[1, :] = real(yf[Tuple([fill(1, C); :])...])/2;
             i0 = 1;
         end
         for i in (i0+1):size(h, 1)
             inds = Tuple([mod.(h[i, :], N) .+ 1; :]);
-            yout[i0+(i-i0-1)*2+1, :] = real(yf[inds...]);
-            yout[i0+(i-i0-1)*2+2, :] = -imag(yf[inds...]);
+            yout[i0+2(i-i0-1)+1, :] = real(yf[inds...]);
+            yout[i0+2(i-i0-1)+2, :] = -imag(yf[inds...]);
         end
-    elseif cmp(dir, :f2t) == 0
-        yf = zeros(ComplexF64, fN);
+    elseif cmp(dir, :f2t) == 0        
+        yf = zeros(Complex{eltype(yin)}, fN);
         i0 = 0;
         if all(h[1, :] .== 0)
-            yf[Tuple([fill(1, C); :])...] = real(yin[1, :]) .* 2;
+            yf[Tuple([fill(1, C); :])...] = 2yin[1, :];
             i0 = 1;
         end
         for i in (i0+1):size(h, 1)
             inds1 = Tuple([mod.(h[i, :], N).+1; :]);
-            yf[inds1...] = yin[i0+(i-i0-1)*2+1, :] - im .* yin[i0+(i-i0-1)*2+2, :];
+            yf[inds1...] = yin[i0+2(i-i0-1)+1, :] - im .* yin[i0+2(i-i0-1)+2, :];
 
             inds2 = [mod.(-h[i, :], N).+1; :];
             inds2[1] = inds1[1];
             inds2 = Tuple(inds2);
             if inds2[1] == 1
-                yf[inds2...] = yin[i0+(i-i0-1)*2+1, :] + im * yin[i0+(i-i0-1)*2+2, :];
+                yf[inds2...] = yin[i0+2(i-i0-1)+1, :] + im * yin[i0+2(i-i0-1)+2, :];
             end
-        end        
-        yout = reshape(irfft(yf .* (N^C / 2), N, 1:C), (N^C, Ny));
+        end
+        yout = reshape(irfft(yf * (N^C / 2), N, 1:C), (N^C, Ny));
     else
         error("Unknown dir for AFT");
     end
@@ -164,8 +168,9 @@ are not provided, it returns the mapping matrix.
 - ut	: In case U is provided, this is outputted first.
 - J	: The mapping matrix such that J*U gives the desired temporal evaluates.
 """
-function FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}},
-                U::Union{Nothing,VecOrMat{Float64}}=nothing)
+function FSEVAL(h, t, U=nothing)
+# function FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}},
+#                 U::Union{Nothing,VecOrMat{Float64}}=nothing)
     Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
     Nt = size(t, 1);
 
@@ -187,7 +192,7 @@ function FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}},
         sbass = permutedims(sbass, (1,3,2));
 
         Np = size(U, 2);
-        ut = zeros(Nt, Np);
+        ut = zeros(eltype(U), Nt, Np);
         ut = dropdims(U[zinds,:] .+ sum(U[rinds,:].*cbass + U[iinds,:].*sbass, dims=1), dims=1)';
     
         return ut, J
@@ -228,11 +233,12 @@ h = HSEL(Nhmax, ws);
 E, dEdw = HARMONICSTIFFNESS(M, D, K, ws, h);
 ```
 """
-function HARMONICSTIFFNESS(M::MxTypes,
-                           D::MxTypes,
-                           K::MxTypes,
-                           ws::Union{Float64, Vector{Float64}},
-                           h::hTypes)
+function HARMONICSTIFFNESS(M, D, K, ws, h)
+# function HARMONICSTIFFNESS(M::MxTypes,
+#                            D::MxTypes,
+#                            K::MxTypes,
+#                            ws::Union{Float64, Vector{Float64}},
+#                            h::hTypes)
     H = size(h,1);
     C = size(h,2);
     Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
@@ -246,6 +252,9 @@ function HARMONICSTIFFNESS(M::MxTypes,
     E = kron(sparse(I, Nhc, Nhc), K) + kron((hn*ws).*E1, D) - kron(spdiagm((hn*ws)[:].^2), M);
     dEdw = [kron(hn[:,i].*E1, D) -
         kron(spdiagm(2(hn*ws)[:] .* hn[:,i]), M) for i in 1:C];
+    if C==1
+        dEdw = dEdw[1];
+    end
 
     return (E, dEdw);
 end
@@ -314,7 +323,7 @@ end
 # **  Harmonic Indices
 
 """
-# Description
+   HINDS(Ndofs::Int64, h::hTypes)
 
 # Arguments
 - Ndofs::Int64     : 
@@ -425,7 +434,8 @@ Returns the Fourier product matrix. Currently only implemented for C=1.
 - D    				: (default nothing)
 - Lb   				: (default nothing)
 """
-function PRODMAT_FOUR(U::VecOrMat{Float64}, h::hTypes, Hmax=nothing, D=nothing, L=nothing)
+function PRODMAT_FOUR(U, h, Hmax=nothing, D=nothing, L=nothing)
+# function PRODMAT_FOUR(U::VecOrMat{Float64}, h::hTypes, Hmax=nothing, D=nothing, L=nothing)
     if size(h,2)>1
         error("PRODMAT is currently only implemented for Single Time Fourier Series.");
     end
@@ -453,7 +463,7 @@ function PRODMAT_FOUR(U::VecOrMat{Float64}, h::hTypes, Hmax=nothing, D=nothing, 
     cinds = 2:2:Nhc;
     sinds = 3:2:Nhc;
 
-    zh = zeros(length(h)-1,1);
+    zh = zeros(eltype(U), length(h)-1,1);
 
     Df = zeros(Nhc, Nhc);
     Df[zind, [zind; cinds; sinds]] = [a0 as[2:end]'/2 bs[2:end]'/2];
@@ -497,7 +507,8 @@ end
 - N::Int64         : 
 - dir::Symbol      : 
 """
-function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
+function ACT(yin, h, N, dir)
+# function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
     Nhc = sum(all(h.==0, dims=2) + 2*any(h.!=0, dims=2));
     Ny = size(yin, 2);
     C = size(h,2);
@@ -598,10 +609,10 @@ function PRODMAT_CHEB(U, h, Hmax=nothing, D=nothing, L=nothing)
     zind = 1;
     cinds = 2:Nh;
 
-    Df = zeros(Nh, Nh);
+    Df = zeros(eltype(U), Nh, Nh);
     Df[zind, [zind; cinds]] = [a0 as[2:end]'/2];
     Df[cinds, zind] = as[2:end];
-    tmp = (Toeplitz(as,as)+Hankel(as,vec([as[end]; zeros(Nh-1,1)])))/2;
+    tmp = (Toeplitz(as,as)+Hankel(as,vec([as[end]; zeros(eltype(U), Nh-1,1)])))/2;
     Df[cinds, cinds] = tmp[2:end, 2:end] + I(Nh-1).*a0;
 
     ##

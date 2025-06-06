@@ -107,7 +107,7 @@ end
 # ** Continuation
 funduff = NonlinearFunction((du,up,Om)->duffresfun!([up;Om],pars;du=du),
                             jac=(J,up,Om)->duffresfun!([up;Om],pars;J=J),
-                            paramjac=(JOm,up,Om)->duffresfun!([up;Om],pars;JOm=JOm));
+                            paramjac=(JOm,up,Om)->duffresfun!([up;Om],pars;Jp=JOm));
 
 # Temporary Variables
 R = ones(2);
