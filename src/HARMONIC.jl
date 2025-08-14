@@ -1,7 +1,7 @@
 # * Preamble
-using Base: nothing_sentinel, TupleOrBottom
 using FFTW
 using ForwardDiff
+using FastTransformsForwardDiff
 using LinearAlgebra
 using SparseArrays
 using ToeplitzMatrices

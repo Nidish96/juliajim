@@ -12,7 +12,7 @@ includet("../src/HARMONIC.jl")
 
 # * Residue Function
 function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
-    (; z0, w0, al, F) = pars;
+    (; z0, w0, kt, fs, F) = pars;
 
     Om = Uw[end];
     Nhc = sum((h.==0)+2(h.!=0));
@@ -25,14 +25,33 @@ function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
         
     # Construct Residue
     if !(R === nothing)
-        ft  = al*ut.^3;
+        ft = kt*ut;
+        
+        for _ in 1:2            
+            for (ti, tim1) in zip(1:Nt, circshift(1:Nt,1))
+                fsp = kt*(ut[ti]-ut[tim1]) + ft[tim1];  # stick prediction
+                ft[ti] = clamp(fsp, -fs, fs);
+            end
+        end
         Fnl = AFT(ft, h, Nt, :t2f);
         
         R[:] = E*Uw[1:end-1] + Fnl - Fl*F;
     end
     if !(dRdU === nothing)
-        cst = AFT(Float64.(I(Nhc)), h, Nt, :f2t);
-        dfdat = (3al*ut.^2) .* cst;
+        cst = AFT(eltype(Uw).(I(Nhc)), h, Nt, :f2t);
+        ft = kt*ut;
+        dfdat = kt.*cst;
+        for _ in 1:2
+            for (ti, tim1) in zip(1:Nt, circshift(1:Nt,1))
+                fsp = kt*(ut[ti]-ut[tim1]) + ft[tim1];
+                ft[ti] = clamp(fsp, -fs, fs);
+                if abs(fsp)<fs
+                    dfdat[ti, :] = kt.*(cst[ti,:]-cst[tim1,:]) + dfdat[tim1,:];
+                else
+                    dfdat[ti, :] .= 0.0;
+                end
+            end
+        end
         Jnl    = AFT(dfdat, h, Nt, :t2f);
         
         dRdU[:, :] = E + Jnl;
@@ -44,8 +63,7 @@ function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
 end
 
 # * Setup
-ξ = 1e3;
-pars = (z0 = 0.5e-2, w0 = 2., al = 0.1*ξ^2, F = 0.1/ξ);
+pars = (z0 = 0.5e-2, w0 = 2., kt = 5.0, fs=1.0, F = 0.1);
 
 h = (0:5);
 # h = 1:2:5;
@@ -63,8 +81,8 @@ fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
                         paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
 
 E = zeros(Nhc, Nhc);
-HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2, Om, h);
-U0 = E\(Fl*pars.F);
+HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om, h);
+U0 = E\ (Fl*pars.F);
 
 prob = NonlinearProblem(fun, U0, Om);
 sol = solve(prob, show_trace=Val(true))
@@ -74,13 +92,12 @@ Jf = zeros(Nhc, Nhc+1);
 J = @view Jf[:, 1:Nhc];
 Jp = @view Jf[:, end];
 
-
 # * Continuation
-Om1 = 0.02pars.w0;
-Om0 = 2pars.w0;
+Om0 = 0.02pars.w0;
+Om1 = 2pars.w0;
 
-HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2, Om0, h);
-U0 = E\(Fl*pars.F);
+HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om0, h);
+U0 = E\ (Fl*pars.F);
 
 fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
                         jac=(J,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
@@ -88,7 +105,7 @@ fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
 
 dOm = 0.04pars.w0;
 dOm = 0.1;
-cpars = (parm=:arclength, nmax=2000);
+cpars = (parm=:arclength, nmax=2000, Dsc=:none);
 sols, its, dss, xis, Dsc = CONTINUATE(U0, fun, [Om0, Om1], dOm; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols));
