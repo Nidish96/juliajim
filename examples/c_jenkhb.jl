@@ -24,37 +24,34 @@ function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
     ut  = AFT(Uw[1:end-1], h, Nt, :f2t);
         
     # Construct Residue
-    if !(R === nothing)
+    if !(R === nothing && dRdU === nothing)
         ft = kt*ut;
+        if !(dRdU === nothing)
+            cst = AFT(eltype(Uw).(I(Nhc)), h, Nt, :f2t);
+            dfdat = kt.*cst;
+        end
         
         for _ in 1:2            
             for (ti, tim1) in zip(1:Nt, circshift(1:Nt,1))
                 fsp = kt*(ut[ti]-ut[tim1]) + ft[tim1];  # stick prediction
                 ft[ti] = clamp(fsp, -fs, fs);
-            end
-        end
-        Fnl = AFT(ft, h, Nt, :t2f);
-        
-        R[:] = E*Uw[1:end-1] + Fnl - Fl*F;
-    end
-    if !(dRdU === nothing)
-        cst = AFT(eltype(Uw).(I(Nhc)), h, Nt, :f2t);
-        ft = kt*ut;
-        dfdat = kt.*cst;
-        for _ in 1:2
-            for (ti, tim1) in zip(1:Nt, circshift(1:Nt,1))
-                fsp = kt*(ut[ti]-ut[tim1]) + ft[tim1];
-                ft[ti] = clamp(fsp, -fs, fs);
-                if abs(fsp)<fs
-                    dfdat[ti, :] = kt.*(cst[ti,:]-cst[tim1,:]) + dfdat[tim1,:];
-                else
-                    dfdat[ti, :] .= 0.0;
+                if !(dRdU === nothing)
+                    if (abs(fsp)<fs)
+                        dfdat[ti, :] = kt.*(cst[ti,:]-cst[tim1,:]) + dfdat[tim1,:];
+                    else
+                        dfdat[ti, :] .= 0.0;
+                    end
                 end
             end
         end
-        Jnl    = AFT(dfdat, h, Nt, :t2f);
-        
-        dRdU[:, :] = E + Jnl;
+        if !(R === nothing)
+            Fnl = AFT(ft, h, Nt, :t2f);        
+            R[:] = E*Uw[1:end-1] + Fnl - Fl*F;
+        end
+        if !(dRdU === nothing)
+            Jnl    = AFT(dfdat, h, Nt, :t2f);
+            dRdU[:, :] = E + Jnl;
+        end
     end
     if !(dRdw === nothing)
         dRdw[:] = dEdw*Uw[1:end-1];
@@ -65,8 +62,8 @@ end
 # * Setup
 pars = (z0 = 0.5e-2, w0 = 2., kt = 5.0, fs=1.0, F = 0.1);
 
-h = (0:5);
-# h = 1:2:5;
+# h = (0:5);
+h = 1:2:5;
 Om = 0.1;
 
 Nhc = sum((h.==0)+2(h.!=0));
@@ -104,8 +101,8 @@ fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
                         paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
 
 dOm = 0.04pars.w0;
-dOm = 0.1;
-cpars = (parm=:arclength, nmax=2000, Dsc=:none);
+# dOm = 0.1;
+cpars = (parm=:riks, nmax=300, minDsc=1e-2);
 sols, its, dss, xis, Dsc = CONTINUATE(U0, fun, [Om0, Om1], dOm; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols));
@@ -137,4 +134,3 @@ if isdefined(Main, :GLMakie)
 else
     fig
 end
-
