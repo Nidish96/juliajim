@@ -21,3 +21,7 @@ makedocs(;
     ),
     pages = ["Home" => "index.md", "Reference" => "reference.md"],
 )
+
+deploydocs(
+    repo = "github.com/Nidish96/juliajim"
+)
