@@ -290,15 +290,15 @@ Continuation routine. Solves the bordered problem with residue drawn from `EXTRE
 - `vector{Float64}` representing the final Dscale matrix.
 """
 function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
-                    parm::Symbol=:arclength, nmax::Int64=1000,
-                    dpbnds::Union{Nothing,Vector{Float64}}=nothing,
-                    save_jacs::Bool=false, verbosity::Int=1,
-                    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
-                    DynScale::Bool=true,
-                    itopt::Union{Symbol,Int}=:auto,
-                    nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],
-                    minDsc::Float64=eps()^(4//5))
-    
+    parm::Symbol=:arclength, nmax::Int64=1000,
+    dpbnds::Union{Nothing,Vector{Float64}}=nothing,
+    save_jacs::Bool=false, verbosity::Int=1,
+    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
+    DynScale::Bool=true,
+    itopt::Union{Symbol,Int}=:auto,
+    nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],
+    minDsc::Float64=eps()^(4//5))
+
     if dpbnds === nothing
         dpbnds = [dp/5, 5dp];
     end

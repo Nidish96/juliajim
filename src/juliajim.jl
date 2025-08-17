@@ -10,5 +10,6 @@ jimgreet() = "Hello World!";
 
 include("./HARMONIC.jl")
 include("./CONTINUATION.jl")
+include("./MDOFGEN.jl")
 
 end

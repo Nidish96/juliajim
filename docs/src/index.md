@@ -9,8 +9,22 @@ Welcome to the documentation page.
 juliajim
 jimgreet()
 ```
-
-# Harmonic/Galerkin Utilities
+# Introduction
+Welcome welcome!
+## Conventions
+  * All scripts are tagged by an alphabet. 
+  * All routines are upper case. 
+# Getting Started
+If you're just here for the...
+  * Fourier Utilities
+  * Continuation Utilities
+  * Harmonic Balance Utilities
+  * Transient Simulation Utilities
+  * All of the above
+# Examples with Documentation
+Few examples of increasing complexity. Find them in /examples/.
+# Documentation
+## Harmonic/Galerkin Utilities
 ```@docs
 AFT
 HSEL
@@ -24,10 +38,29 @@ ACT
 DCHEB
 PRODMAT_CHEB
 ```
-# Continuation Utilities
-
+## Continuation Utilities
+### Struct(s)
 ```@docs
 myNLSoln
+```
+### Routines
+```@docs
 EXTRESFUN!
 CONTINUATE
+```
+## MDOF Problem Utilities
+### Structs
+```@docs
+NONLINEARITY
+MDOFGEN
+```
+### Routines
+```@docs
+ADDNL
+NLEVAL!
+HBRESFUN!
+HBRESFUN_A!
+EPMCRESFUN!
+NLFORCE
+NEWMARKMARCH
 ```
