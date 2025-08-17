@@ -5,7 +5,6 @@ using LinearAlgebra
 using NLsolve
 using UnPack
 using DSP
-using NonlinearEigenproblems
 
 using Revise
 includet("../src/HARMONIC.jl")
