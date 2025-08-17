@@ -39,13 +39,10 @@ DCHEB
 PRODMAT_CHEB
 ```
 ## Continuation Utilities
-### Struct(s)
-```@docs
-myNLSoln
-```
 ### Routines
 ```@docs
 EXTRESFUN!
+EXTRESFUN_scaled!
 CONTINUATE
 ```
 ## MDOF Problem Utilities
@@ -63,4 +60,8 @@ HBRESFUN_A!
 EPMCRESFUN!
 NLFORCE
 NEWMARKMARCH
+```
+### Struct(s)
+```@docs
+myNLSoln
 ```

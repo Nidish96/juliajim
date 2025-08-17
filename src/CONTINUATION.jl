@@ -336,7 +336,8 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         ForwardDiff.jacobian!(Jp, (R,p)->fun.f(R,solp0.u,p), R, [ps[1]]);
     end
 
-    push!(sols, myNLSoln([solp0.u;ps[1]]; J=copy(J), Jp=copy(Jp), save_jacs=save_jacs));
+    push!(sols, myNLSoln([solp0.u;ps[1]]; J=copy(J), Jp=copy(Jp),
+        save_jacs=save_jacs))
     sols[end].dupds .*= sign(sols[end].dupds[end]*(ps[2]-ps[1]));
     push!(its, solp0.stats.nsteps)
 
@@ -364,13 +365,11 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
 
     # Setup Extended Problem
     exfun = NonlinearFunction((du,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
-                                                    parm=parm, Dsc=p[3], dup=du,
-                                                    Ralsc=p[4]),
-                              jac=(J,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
-                                                       parm=parm, Dsc=p[3], Jf=J,
-                                                       Ralsc=p[4]));
+        parm=parm, Dsc=p[3], dup=du, Ralsc=p[4]),
+        jac=(J,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
+            parm=parm, Dsc=p[3], Jf=J, Ralsc=p[4]));
     
-    if itopt == :auto # Automatic itopt
+    if (itopt == :auto) # Automatic itopt
         # itopt as no. of iterations required for first point.
         tgt_ = Dsc.*normalize(sols[end].dupds./Dsc);
         up0_ = sols[end].up + dss[end]tgt_;
@@ -392,7 +391,8 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         display(md"# Starting Continuation (_itopt = $(itopt), nxi = $(nxi)_)")
     end
     
-    while sols[end].up[end]sign(ps[2]-ps[1])<ps[2]sign(ps[2]-ps[1]) && length(sols)<=nmax
+    while (sols[end].up[end]sign(ps[2]-ps[1])<ps[2]sign(ps[2]-ps[1]) &&
+                                                   length(sols)<=nmax)
     	# Tangent Predictor
         Dsc_ = Dsc;
         tgt = Dsc_.*normalize(sols[end].dupds./Dsc_);

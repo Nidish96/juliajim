@@ -5,6 +5,11 @@ using Markdown
 using Printf
 using Infiltrator
 
+# * Exports
+export NONLINEARITY, MDOFGEN
+export ADDNL
+export NLEVAL!, HBRESFUN!, HBRESFUN_A!, EPMCRESFUN!
+export NLFORCE, NEWMARKMARCH
 # * Define Structs
 """
 NONLINEARITY
