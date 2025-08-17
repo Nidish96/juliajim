@@ -20,7 +20,8 @@ jobs:
         uses: julia-actions/cache@v2
       - name: Install fork of FastTransformsForwardDiff
         run: |
-          julia --project=docs -e '
+          julia --project=. -e '
+            using Pkg
             Pkg.add(url="https://github.com/Nidish96/FastTransformsForwardDiff.jl")'
       - name: Instantiate environment with development version of the package
         run: |
