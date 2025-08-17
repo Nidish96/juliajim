@@ -19,23 +19,25 @@ This is a set of Julia routines to help with computational research in nonlinear
 
 ## Why yet another package?
 
-Each programming language/environment/specification you choose (MATLAB, Python, Julia, C/C++, etc.) has its own host of libraries that can do a lot of what juliajim sets out to do. Notable examples include [https://trilinos.github.io/](Trilinos) (C++) and the [https://sciml.ai/](SciML ecosystem) (Julia), which can do what juliajim sets out and (FAR!) more.
+Each programming language/environment/specification you choose (MATLAB, Python, Julia, C/C++, etc.) has its own host of libraries that can do a lot of what juliajim sets out to do. Notable examples include [Trilinos](https://trilinos.github.io/) (C++) and the [SciML ecosystem](https://sciml.ai/) (Julia), which can do what juliajim sets out and (FAR!) more.
 
 My vision for this tool is this: **I'd like to be able to specify a system once and conduct different types of analysis on it.** This mainly includes nonlinear static solves, transient time-marching (also shooting for periodic solutions), harmonic balance (for periodic and quasi periodic solutions), and variants therein (potentially more).
 
 Although a lot of the existing tools come very close to acheiving this, they don't span nearly all the kinds of nonlinearities. For instance, it is presently quite non-trivial to use any existing code as is for simulating systems with something as simple as an elastic dry-friction element (a hysteretically saturated linear spring).
 
-Furthermore, very few tools provide a lot of convenience for harmonic balance simulations. A notable exception to this is the MATLAB tool [https://github.com/maltekrack/NLvib](NLvib) (a very well designed set of minimal routines that work really well). The main reason that juliajim is not just a fork of NLvib is Julia - I'm convinced of the several advantages of Julia and want to ensure a useful package exists in Julia that I can throw myself behind. Furthermore, since I started using Julia MATLAB has started feeling really annoying (read: https://mateusaraujo.info/2024/04/03/matlab-is-dead-long-live-julia/ ).
+Furthermore, very few tools provide a lot of convenience for harmonic balance simulations. A notable exception to this is the MATLAB tool [NLvib](https://github.com/maltekrack/NLvib) (a very well designed set of minimal routines that work really well). The main reason that juliajim is not just a fork of NLvib is Julia - I'm convinced of the several advantages of Julia and want to ensure a useful package exists in Julia that I can throw myself behind. Furthermore, since I started using Julia MATLAB has started feeling really annoying (read: https://mateusaraujo.info/2024/04/03/matlab-is-dead-long-live-julia/ ).
 
 ### Other Projects to Look at
-+ [https://github.com/maltekrack/NLvib](NLvib): A Matlab toolbox for harmonic balance, shooting, and continuation.
-+ [https://github.com/tmd-lab/tmdsimpy](tmdsimpy): A Python package with very similar goals as juliajim.
-+ [https://github.com/Nidish96/octave-jim](octave-jim): My old code - its a mess that works.
-+ [https://github.com/QuantumEngineeredSystems/HarmonicBalance.jl](HarmonicBalance.jl): A Julia toolbox for harmonic balance. 
++ [NLvib](https://github.com/maltekrack/NLvib): A Matlab toolbox for harmonic balance, shooting, and continuation.
++ [tmdsimpy](https://github.com/tmd-lab/tmdsimpy): A Python package with very similar goals as juliajim.
++ [octave-jim](https://github.com/Nidish96/octave-jim): My old code - its a mess that works.
++ [HarmonicBalance.jl](https://github.com/QuantumEngineeredSystems/HarmonicBalance.jl): A Julia toolbox for harmonic balance. 
++ [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl): A great set of continuation and bifurcation routines.
 
 ## Design Philosophy
 
-I am taking care to ensure that the project is as small as possible in order to ensure that the routines developed here can be part of something bigger. Furthermore, the different parts of the package (Harmonic, Continuation) are written in order to be fully functional independently. 
+I am taking care to ensure that the project is as small as possible in order to ensure that the routines developed here can be part of something bigger. Furthermore, the different parts of the package (Harmonic, Continuation) are written in order to be fully functional independently. For instance, the HB routines in the former portion of the toolbox can be used to write residue that can be used with [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl) for doing numerical continuation if the provided routines are deemed insufficient. 
+
 [`MDOFGEN`](@ref) and its suite of routines (including frequency domain residues, time domain marchers, etc.) are my way of using the two main parts of the package to provide a functional interface for nonlinear dynamics research.
 
 ### Conventions
@@ -52,11 +54,11 @@ If you're just here for the...
       * All of the above.
 # Examples with Documentation
 Few examples of increasing complexity. Find them in *examples*.
-1. [../../examples/a_hworld.jl](a_hworld.jl)
-2. [../../examples/b_duffhb.jl](b_duffhbl.jl)
-3. [../../examples/c_jenkhb.jl](c_jenkhb.jl)
-4. [../../examples/d_mdofgen_instnl.jl](d_mdofgen_instnl.jl)
-5. [../../examples/d1_mdofgen_hystnl.jl](d1_mdofgen_hystnl.jl)
+1. [a_hworld.jl](../../examples/a_hworld.jl)
+2. [b_duffhb.jl](../../examples/b_duffhb.jl)
+3. [c_jenkhb.jl](../../examples/c_jenkhb.jl)
+4. [d_mdofgen_instnl.jl](../../examples/d_mdofgen_instnl.jl)
+5. [d1_mdofgen_hystnl.jl](../../examples/d1_mdofgen_hystnl.jl)
 
 And more!
 
