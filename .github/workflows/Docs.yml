@@ -23,6 +23,7 @@ jobs:
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.add(url="https://github.com/Nidish96/FastTransformsForwardDiff.jl")
             Pkg.instantiate()'
       - name: Run doctest
         run: |
