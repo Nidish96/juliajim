@@ -21,7 +21,7 @@ jobs:
       - name: Install fork of FastTransformsForwardDiff
         run: |
           julia --project=docs -e '
-            ]add https://github.com/Nidish96/FastTransformsForwardDiff.jl'
+            Pkg.add(url="https://github.com/Nidish96/FastTransformsForwardDiff.jl")'
       - name: Instantiate environment with development version of the package
         run: |
           julia --project=docs -e '
