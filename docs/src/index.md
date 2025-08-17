@@ -54,11 +54,11 @@ If you're just here for the...
       * All of the above.
 # Examples with Documentation
 Few examples of increasing complexity. Find them in *examples*.
-1. [a_hworld.jl](../../examples/a_hworld.jl)
-2. [b_duffhb.jl](../../examples/b_duffhb.jl)
-3. [c_jenkhb.jl](../../examples/c_jenkhb.jl)
-4. [d_mdofgen_instnl.jl](../../examples/d_mdofgen_instnl.jl)
-5. [d1_mdofgen_hystnl.jl](../../examples/d1_mdofgen_hystnl.jl)
+1. [a_hworld.jl](https://github.com/Nidish96/juliajim/blob/master/examples/a_hworld.jl)
+2. [b_duffhb.jl](https://github.com/Nidish96/juliajim/blob/master/examples/b_duffhb.jl)
+3. [c_jenkhb.jl](https://github.com/Nidish96/juliajim/blob/master/examples/c_jenkhb.jl)
+4. [d_mdofgen_instnl.jl](https://github.com/Nidish96/juliajim/blob/master/examples/d_mdofgen_instnl.jl)
+5. [d1_mdofgen_hystnl.jl](https://github.com/Nidish96/juliajim/blob/master/examples/d1_mdofgen_hystnl.jl)
 
 And more!
 
