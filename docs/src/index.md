@@ -55,6 +55,10 @@ If you're just here for the...
 # Examples with Documentation
 Few examples of increasing complexity. Find them in the */examples/* folder.
 
+\\[
+m \ddot{x} + c \dot{x} = 0 
+\\]
+
 And more!
 
 ## Example code snippet
