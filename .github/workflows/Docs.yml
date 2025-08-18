@@ -24,11 +24,9 @@ jobs:
             using Pkg
             Pkg.add(url="https://github.com/Nidish96/FastTransformsForwardDiff.jl")'
       - name: Instantiate environment with development version of the package
-        run: |
-          julia --project=docs -e '
-            using Pkg
-            Pkg.develop(PackageSpec(path=pwd()))
-            Pkg.instantiate()'
+        run: >
+          DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
+          julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate();'
       - name: Run doctest
         run: |
           julia --project=docs -e '
