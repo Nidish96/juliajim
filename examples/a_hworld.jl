@@ -5,8 +5,7 @@ using SparseArrays
 using Arpack
 
 using Revise
-
-includet("../src/HARMONIC.jl");
+using juliajim.HARMONIC
 
 # * AFT - 1 Freq Check
 N = 128;

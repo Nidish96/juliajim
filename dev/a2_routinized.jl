@@ -6,7 +6,7 @@ using GLMakie
 using LaTeXStrings
 
 using Revise
-includet("../src/CONTINUATION.jl")
+using juliajim.CONTINUATION
 
 # * Duffing
 function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)

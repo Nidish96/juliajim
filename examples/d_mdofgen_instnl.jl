@@ -6,9 +6,9 @@ using NonlinearSolve
 using DSP
 
 using Revise
-includet("../src/MDOFGEN.jl")
-includet("../src/HARMONIC.jl")
-includet("../src/CONTINUATION.jl")
+using juliajim.HARMONIC
+using juliajim.CONTINUATION
+using juliajim.MDOFUTILS
 
 # * System Setup
 M = I(2);

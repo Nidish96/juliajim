@@ -5,7 +5,7 @@ using Printf
 using Test
 
 using Revise
-includet("../src/CONTINUATION.jl")
+using juliajim.CONTINUATION
 
 # * Duffing MMS System Setup
 function duffresfun!(uOm, p; du=nothing, J=nothing, Jp=nothing)

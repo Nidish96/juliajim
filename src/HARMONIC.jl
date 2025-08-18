@@ -56,7 +56,7 @@ for the general Multi frequency case.
 ```
 """
 function AFT(yin, h, N, dir)
-# function AFT(yin::AbstractArray{Float64}, h::hTypes, N::Int, dir::Symbol)
+    # function AFT(yin::AbstractArray{Float64}, h::hTypes, N::Int, dir::Symbol)
     C = size(h, 2);
     Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
     Ny = size(yin, 2);

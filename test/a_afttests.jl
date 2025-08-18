@@ -2,7 +2,7 @@
 using Revise
 using Test
 
-includet("../src/HARMONIC.jl");
+using juliajim.HARMONIC
 
 # * Single Frequency Tests
 # ** AFT

@@ -1,9 +1,11 @@
 using NonlinearSolve
 using LinearAlgebra
+using SparseArrays
 using ProgressMeter
 using Markdown
 using Printf
 using Infiltrator
+using ..HARMONIC
 
 # * Exports
 export NONLINEARITY, MDOFGEN

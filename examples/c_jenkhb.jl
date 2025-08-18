@@ -7,8 +7,8 @@ using DSP
 using Infiltrator
 
 using Revise
-includet("../src/CONTINUATION.jl")
-includet("../src/HARMONIC.jl")
+using juliajim.HARMONIC
+using juliajim.CONTINUATION
 
 # * Residue Function
 function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)

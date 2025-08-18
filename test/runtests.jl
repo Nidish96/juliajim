@@ -1,3 +1,5 @@
+using Test
+
 @testset "Alltests" begin
     @testset "a_afttests" begin
         include("./a_afttests.jl");

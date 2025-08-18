@@ -7,7 +7,7 @@ using FFTW
 using LinearAlgebra
 using BlockDiagonals
 
-includet("../src/HARMONIC.jl");
+using juliajim.HARMONIC
 
 # * Single Frequency Case
 N = 128;
