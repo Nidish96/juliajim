@@ -1,4 +1,6 @@
-# * Preamble
+# # Example a: Introduction to the AFT Routines
+# This example is intended to showcase the Alternating Frequency Time (AFT) routines in [`juliajim.HARMONIC`](@ref).
+# ## PreambleLoad the necessary packages
 using GLMakie
 using LinearAlgebra
 using SparseArrays
@@ -7,10 +9,12 @@ using Arpack
 using Revise
 using juliajim.HARMONIC
 
-# * AFT - 1 Freq Check
+# ## AFT - 1 Freq Check
+
+# Here we will use the AFT routine to do a Fourier transform of a time-domain signal, `yt`, to compute its Fourier coefficients, `yf`. 
 N = 128;
 t = (0:N-1)*2π/N;
-# yt = cos.(t) + 3sin.(2t) .+ 4;
+## yt = cos.(t) + 3sin.(2t) .+ 4;
 yt = cos.(t) .+ 2;
 yt = [yt yt];
 
@@ -20,7 +24,7 @@ Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
 yf = AFT(yt, h, N, :t2f);
 YT = AFT(yf, h, N, :f2t);
 
-# ** AFT - 2 Freq Check
+# ## AFT - 2 Freq Check
 ts = Iterators.product(t, t);
 yt = [cos(t1)+3sin(t2)+4 for (t1,t2) in ts];
 h = [0 0;1 0;0 1;1 1];
@@ -28,14 +32,14 @@ h = [0 0;1 0;0 1;1 1];
 yf = AFT([yt[:] yt[:]], h, N, :t2f);
 YT = AFT(yf, h, N, :f2t);
 
-# * HSEL
+# ## HSEL
 C = 2;
 Nhmax = 4;
 
 h = HSEL(Nhmax, 1:C);
 Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
 
-# * HARMONIC STIFFNESS
+# ## HARMONIC STIFFNESS
 M = I(2);
 K = [2 -1;-1 2];
 D = 0.001.*K + 0.01.*M;
@@ -49,7 +53,7 @@ ws = ws[1:C];
 
 E, dEdw = HARMONICSTIFFNESS(M, D, K, ws, h);
 
-# * Forced Response
+# ## Forced Response
 C = 1;
 Nhmax = 3;
 
@@ -75,9 +79,9 @@ end
 set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie
-   scr = GLMakie.Screen();
-end
+if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie # src
+   scr = GLMakie.Screen(); # src
+end # src
 
 ax = Axis(fig[1, 1],
           xlabel="Excitation Frequency (rad/s)",
@@ -86,9 +90,10 @@ ax = Axis(fig[1, 1],
           yscale=Makie.pseudolog10);
 lines!(ax, Ωs, abs.(As))
 
-if Makie.current_backend()==GLMakie
-   display(scr, fig);
-else
-   display(fig)
-end
-   
+if Makie.current_backend()==GLMakie #src
+   display(scr, fig); #src
+else #src
+   display(fig) #src
+end #src
+
+fig #md
