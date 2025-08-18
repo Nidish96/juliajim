@@ -4,7 +4,7 @@ using Literate
 using juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS
 
 # * Generate Example file documentation with Literate.jl
-Literate.markdown("../examples/a_hworld.jl", "./src", documenter=true)
+# Literate.markdown("../examples/a_hworld.jl", "./src", documenter=true)
 
 # * Make the actual doc files
 DocMeta.setdocmeta!(
