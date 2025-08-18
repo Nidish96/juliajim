@@ -1,3 +1,5 @@
+# # [Example c](@id ex_c)
+# ## Preamble: Load Packages
 using GLMakie
 using LaTeXStrings
 using LinearAlgebra
@@ -10,20 +12,20 @@ using Revise
 using juliajim.HARMONIC
 using juliajim.CONTINUATION
 
-# * Residue Function
+# ## Residue Function
 function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
     (; z0, w0, kt, fs, F) = pars;
 
     Om = Uw[end];
     Nhc = sum((h.==0)+2(h.!=0));
 
-    # Linear Portion
+    ## Linear Portion
     E, dEdw = HARMONICSTIFFNESS(1.0, 2z0*w0, w0^2, Om, h);
 
-    # AFT For nonlinear force
+    ## AFT For nonlinear force
     ut  = AFT(Uw[1:end-1], h, Nt, :f2t);
         
-    # Construct Residue
+    ## Construct Residue
     if !(R === nothing && dRdU === nothing)
         ft = kt*ut;
         if !(dRdU === nothing)
@@ -59,10 +61,10 @@ function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
     return nothing;
 end
 
-# * Setup
+# ## Setup
 pars = (z0 = 0.5e-2, w0 = 2., kt = 5.0, fs=1.0, F = 0.1);
 
-# h = (0:5);
+## h = (0:5);
 h = 1:2:5;
 Om = 0.1;
 
@@ -74,8 +76,8 @@ _,_,zinds,rinds,iinds = HINDS(1, h)
 Fl[rinds[1]] = 1.0;
 
 fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
-                        jac=(J,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
-                        paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
+    jac=(J,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
+    paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
 
 E = zeros(Nhc, Nhc);
 HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om, h);
@@ -89,7 +91,7 @@ Jf = zeros(Nhc, Nhc+1);
 J = @view Jf[:, 1:Nhc];
 Jp = @view Jf[:, end];
 
-# * Continuation
+# ## Continuation
 Om0 = 0.02pars.w0;
 Om1 = 2pars.w0;
 
@@ -97,40 +99,45 @@ HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om0, h)
 U0 = E\ (Fl*pars.F);
 
 fun = NonlinearFunction((r,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;R=r),
-                        jac=(J,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
-                        paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
+    jac=(J,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
+    paramjac=(Jp,u,p)->RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
 
 dOm = 0.04pars.w0;
-# dOm = 0.1;
-cpars = (parm=:riks, nmax=300, minDsc=1e-2);
+## dOm = 0.1;
+cpars = (parm=:riks, nmax=300, Dsc=:auto, minDsc=1e-2);
 sols, its, dss, xis, Dsc = CONTINUATE(U0, fun, [Om0, Om1], dOm; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[h.+1, :] = hcat([[s.up[zinds]; s.up[rinds]+1im*s.up[iinds]] for s in sols]...);
 Oms = [s.up[end] for s in sols];
 
-# Plot
+# ## Plot
 
 his = [1, 3, 5];
 
 fsz = 24;
-fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
-   scr = GLMakie.Screen();
-end
+fig = Figure(fontsize=fsz, size=(1000, 600));
+if !isdefined(Main, :scr) && isdefined(Main, :GLMakie) #src
+    scr = GLMakie.Screen(); #src
+end #src
 
+ax1s = [];
+ax2s = [];
 for i in eachindex(his[his.<=maximum(h)])
-    ax = Axis(fig[1, i], xlabel=L"Excitation Frequency $\Omega$",
-              ylabel=L"$H_%$(his[i])$ Response (m)", yscale=log10);
+    ax = Axis(fig[1, i],
+        ylabel=L"$H_%$(his[i])$ Response (m)", yscale=log10);
     scatterlines!(ax, Oms, abs.(uh[his[i].+1, :]));
+    push!(ax1s, ax)
 
     ax = Axis(fig[2, i], xlabel=L"Excitation Frequency $\Omega$",
-              ylabel=L"$H_%$(his[i])$ Phase (rad)");
+        ylabel=L"$H_%$(his[i])$ Phase (rad)");
     scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :])));
+    push!(ax2s, ax)
 end
+linkxaxes!(vcat(ax1s, ax2s)...)
 
-if isdefined(Main, :GLMakie)
-   display(scr, fig);
-else
+if isdefined(Main, :GLMakie) #src
+    display(scr, fig); #src
+else #src
     fig
-end
+end #src

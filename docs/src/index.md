@@ -52,23 +52,3 @@ If you're just here for the...
       * Harmonic Balance Utilities, start by looking at [`HBRESFUN!`](@ref juliajim.MDOFUTILS.HBRESFUN!)
       * Transient Simulation Utilities, start by looking at [NEWMARKMARCH](@ref juliajim.MDOFUTILS.NEWMARKMARCH)
       * All of the above.
-# Examples with Documentation
-Few examples of increasing complexity. Find them in the */examples/* folder.
-
-\\[
-m \ddot{x} + c \dot{x} = 0 
-\\]
-
-And more!
-
-## Example code snippet
-```@example
-using juliajim.HARMONIC
-
-N = 8
-t = (0:N-1)*2pi/N;
-y = cos.(t);
-h = 0:3;
-Yh = AFT(y, h,N, :t2f);
-```
-

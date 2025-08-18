@@ -1,3 +1,5 @@
+# # [Example d1](@id ex_d1)
+# ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra
 using SparseArrays
@@ -10,14 +12,14 @@ using juliajim.HARMONIC
 using juliajim.CONTINUATION
 using juliajim.MDOFUTILS
 
-# * System Setup
+# ## System Setup
 M = I(2);
 K = [2 -1;-1 2];
 C = 0.01*M+0.001*K;
 
 mdl = MDOFGEN(M, C, K);
 
-# Nonlinearity
+## Nonlinearity
 kt = 1.0;
 fs = 1.0;
 fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
@@ -28,7 +30,7 @@ L = [0.0 1.0];
 
 mdl = ADDNL(mdl, :Hyst, fnl, L);
 
-# * Trial
+# ## Trial
 h = HSEL(3, 1.0);
 h = 1:2:3;
 h = 0:5;
@@ -46,13 +48,13 @@ E, dEdw = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Wst, h);
 
 Uw0 = [E\Fl; Wst];
 
-# * Nonlinear Evaluation
+# ## Nonlinear Evaluation
 FNL = zeros(mdl.Ndofs*Nhc);
 dFNLdU = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
 dFNLdw = zeros(mdl.Ndofs*Nhc);
 NLEVAL!(2Uw0, mdl, h, N; FNL=FNL, dFNLdU=dFNLdU, dFNLdw=dFNLdw)
 
-# * HB Residue
+# ## HB Residue
 R = zeros(mdl.Ndofs*Nhc);
 dRdU = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
 dRdw = zeros(mdl.Ndofs*Nhc);
@@ -67,12 +69,12 @@ fun = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Famp*Fl, h, N; R=r),
 prob = NonlinearProblem(fun, Uw0[1:end-1], Uw0[end]);
 sol = solve(prob, show_trace=Val(true));
 
-# * Continuation
+# ## Continuation
 Om0 = 0.1;
 Om1 = 3;
 dOm = 0.2;
 
-# fun = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Famp*Fl, h, N; R=r));
+## fun = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Famp*Fl, h, N; R=r));
 cpars = (parm=:arclength, nmax=1000, Dsc=:none);
 sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 
@@ -84,30 +86,30 @@ for i in 1:2
 end
 Oms = [s.up[end] for s in sols];
 
-# Plot
+# ## Plot
 
 his = [1, 3, 5];
 
 fsz = 24;
-fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
-   scr = GLMakie.Screen();
-end
+fig = Figure(fontsize=fsz, size=(1000, 600));
+if !isdefined(Main, :scr) && isdefined(Main, :GLMakie) #src
+   scr = GLMakie.Screen(); #src
+end #src
 
 for i in eachindex(his[his.<=maximum(h)])
-    ax = Axis(fig[1, i], xlabel=L"Excitation Frequency $\Omega$",
+    ax = Axis(fig[1, i],
               ylabel=L"$H_%$(his[i])$ Response (m)", yscale=log10);
-    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 1]), label="x1");
-    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 2]), label="x2");
+    lines!(ax, Oms, abs.(uh[his[i].+1, :, 1]), label="x1");
+    lines!(ax, Oms, abs.(uh[his[i].+1, :, 2]), label="x2");
 
     ax = Axis(fig[2, i], xlabel=L"Excitation Frequency $\Omega$",
               ylabel=L"$H_%$(his[i])$ Phase (rad)");
-    scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label="x1");
-    scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label="x2");
+    lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label="x1");
+    lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label="x2");
 end
 
-if isdefined(Main, :GLMakie)
-   display(scr, fig);
-else
+if isdefined(Main, :GLMakie) #src
+   display(scr, fig); #src
+else #src
     fig
-end
+end #src

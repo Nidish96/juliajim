@@ -267,9 +267,9 @@ Continuation routine. Solves the bordered problem with residue drawn from `EXTRE
   - 0: Suppress all messages.
   - 1: Display Steps, Continuation Progress.
   - 2: Display Iteration Information for each step also.
-### For Scaling of Unknowns (recommended to get evenly spaced points on response curve)  
+ ### For Scaling of Unknowns (recommended to get evenly spaced points on response curve)  
     
-- `Dsc::Union{Symbol,Nothing,Vector{Float64}}`   : (default `:auto`) "Dscaling" used to scale the unknowns. The arc length constraint is applied in the scaled space (`uₛ=uₚₕ./Dsc`).
+- `Dsc::Union{Symbol,Nothing,Vector{Float64}}`   : (default `:none`) "Dscaling" used to scale the unknowns. The arc length constraint is applied in the scaled space (`uₛ=uₚₕ./Dsc`).
   
   - If set to `:auto`, it uses the absolute of the first converged solution as the initial `Dsc` vector. Zero entries are replaced with `minDsc`.
   - If set to `:none`, it fixes Dsc to a vector of ones and doesn't dynamically adapt it. (this forces `DynScale` to `false`).
@@ -277,7 +277,7 @@ Continuation routine. Solves the bordered problem with residue drawn from `EXTRE
   
 - `DynScale::Bool`                               : (default `true`) Whether or not to dynamically adapt the `Dsc` vector. Each entry is allowed to grow or shrink by a maximum factor of 2 in each step if `true`.
 - `minDsc::Float64`                              : (default eps()^(4//5)=3e-13) Minimum value for Dscale.
-### For Step Length Adaptation. Currently set as dsₙ = dsₒ * xi, where xi = clamp((itopt/itns)^nxi, xirange[1], xirange[2]).
+ ### For Step Length Adaptation. Currently set as dsₙ = dsₒ * xi, where xi = clamp((itopt/itns)^nxi, xirange[1], xirange[2]).
 - `itopt::Union{Symbol,Int}`                     : (default :auto) Optimal number of  
 - `nxi::Float64`                                 : (default 0.0) Switches off adaptation by default. 
 - `xirange::Vector{Float64}`                     : (default [0.5,2.])
@@ -293,7 +293,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     parm::Symbol=:arclength, nmax::Int64=1000,
     dpbnds::Union{Nothing,Vector{Float64}}=nothing,
     save_jacs::Bool=false, verbosity::Int=1,
-    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
+    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:none,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
     nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],

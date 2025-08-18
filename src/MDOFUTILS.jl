@@ -257,6 +257,7 @@ function HBRESFUN!(Uw, m::MDOFGEN,
     h, N::Int64;
     tol::Float64=eps()^(4//5), R=nothing, dRdU=nothing, dRdw=nothing)
     w = Uw[end];
+    Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
 
     E = spzeros(eltype(Uw), Nhc*m.Ndofs, Nhc*m.Ndofs);
     if !(dRdw === nothing)
@@ -319,7 +320,7 @@ function HBRESFUN_A!(Ufw, m::MDOFGEN, A::Float64, Fl, h, N::Int64;
     else
         dRidw = nothing;
     end
-
+    
     HBRESFUN!(Ufw[[1:end-2; end]], m, Ufw[end-1]*Fl, h, N;
         tol=tol, R=Ri, dRdU=dRidU, dRdw = dRidw)
 
@@ -335,6 +336,7 @@ function HBRESFUN_A!(Ufw, m::MDOFGEN, A::Float64, Fl, h, N::Int64;
         end
     end
 
+    Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
     hweights = zeros(eltype(Ufw), Nhc);
     if (atype==:H1)
         hweights[[rinds[1],iinds[1]]] .= 1.0;
@@ -431,13 +433,15 @@ function EPMCRESFUN!(Uwxa, m::MDOFGEN, Fl, h, N::Int64;
     
     # Linear harmonic stiffness
     E = spzeros(eltp, Nhc*m.Ndofs, Nhc*m.Ndofs);
-    if !(dRdw === nothing)
+    if !(dRdUwx === nothing)
         dEdw = [spzeros(eltp, Nhc*m.Ndofs, Nhc*m.Ndofs)];
     else
         dEdw = nothing;
     end
     HARMONICSTIFFNESS!(E, dEdw, m.M, m.C-xi*m.M, m.K, w, h);
-    dEdw = dEdw[1];
+    if !(dRdUwx === nothing)
+        dEdw = dEdw[1];
+    end
     dEdxi, _ = HARMONICSTIFFNESS(zeros(size(m.M)), -m.M, zeros(size(m.M)), w, h);
 
     # Evaluate Nonlinear Forces

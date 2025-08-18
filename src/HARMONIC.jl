@@ -8,7 +8,7 @@ using ToeplitzMatrices
 using Infiltrator
 
 # * Exports
-export AFT, HSEL, FSEVAL, HARMONICSTIFFNESS, HARMONICSTIFFNESS!
+export AFT, HINDS, HSEL, FSEVAL, HARMONICSTIFFNESS, HARMONICSTIFFNESS!
 export DFOUR, DFOUR!, PRODMAT_FOUR, ACT, DCHEB, PRODMAT_CHEB
     
 # * Custom Abstract Types

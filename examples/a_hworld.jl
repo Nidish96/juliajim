@@ -1,6 +1,6 @@
-# # Example a: Introduction to the AFT Routines
+# # [Example a: Introduction to the AFT Routines](@id ex_a)
 # This example is intended to showcase the Alternating Frequency Time (AFT) routines in [`juliajim.HARMONIC`](@ref).
-# ## PreambleLoad the necessary packages
+# ## Preamble: Load the necessary packages
 using GLMakie
 using LinearAlgebra
 using SparseArrays
@@ -103,20 +103,18 @@ set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
 if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie # src
-   scr = GLMakie.Screen(); # src
+    scr = GLMakie.Screen(); # src
 end # src
 
 ax = Axis(fig[1, 1],
-          xlabel="Excitation Frequency (rad/s)",
-          ylabel="Response Amplitude (m)",
-          xscale=Makie.pseudolog10,
-          yscale=Makie.pseudolog10);
+    xlabel="Excitation Frequency (rad/s)",
+    ylabel="Response Amplitude (m)",
+    xscale=Makie.pseudolog10,
+    yscale=Makie.pseudolog10);
 lines!(ax, Ωs, abs.(As))
 
 if Makie.current_backend()==GLMakie #src
-   display(scr, fig); #src
+    display(scr, fig); #src
 else #src
-   display(fig) #src
+    fig
 end #src
-
-fig #md

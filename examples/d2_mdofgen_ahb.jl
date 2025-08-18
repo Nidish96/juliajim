@@ -1,3 +1,5 @@
+# # [Example d2](@id ex_d2)
+# ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra
 using SparseArrays
@@ -10,14 +12,14 @@ using juliajim.HARMONIC
 using juliajim.CONTINUATION
 using juliajim.MDOFUTILS
 
-# * System Setup
+# ## System Setup
 M = I(2);
 K = [2 -1;-1 2];
 C = 0.01*M+0.001*K;
 
 mdl = MDOFGEN(M, C, K);
 
-# Nonlinearity
+## Nonlinearity
 kt = 1.0;
 fs = 1.0;
 fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
@@ -28,10 +30,10 @@ L = [0.0 1.0];
 
 mdl = ADDNL(mdl, :Hyst, fnl, L);
 
-# * Trial
+# ## Trial
 h = HSEL(3, 1.0);
 h = 1:2:5;
-# h = 0:5;
+## h = 0:5;
 N = 256;
 t = (0:N-1)*2π/N;
 
@@ -45,7 +47,7 @@ Wst = 0.6;
 E, dEdw = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Wst, h);
 U0 = E\Fl;
 
-# * HB Residue
+# ## HB Residue
 R = zeros(mdl.Ndofs*Nhc+1);
 dRdUf = zeros(mdl.Ndofs*Nhc+1, mdl.Ndofs*Nhc+1);
 dRdw = zeros(mdl.Ndofs*Nhc+1);
@@ -61,7 +63,7 @@ fun = NonlinearFunction((r,uf,p)->HBRESFUN_A!([uf;p], mdl, Amp, Fl, h, N; R=r),
 prob = NonlinearProblem(fun, [U0;1.0], Wst);
 sol = solve(prob, show_trace=Val(true));
 
-# * Continuation
+# ## Continuation
 Om0 = 0.1;
 Om1 = 3;
 dOm = 0.1;
@@ -78,31 +80,31 @@ end
 Oms = [s.up[end] for s in sols];
 Fs = [s.up[end-1] for s in sols];
 
-# Plot
+# ## Plot
 his = [1, 3, 5];
 
-set_theme!(theme_black())
+set_theme!(theme_latexfonts())
 fsz = 24;
-fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && isdefined(Main, :GLMakie)
-   scr = GLMakie.Screen();
-end
+fig = Figure(fontsize=fsz, size=(1000, 600));
+if !isdefined(Main, :scr) && isdefined(Main, :GLMakie) #src
+   scr = GLMakie.Screen(); #src
+end #src
 
 for i in eachindex(his[his.<=maximum(h)])
-    ax = Axis(fig[1, i], xlabel=L"Excitation Frequency $\Omega$",
-              ylabel=L"$H_%$(his[i])$ Response (m/N)", yscale=log10);
+    ax = Axis(fig[1, i],
+        ylabel=L"$H_%$(his[i])$ Response (m/N)", yscale=log10);
     scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 1])./Fs, label="x1");
     scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 2])./Fs, label="x2");
 
     ax = Axis(fig[2, i], xlabel=L"Excitation Frequency $\Omega$",
-              ylabel=L"$H_%$(his[i])$ Phase (rad)");
+        ylabel=L"$H_%$(his[i])$ Phase (rad)");
     scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label="x1");
     scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label="x2");
 end
 
-if isdefined(Main, :GLMakie)
-   display(scr, fig);
-else
+if isdefined(Main, :GLMakie) #src
+   display(scr, fig); #src
+else #src
     fig
-end
+end #src
 
