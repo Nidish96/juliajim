@@ -1,6 +1,7 @@
-using juliajim
 using Documenter
 using Literate
+
+using juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS
 
 # # * Generate Example file documentation with Literate.jl
 # Literate.markdown("../examples/a_hworld.jl", "./src", documenter=true)

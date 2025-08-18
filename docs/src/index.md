@@ -38,7 +38,7 @@ Furthermore, very few tools provide a lot of convenience for harmonic balance si
 
 I am taking care to ensure that the project is as small as possible in order to ensure that the routines developed here can be part of something bigger. Furthermore, the different parts of the package (Harmonic, Continuation) are written in order to be fully functional independently. For instance, the HB routines in the former portion of the toolbox can be used to write residue that can be used with [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl) for doing numerical continuation if the provided routines are deemed insufficient. 
 
-[`MDOFGEN`](@ref) and its suite of routines (including frequency domain residues, time domain marchers, etc.) are my way of using the two main parts of the package to provide a functional interface for nonlinear dynamics research.
+[`MDOFUTILS`](@ref) and its suite of routines (including frequency domain residues, time domain marchers, etc.) are my way of using the two main parts of the package to provide a functional interface for nonlinear dynamics research.
 
 ### Conventions
   * All scripts are tagged by an alphabet. 
@@ -46,11 +46,11 @@ I am taking care to ensure that the project is as small as possible in order to 
   
 # Getting Started
 If you're just here for the...
-  * Fourier Utilities, start by looking at [`AFT`](@ref).
-  * Continuation Utilities, start by looking at [`CONTINUATE`](@ref).
-  * Integrated nonlinear dynamics, start by looking at [`MDOFGEN`](@ref).
-      * Harmonic Balance Utilities (start by looking at [`HBRESFUN!`](@ref))
-      * Transient Simulation Utilities (start by looking at [NEWMARKMARCH](@ref))
+  * Fourier Utilities, start by looking at [`AFT`](@ref juliajim.HARMONIC.AFT).
+  * Continuation Utilities, start by looking at [`CONTINUATE`](@ref juliajim.CONTINUATION.CONTINUATE).
+  * Integrated nonlinear dynamics, start by looking at [`MDOFUTILS`](@ref).
+      * Harmonic Balance Utilities, start by looking at [`HBRESFUN!`](@ref juliajim.MDOFUTILS.HBRESFUN!)
+      * Transient Simulation Utilities, start by looking at [NEWMARKMARCH](@ref juliajim.MDOFUTILS.NEWMARKMARCH)
       * All of the above.
 # Examples with Documentation
 Few examples of increasing complexity. Find them in *examples*.
