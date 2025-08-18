@@ -40,7 +40,7 @@ makedocs(;
         size_threshold_warn = 400_000
     ),
     pages = ["Home" => "index.md",
-             "Examples" => [ f => "$f.md" for f in fils],
+             "Examples" => [ f => "$(f).md" for f in fils],
              # "Examples" => [ "b_duffhb" => "b_duffhb.md"],
              "Reference" => "reference.md"],
 )
