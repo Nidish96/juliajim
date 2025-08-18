@@ -9,9 +9,20 @@ using Arpack
 using Revise
 using juliajim.HARMONIC
 
-# ## AFT - 1 Freq Check
+# ## Alternating Frequency Time Transformation
 
-# Here we will use the AFT routine to do a Fourier transform of a time-domain signal, `yt`, to compute its Fourier coefficients, `yf`. 
+# ### AFT - Single Frequency Check (Periodic signal)
+
+# Here we will use the AFT routine to do a Fourier transform of a time-domain signal, `yt`, to compute its Fourier coefficients, `yf`.
+# The general form assumed for a Fourier series is:
+# $$ y = a_0 + \sum_{n=1}^H a_n \cos n\tau + \sin n\tau $$
+# where $\tau$ is the scaled time such that the signal $y(\tau)$ is $2\pi-$periodic. For instance, if the excitation frequency is $\Omega$ and physical time is $t$ (such that we have $2\pi/\Omega$ as the time period, the scaled time coordinate $\tau$ is defined as $\tau=\Omega t$.
+
+# The AFT routine provides a convenience utility for transforming from a discrete time array to an array of the Fourier coefficients which is written as
+# $$ \begin{bmatrix} a_0 & a_1 & b_1 & a_2 & b_2 & \dots \end{bmatrix}^T. $$
+# The same routine may also be used to do the opposite transformation (frequency coefficients to time array).
+
+# We first discretize time by dividing the domain $[0, 2\pi]$ into `128` parts.
 N = 128;
 t = (0:N-1)*2π/N;
 ## yt = cos.(t) + 3sin.(2t) .+ 4;
