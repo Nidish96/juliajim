@@ -41,7 +41,6 @@ makedocs(;
     ),
     pages = ["Home" => "index.md",
              "Examples" => [ f => "$(f).md" for f in fils],
-             # "Examples" => [ "b_duffhb" => "b_duffhb.md"],
              "Reference" => "reference.md"],
 )
 

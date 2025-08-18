@@ -1,4 +1,4 @@
-# # [Example d](@id ex_d)
+# # [Example d0](@id ex_d0)
 # ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra

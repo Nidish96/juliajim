@@ -2,7 +2,7 @@
 EditURL = "../../examples/d0_mdofgen_instnl.jl"
 ```
 
-# [Example d](@id ex_d)
+# [Example d0](@id ex_d0)
 ## Preamble: Load Packages
 
 ````@example d0_mdofgen_instnl
