@@ -72,9 +72,10 @@ for i = eachindex(Ωs)
     As[i] = U[3]+im*U[5];
 end
 
+set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr)
+if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie
    scr = GLMakie.Screen();
 end
 
@@ -85,4 +86,9 @@ ax = Axis(fig[1, 1],
           yscale=Makie.pseudolog10);
 lines!(ax, Ωs, abs.(As))
 
-display(scr, fig);
+if Makie.current_backend()==GLMakie
+   display(scr, fig);
+else
+   display(fig)
+end
+   

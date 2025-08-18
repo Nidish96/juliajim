@@ -13,6 +13,6 @@ Pages = ["reference.md"]
 ```
 
 ```@autodocs
-Modules = [juliajim]
+Modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS]
 ```
 

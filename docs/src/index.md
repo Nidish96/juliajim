@@ -64,7 +64,7 @@ And more!
 
 ## Example code snippet
 ```@example
-using juliajim
+using juliajim.HARMONIC
 
 N = 8
 t = (0:N-1)*2pi/N;

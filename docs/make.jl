@@ -1,5 +1,11 @@
-using Documenter, juliajim
+using juliajim
+using Documenter
+using Literate
 
+# # * Generate Example file documentation with Literate.jl
+# Literate.markdown("../examples/a_hworld.jl", "./src", documenter=true)
+
+# * Make the actual doc files
 DocMeta.setdocmeta!(
     juliajim,
     :DocTestSetup,
@@ -8,7 +14,7 @@ DocMeta.setdocmeta!(
 )
 
 makedocs(;
-    modules = [juliajim],
+    modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS],
     doctest = true,
     linkcheck = true,
     authors = "Nidish Narayanaa Balaji <nidish@iitm.ac.in>",
@@ -19,7 +25,9 @@ makedocs(;
         canonical = "https://github.com/Nidish96/juliajim",
         assets = ["assets/style.css"],
     ),
-    pages = ["Home" => "index.md", "Reference" => "reference.md"],
+    pages = ["Home" => "index.md",
+             "Examples" => [ "a_hworld" => "a_hworld.md",],
+             "Reference" => "reference.md"],
 )
 
 deploydocs(
