@@ -37,7 +37,9 @@ jobs:
             DocMeta.setdocmeta!(juliajim, :DocTestSetup, :(using juliajim); recursive=true)
             doctest(juliajim)'
       - name: Generate and deploy documentation
-        run: julia --project=docs docs/make.jl
+        run: >
+          DISPLAY=:0 xvfb-run -s '-screen 0 1024x768x24'
+          julia --project=docs docs/make.jl
         env:
           JULIA_PKG_SERVER: ""
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
