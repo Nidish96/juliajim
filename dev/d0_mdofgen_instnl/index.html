@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>d0mdofgeninstnl · juliajim</title><meta name="title" content="d0mdofgeninstnl · juliajim"/><meta property="og:title" content="d0mdofgeninstnl · juliajim"/><meta property="twitter:title" content="d0mdofgeninstnl · juliajim"/><meta name="description" content="Documentation for juliajim."/><meta property="og:description" content="Documentation for juliajim."/><meta property="twitter:description" content="Documentation for juliajim."/><meta property="og:url" content="https://github.com/Nidish96/juliajim/d0_mdofgen_instnl/"/><meta property="twitter:url" content="https://github.com/Nidish96/juliajim/d0_mdofgen_instnl/"/><link rel="canonical" href="https://github.com/Nidish96/juliajim/d0_mdofgen_instnl/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/style.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">juliajim</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../a_hworld/">a_hworld</a></li><li><a class="tocitem" href="../b_duffhb/">b_duffhb</a></li><li><a class="tocitem" href="../c_jenkhb/">c_jenkhb</a></li><li class="is-active"><a class="tocitem" href>d0<em>mdofgen</em>instnl</a><ul class="internal"><li><a class="tocitem" href="#Preamble:-Load-Packages"><span>Preamble: Load Packages</span></a></li><li><a class="tocitem" href="#System-Setup"><span>System Setup</span></a></li><li><a class="tocitem" href="#Trial"><span>Trial</span></a></li><li><a class="tocitem" href="#Nonlinear-Evaluation"><span>Nonlinear Evaluation</span></a></li><li><a class="tocitem" href="#HB-Residue"><span>HB Residue</span></a></li><li><a class="tocitem" href="#Continuation"><span>Continuation</span></a></li><li><a class="tocitem" href="#Plot"><span>Plot</span></a></li></ul></li><li><a class="tocitem" href="../d1_mdofgen_hystnl/">d1<em>mdofgen</em>hystnl</a></li><li><a class="tocitem" href="../d2_mdofgen_ahb/">d2<em>mdofgen</em>ahb</a></li><li><a class="tocitem" href="../d3_mdofgen_epmc/">d3<em>mdofgen</em>epmc</a></li><li><a class="tocitem" href="../d4_mdofgen_newmark/">d4<em>mdofgen</em>newmark</a></li></ul></li><li><a class="tocitem" href="../reference/">Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>d0<em>mdofgen</em>instnl</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>d0<em>mdofgen</em>instnl</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Nidish96/juliajim/blob/master/examples/d0_mdofgen_instnl.jl#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="ex_d0"><a class="docs-heading-anchor" href="#ex_d0">Example d0</a><a id="ex_d0-1"></a><a class="docs-heading-anchor-permalink" href="#ex_d0" title="Permalink"></a></h1><h2 id="Preamble:-Load-Packages"><a class="docs-heading-anchor" href="#Preamble:-Load-Packages">Preamble: Load Packages</a><a id="Preamble:-Load-Packages-1"></a><a class="docs-heading-anchor-permalink" href="#Preamble:-Load-Packages" title="Permalink"></a></h2><pre><code class="language-julia hljs">using GLMakie
+using LinearAlgebra
+using SparseArrays
+using ForwardDiff
+using NonlinearSolve
+using DSP
+
+using Revise
+using juliajim.HARMONIC
+using juliajim.CONTINUATION
+using juliajim.MDOFUTILS</code></pre><h2 id="System-Setup"><a class="docs-heading-anchor" href="#System-Setup">System Setup</a><a id="System-Setup-1"></a><a class="docs-heading-anchor-permalink" href="#System-Setup" title="Permalink"></a></h2><pre><code class="language-julia hljs">M = I(2);
+K = [2 -1;-1 2];
+C = 0.01*M+0.001*K;
+
+mdl = MDOFGEN(M, C, K);
+
+# Nonlinearity
+β = 0.1;
+fnl = (t,u,ud)-&gt;return β.*u.^3, 3β.*u.^2, zeros(size(u));;
+L = [0.0 1.0];
+
+mdl = ADDNL(mdl, :Inst, fnl, L);</code></pre><h2 id="Trial"><a class="docs-heading-anchor" href="#Trial">Trial</a><a id="Trial-1"></a><a class="docs-heading-anchor-permalink" href="#Trial" title="Permalink"></a></h2><pre><code class="language-julia hljs">h = HSEL(3, 1.0);
+# h = 1:2:5;
+h = 0:5;
+N = 128;
+t = (0:N-1)*2π/N;
+
+Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+
+_, _, zinds, rinds, iinds = HINDS(mdl.Ndofs, h)
+Fl = zeros(Nhc*mdl.Ndofs, 1);
+Fl[rinds[1]] = 1.0;
+
+Wst = 0.6;
+E, dEdw = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Wst, h);
+
+Uw0 = [E\Fl; Wst];</code></pre><h2 id="Nonlinear-Evaluation"><a class="docs-heading-anchor" href="#Nonlinear-Evaluation">Nonlinear Evaluation</a><a id="Nonlinear-Evaluation-1"></a><a class="docs-heading-anchor-permalink" href="#Nonlinear-Evaluation" title="Permalink"></a></h2><pre><code class="language-julia hljs">FNL = zeros(mdl.Ndofs*Nhc);
+dFNLdU = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
+dFNLdw = zeros(mdl.Ndofs*Nhc);
+NLEVAL!(Uw0, mdl, h, N; FNL=FNL, dFNLdU=dFNLdU, dFNLdw=dFNLdw)</code></pre><h2 id="HB-Residue"><a class="docs-heading-anchor" href="#HB-Residue">HB Residue</a><a id="HB-Residue-1"></a><a class="docs-heading-anchor-permalink" href="#HB-Residue" title="Permalink"></a></h2><pre><code class="language-julia hljs">R = zeros(mdl.Ndofs*Nhc);
+dRdU = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
+dRdw = zeros(mdl.Ndofs*Nhc);
+HBRESFUN!(Uw0, mdl, Fl, h, N; R=R, dRdU=dRdU, dRdw=dRdw)
+
+fun = NonlinearFunction((r,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; R=r),
+    jac=(J,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; dRdU=J),
+    paramjac=(Jp,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; dRdw=Jp));
+
+prob = NonlinearProblem(fun, Uw0[1:end-1], Uw0[end]);
+sol = solve(prob, show_trace=Val(true));</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	1.55453317e-02      	0.00000000e+00
+1       	2.50631608e-05      	2.32525851e-02
+2       	4.84989670e-10      	8.06504063e-05
+3       	1.05818132e-16      	9.82129830e-10
+Final   	1.05818132e-16
+----------------------</code></pre><h2 id="Continuation"><a class="docs-heading-anchor" href="#Continuation">Continuation</a><a id="Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Continuation" title="Permalink"></a></h2><pre><code class="language-julia hljs">Om0 = 0.1;
+Om1 = 3;
+dOm = 0.01;
+
+cpars = (parm=:arclength, nmax=2000, Dsc=:auto, minDsc=1e-5);
+sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
+
+uh = zeros(Complex, maximum(h)+1, length(sols), 2);
+for i in 1:2
+    uh[h.+1, :, i] = hcat([[s.up[zinds[i:2:end]];
+                            s.up[rinds[i:2:end]]+1im*s.up[iinds[i:2:end]]]
+                          for s in sols]...);
+end
+Oms = [s.up[end] for s in sols];</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	3.39647780e-01      	0.00000000e+00
+1       	7.19434350e-03      	3.88965697e-01
+2       	2.25630863e-06      	5.63043188e-03
+3       	3.10513334e-13      	2.03363086e-06
+4       	1.43114687e-17      	3.33802162e-13
+Final   	1.43114687e-17
+----------------------
+2. 0.11 with step 0.0100 (0.2060) converged in 3 iterations.
+3. 0.12 with step 0.0102 (0.2060) converged in 3 iterations.
+4. 0.13 with step 0.0100 (0.2060) converged in 3 iterations.
+5. 0.14 with step 0.0094 (0.2060) converged in 3 iterations.
+6. 0.15 with step 0.0085 (0.2060) converged in 3 iterations.
+7. 0.15 with step 0.0073 (0.2060) converged in 3 iterations.
+8. 0.16 with step 0.0062 (0.2060) converged in 3 iterations.
+9. 0.16 with step 0.0053 (0.2060) converged in 3 iterations.
+10. 0.17 with step 0.0045 (0.2060) converged in 3 iterations.
+11. 0.17 with step 0.0040 (0.2060) converged in 3 iterations.
+12. 0.17 with step 0.0036 (0.2060) converged in 3 iterations.
+13. 0.18 with step 0.0033 (0.2060) converged in 3 iterations.
+14. 0.18 with step 0.0030 (0.2060) converged in 3 iterations.
+15. 0.18 with step 0.0027 (0.2060) converged in 3 iterations.
+16. 0.18 with step 0.0024 (0.2060) converged in 3 iterations.
+17. 0.19 with step 0.0021 (0.2060) converged in 3 iterations.
+18. 0.19 with step 0.0018 (0.2060) converged in 3 iterations.
+19. 0.19 with step 0.0016 (0.2060) converged in 2 iterations.
+20. 0.19 with step 0.0016 (0.2523) converged in 3 iterations.
+21. 0.19 with step 0.0013 (0.2523) converged in 3 iterations.
+22. 0.19 with step 0.0011 (0.2523) converged in 2 iterations.
+23. 0.19 with step 0.0010 (0.3090) converged in 2 iterations.
+24. 0.19 with step 0.0010 (0.3785) converged in 2 iterations.
+25. 0.20 with step 0.0010 (0.4635) converged in 3 iterations.
+26. 0.20 with step 0.0009 (0.4635) converged in 3 iterations.
+27. 0.20 with step 0.0008 (0.4635) converged in 3 iterations.
+28. 0.20 with step 0.0007 (0.4635) converged in 3 iterations.
+29. 0.20 with step 0.0006 (0.4635) converged in 3 iterations.
+30. 0.20 with step 0.0006 (0.4635) converged in 3 iterations.
+31. 0.20 with step 0.0005 (0.4635) converged in 3 iterations.
+32. 0.20 with step 0.0005 (0.4635) converged in 3 iterations.
+33. 0.20 with step 0.0004 (0.4635) converged in 3 iterations.
+34. 0.20 with step 0.0004 (0.4635) converged in 3 iterations.
+35. 0.20 with step 0.0004 (0.4635) converged in 3 iterations.
+36. 0.20 with step 0.0004 (0.4635) converged in 3 iterations.
+37. 0.20 with step 0.0003 (0.4635) converged in 3 iterations.
+38. 0.20 with step 0.0002 (0.4635) converged in 3 iterations.
+39. 0.20 with step 0.0001 (0.4635) converged in 2 iterations.
+40. 0.20 with step 0.0001 (0.5677) converged in 2 iterations.
+41. 0.20 with step 0.0001 (0.6953) converged in 2 iterations.
+42. 0.20 with step 0.0000 (0.8515) converged in 2 iterations.
+43. 0.20 with step 0.0000 (1.0300) converged in 1 iterations.
+44. 0.20 with step 0.0000 (1.0300) converged in 1 iterations.
+45. 0.20 with step 0.0000 (1.0300) converged in 1 iterations.
+46. 0.20 with step 0.0000 (1.0300) converged in 1 iterations.
+47. 0.20 with step 0.0000 (1.0300) converged in 2 iterations.
+48. 0.20 with step 0.0001 (1.0300) converged in 2 iterations.
+49. 0.20 with step 0.0001 (1.0300) converged in 2 iterations.
+50. 0.20 with step 0.0003 (1.0300) converged in 3 iterations.
+51. 0.20 with step 0.0008 (1.0300) converged in 5 iterations.
+52. 0.21 with step 0.0011 (0.7979) converged in 4 iterations.
+53. 0.21 with step 0.0019 (0.6910) converged in 4 iterations.
+54. 0.21 with step 0.0031 (0.5984) converged in 4 iterations.
+55. 0.22 with step 0.0047 (0.5182) converged in 4 iterations.
+56. 0.23 with step 0.0063 (0.4488) converged in 4 iterations.
+57. 0.24 with step 0.0072 (0.3887) converged in 3 iterations.
+58. 0.25 with step 0.0081 (0.3887) converged in 3 iterations.
+59. 0.25 with step 0.0085 (0.3887) converged in 3 iterations.
+60. 0.26 with step 0.0086 (0.3887) converged in 3 iterations.
+61. 0.27 with step 0.0081 (0.3887) converged in 3 iterations.
+62. 0.27 with step 0.0073 (0.3887) converged in 3 iterations.
+63. 0.28 with step 0.0065 (0.3887) converged in 3 iterations.
+64. 0.29 with step 0.0058 (0.3887) converged in 3 iterations.
+65. 0.29 with step 0.0050 (0.3887) converged in 3 iterations.
+66. 0.29 with step 0.0044 (0.3887) converged in 3 iterations.
+67. 0.30 with step 0.0038 (0.3887) converged in 3 iterations.
+68. 0.30 with step 0.0033 (0.3887) converged in 3 iterations.
+69. 0.30 with step 0.0028 (0.3887) converged in 2 iterations.
+70. 0.31 with step 0.0034 (0.4760) converged in 3 iterations.
+71. 0.31 with step 0.0031 (0.4760) converged in 3 iterations.
+72. 0.31 with step 0.0029 (0.4760) converged in 3 iterations.
+73. 0.31 with step 0.0025 (0.4760) converged in 3 iterations.
+74. 0.32 with step 0.0022 (0.4760) converged in 3 iterations.
+75. 0.32 with step 0.0020 (0.4760) converged in 3 iterations.
+76. 0.32 with step 0.0017 (0.4760) converged in 3 iterations.
+77. 0.32 with step 0.0016 (0.4760) converged in 3 iterations.
+78. 0.32 with step 0.0015 (0.4760) converged in 2 iterations.
+79. 0.32 with step 0.0017 (0.5830) converged in 3 iterations.
+80. 0.32 with step 0.0015 (0.5830) converged in 3 iterations.
+81. 0.33 with step 0.0014 (0.5830) converged in 3 iterations.
+82. 0.33 with step 0.0013 (0.5830) converged in 3 iterations.
+83. 0.33 with step 0.0011 (0.5830) converged in 3 iterations.
+84. 0.33 with step 0.0010 (0.5830) converged in 3 iterations.
+85. 0.33 with step 0.0009 (0.5830) converged in 3 iterations.
+86. 0.33 with step 0.0009 (0.5830) converged in 3 iterations.
+87. 0.33 with step 0.0008 (0.5830) converged in 3 iterations.
+88. 0.33 with step 0.0007 (0.5830) converged in 3 iterations.
+89. 0.33 with step 0.0007 (0.5830) converged in 3 iterations.
+90. 0.33 with step 0.0006 (0.5830) converged in 3 iterations.
+91. 0.33 with step 0.0006 (0.5830) converged in 3 iterations.
+92. 0.33 with step 0.0005 (0.5830) converged in 3 iterations.
+93. 0.33 with step 0.0005 (0.5830) converged in 3 iterations.
+94. 0.33 with step 0.0005 (0.5830) converged in 3 iterations.
+95. 0.33 with step 0.0005 (0.5830) converged in 4 iterations.
+96. 0.33 with step 0.0003 (0.5049) converged in 3 iterations.
+97. 0.33 with step 0.0002 (0.5049) converged in 3 iterations.
+98. 0.33 with step 0.0001 (0.5049) converged in 3 iterations.
+99. 0.33 with step 0.0001 (0.5049) converged in 2 iterations.
+100. 0.34 with step 0.0001 (0.6184) converged in 2 iterations.
+101. 0.34 with step 0.0001 (0.7573) converged in 2 iterations.
+102. 0.34 with step 0.0000 (0.9276) converged in 2 iterations.
+103. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+104. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+105. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+106. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+107. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+108. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+109. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+110. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+111. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+112. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+113. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+114. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+115. 0.34 with step 0.0000 (1.0300) converged in 1 iterations.
+116. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+117. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+118. 0.34 with step 0.0000 (1.0300) converged in 2 iterations.
+119. 0.34 with step 0.0001 (1.0300) converged in 2 iterations.
+120. 0.34 with step 0.0001 (1.0300) converged in 2 iterations.
+121. 0.34 with step 0.0002 (1.0300) converged in 3 iterations.
+122. 0.34 with step 0.0003 (1.0300) converged in 3 iterations.
+123. 0.34 with step 0.0007 (1.0300) converged in 4 iterations.
+124. 0.34 with step 0.0008 (0.8920) converged in 3 iterations.
+125. 0.34 with step 0.0008 (0.8920) converged in 3 iterations.
+126. 0.34 with step 0.0009 (0.8920) converged in 3 iterations.
+127. 0.34 with step 0.0008 (0.8920) converged in 3 iterations.
+128. 0.34 with step 0.0005 (0.8920) converged in 2 iterations.
+129. 0.34 with step 0.0003 (1.0300) converged in 2 iterations.
+130. 0.34 with step 0.0002 (1.0300) converged in 2 iterations.
+131. 0.34 with step 0.0001 (1.0300) converged in 2 iterations.
+132. 0.34 with step 0.0002 (1.0300) converged in 2 iterations.
+133. 0.34 with step 0.0004 (1.0300) converged in 2 iterations.
+134. 0.34 with step 0.0005 (1.0300) converged in 3 iterations.
+135. 0.34 with step 0.0007 (1.0300) converged in 3 iterations.
+136. 0.34 with step 0.0008 (1.0300) converged in 3 iterations.
+137. 0.35 with step 0.0009 (1.0300) converged in 3 iterations.
+138. 0.35 with step 0.0008 (1.0300) converged in 3 iterations.
+139. 0.35 with step 0.0009 (1.0300) converged in 4 iterations.
+140. 0.35 with step 0.0004 (0.8920) converged in 3 iterations.
+141. 0.35 with step 0.0002 (0.8920) converged in 2 iterations.
+142. 0.35 with step 0.0001 (1.0300) converged in 2 iterations.
+143. 0.35 with step 0.0001 (1.0300) converged in 2 iterations.
+144. 0.35 with step 0.0001 (1.0300) converged in 2 iterations.
+145. 0.35 with step 0.0002 (1.0300) converged in 3 iterations.
+146. 0.35 with step 0.0004 (1.0300) converged in 5 iterations.
+147. 0.35 with step 0.0007 (0.7979) converged in 3 iterations.
+148. 0.35 with step 0.0008 (0.7979) converged in 3 iterations.
+149. 0.35 with step 0.0009 (0.7979) converged in 3 iterations.
+150. 0.35 with step 0.0012 (0.7979) converged in 3 iterations.
+151. 0.36 with step 0.0014 (0.7979) converged in 3 iterations.
+152. 0.36 with step 0.0017 (0.7979) converged in 3 iterations.
+153. 0.36 with step 0.0021 (0.7979) converged in 3 iterations.
+154. 0.36 with step 0.0024 (0.7979) converged in 3 iterations.
+155. 0.37 with step 0.0029 (0.7979) converged in 3 iterations.
+156. 0.37 with step 0.0042 (0.7979) converged in 3 iterations.
+157. 0.38 with step 0.0055 (0.7979) converged in 3 iterations.
+158. 0.39 with step 0.0064 (0.7979) converged in 3 iterations.
+159. 0.40 with step 0.0064 (0.7979) converged in 3 iterations.
+160. 0.40 with step 0.0056 (0.7979) converged in 3 iterations.
+161. 0.41 with step 0.0053 (0.7979) converged in 3 iterations.
+162. 0.42 with step 0.0064 (0.7979) converged in 3 iterations.
+163. 0.43 with step 0.0099 (0.7979) converged in 3 iterations.
+164. 0.45 with step 0.0168 (0.7979) converged in 4 iterations.
+165. 0.46 with step 0.0151 (0.6910) converged in 3 iterations.
+166. 0.47 with step 0.0085 (0.6910) converged in 3 iterations.
+167. 0.47 with step 0.0042 (0.6910) converged in 2 iterations.
+168. 0.47 with step 0.0025 (0.8463) converged in 2 iterations.
+169. 0.48 with step 0.0032 (1.0300) converged in 2 iterations.
+170. 0.48 with step 0.0062 (1.0300) converged in 2 iterations.
+171. 0.49 with step 0.0108 (1.0300) converged in 3 iterations.
+172. 0.51 with step 0.0157 (1.0300) converged in 3 iterations.
+173. 0.52 with step 0.0174 (1.0300) converged in 3 iterations.
+174. 0.53 with step 0.0159 (1.0300) converged in 3 iterations.
+175. 0.54 with step 0.0131 (1.0300) converged in 3 iterations.
+176. 0.55 with step 0.0109 (1.0300) converged in 3 iterations.
+177. 0.56 with step 0.0088 (1.0300) converged in 3 iterations.
+178. 0.56 with step 0.0069 (1.0300) converged in 3 iterations.
+179. 0.57 with step 0.0053 (1.0300) converged in 3 iterations.
+180. 0.57 with step 0.0039 (1.0300) converged in 3 iterations.
+181. 0.57 with step 0.0031 (1.0300) converged in 3 iterations.
+182. 0.57 with step 0.0025 (1.0300) converged in 3 iterations.
+183. 0.57 with step 0.0020 (1.0300) converged in 3 iterations.
+184. 0.58 with step 0.0017 (1.0300) converged in 3 iterations.
+185. 0.58 with step 0.0014 (1.0300) converged in 3 iterations.
+186. 0.58 with step 0.0012 (1.0300) converged in 4 iterations.
+187. 0.58 with step 0.0010 (0.8920) converged in 4 iterations.
+188. 0.58 with step 0.0008 (0.7725) converged in 4 iterations.
+189. 0.58 with step 0.0003 (0.6690) converged in 3 iterations.
+190. 0.58 with step 0.0002 (0.6690) converged in 3 iterations.
+191. 0.58 with step 0.0001 (0.6690) converged in 2 iterations.
+192. 0.58 with step 0.0001 (0.8194) converged in 2 iterations.
+193. 0.58 with step 0.0000 (1.0035) converged in 2 iterations.
+194. 0.58 with step 0.0000 (1.0300) converged in 2 iterations.
+195. 0.58 with step 0.0000 (1.0300) converged in 2 iterations.
+196. 0.58 with step 0.0000 (1.0300) converged in 2 iterations.
+197. 0.58 with step 0.0000 (1.0300) converged in 1 iterations.
+198. 0.58 with step 0.0000 (1.0300) converged in 2 iterations.
+199. 0.58 with step 0.0000 (1.0300) converged in 2 iterations.
+200. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+201. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+202. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+203. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+204. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+205. 0.58 with step 0.0001 (1.0300) converged in 2 iterations.
+206. 0.58 with step 0.0002 (1.0300) converged in 2 iterations.
+207. 0.58 with step 0.0003 (1.0300) converged in 3 iterations.
+208. 0.58 with step 0.0005 (1.0300) converged in 4 iterations.
+209. 0.58 with step 0.0009 (0.8920) converged in 4 iterations.
+210. 0.58 with step 0.0008 (0.7725) converged in 3 iterations.
+211. 0.58 with step 0.0009 (0.7725) converged in 3 iterations.
+212. 0.59 with step 0.0010 (0.7725) converged in 3 iterations.
+213. 0.59 with step 0.0013 (0.7725) converged in 3 iterations.
+214. 0.59 with step 0.0016 (0.7725) converged in 3 iterations.
+215. 0.59 with step 0.0019 (0.7725) converged in 3 iterations.
+216. 0.60 with step 0.0025 (0.7725) converged in 3 iterations.
+217. 0.60 with step 0.0034 (0.7725) converged in 3 iterations.
+218. 0.61 with step 0.0043 (0.7725) converged in 3 iterations.
+219. 0.61 with step 0.0050 (0.7725) converged in 3 iterations.
+220. 0.62 with step 0.0054 (0.7725) converged in 3 iterations.
+221. 0.63 with step 0.0052 (0.7725) converged in 3 iterations.
+222. 0.63 with step 0.0042 (0.7725) converged in 3 iterations.
+223. 0.64 with step 0.0036 (0.7725) converged in 3 iterations.
+224. 0.64 with step 0.0051 (0.7725) converged in 3 iterations.
+225. 0.65 with step 0.0043 (0.7725) converged in 3 iterations.
+226. 0.65 with step 0.0035 (0.7725) converged in 2 iterations.
+227. 0.66 with step 0.0051 (0.9461) converged in 3 iterations.
+228. 0.67 with step 0.0099 (0.9461) converged in 3 iterations.
+229. 0.70 with step 0.0252 (0.9461) converged in 4 iterations.
+230. 0.74 with step 0.0439 (0.8194) converged in 4 iterations.
+231. 0.77 with step 0.0371 (0.7096) converged in 4 iterations.
+232. 0.79 with step 0.0277 (0.6145) converged in 3 iterations.
+233. 0.81 with step 0.0243 (0.6145) converged in 3 iterations.
+234. 0.83 with step 0.0212 (0.6145) converged in 3 iterations.
+235. 0.85 with step 0.0183 (0.6145) converged in 3 iterations.
+236. 0.86 with step 0.0174 (0.6145) converged in 3 iterations.
+237. 0.88 with step 0.0166 (0.6145) converged in 3 iterations.
+238. 0.89 with step 0.0160 (0.6145) converged in 3 iterations.
+239. 0.91 with step 0.0154 (0.6145) converged in 3 iterations.
+240. 0.92 with step 0.0152 (0.6145) converged in 3 iterations.
+241. 0.93 with step 0.0151 (0.6145) converged in 3 iterations.
+242. 0.95 with step 0.0151 (0.6145) converged in 3 iterations.
+243. 0.96 with step 0.0150 (0.6145) converged in 3 iterations.
+244. 0.97 with step 0.0150 (0.6145) converged in 3 iterations.
+245. 0.99 with step 0.0148 (0.6145) converged in 3 iterations.
+246. 1.00 with step 0.0146 (0.6145) converged in 3 iterations.
+247. 1.01 with step 0.0149 (0.6145) converged in 3 iterations.
+248. 1.03 with step 0.0153 (0.6145) converged in 3 iterations.
+249. 1.04 with step 0.0156 (0.6145) converged in 3 iterations.
+250. 1.06 with step 0.0159 (0.6145) converged in 3 iterations.
+251. 1.07 with step 0.0162 (0.6145) converged in 3 iterations.
+252. 1.09 with step 0.0165 (0.6145) converged in 3 iterations.
+253. 1.10 with step 0.0167 (0.6145) converged in 3 iterations.
+254. 1.12 with step 0.0168 (0.6145) converged in 3 iterations.
+255. 1.13 with step 0.0169 (0.6145) converged in 3 iterations.
+256. 1.15 with step 0.0169 (0.6145) converged in 3 iterations.
+257. 1.16 with step 0.0168 (0.6145) converged in 3 iterations.
+258. 1.18 with step 0.0166 (0.6145) converged in 3 iterations.
+259. 1.19 with step 0.0164 (0.6145) converged in 3 iterations.
+260. 1.21 with step 0.0161 (0.6145) converged in 3 iterations.
+261. 1.22 with step 0.0158 (0.6145) converged in 3 iterations.
+262. 1.23 with step 0.0154 (0.6145) converged in 3 iterations.
+263. 1.25 with step 0.0151 (0.6145) converged in 4 iterations.
+264. 1.26 with step 0.0124 (0.5322) converged in 4 iterations.
+265. 1.27 with step 0.0091 (0.4609) converged in 4 iterations.
+266. 1.27 with step 0.0056 (0.3992) converged in 3 iterations.
+267. 1.27 with step 0.0037 (0.3992) converged in 3 iterations.
+268. 1.28 with step 0.0023 (0.3992) converged in 3 iterations.
+269. 1.28 with step 0.0015 (0.3992) converged in 3 iterations.
+270. 1.28 with step 0.0010 (0.3992) converged in 2 iterations.
+271. 1.28 with step 0.0008 (0.4889) converged in 2 iterations.
+272. 1.28 with step 0.0006 (0.5987) converged in 2 iterations.
+273. 1.28 with step 0.0004 (0.7333) converged in 2 iterations.
+274. 1.28 with step 0.0003 (0.8981) converged in 2 iterations.
+275. 1.28 with step 0.0002 (1.0300) converged in 2 iterations.
+276. 1.28 with step 0.0002 (1.0300) converged in 2 iterations.
+277. 1.28 with step 0.0003 (1.0300) converged in 2 iterations.
+278. 1.28 with step 0.0004 (1.0300) converged in 2 iterations.
+279. 1.28 with step 0.0004 (1.0300) converged in 2 iterations.
+280. 1.28 with step 0.0008 (1.0300) converged in 2 iterations.
+281. 1.29 with step 0.0013 (1.0300) converged in 2 iterations.
+282. 1.29 with step 0.0021 (1.0300) converged in 3 iterations.
+283. 1.29 with step 0.0033 (1.0300) converged in 3 iterations.
+284. 1.29 with step 0.0048 (1.0300) converged in 3 iterations.
+285. 1.30 with step 0.0064 (1.0300) converged in 3 iterations.
+286. 1.31 with step 0.0080 (1.0300) converged in 3 iterations.
+287. 1.31 with step 0.0089 (1.0300) converged in 3 iterations.
+288. 1.32 with step 0.0070 (1.0300) converged in 3 iterations.
+289. 1.32 with step 0.0030 (1.0300) converged in 3 iterations.
+290. 1.32 with step 0.0013 (1.0300) converged in 3 iterations.
+291. 1.33 with step 0.0006 (1.0300) converged in 2 iterations.
+292. 1.33 with step 0.0010 (1.0300) converged in 2 iterations.
+293. 1.33 with step 0.0016 (1.0300) converged in 3 iterations.
+294. 1.33 with step 0.0024 (1.0300) converged in 3 iterations.
+295. 1.33 with step 0.0029 (1.0300) converged in 3 iterations.
+296. 1.33 with step 0.0019 (1.0300) converged in 3 iterations.
+297. 1.33 with step 0.0009 (1.0300) converged in 3 iterations.
+298. 1.34 with step 0.0004 (1.0300) converged in 2 iterations.
+299. 1.34 with step 0.0003 (1.0300) converged in 2 iterations.
+300. 1.34 with step 0.0005 (1.0300) converged in 2 iterations.
+301. 1.34 with step 0.0009 (1.0300) converged in 3 iterations.
+302. 1.34 with step 0.0014 (1.0300) converged in 3 iterations.
+303. 1.34 with step 0.0022 (1.0300) converged in 3 iterations.
+304. 1.34 with step 0.0031 (1.0300) converged in 3 iterations.
+305. 1.35 with step 0.0041 (1.0300) converged in 4 iterations.
+306. 1.35 with step 0.0043 (0.8920) converged in 4 iterations.
+307. 1.35 with step 0.0024 (0.7725) converged in 4 iterations.
+308. 1.35 with step 0.0009 (0.6690) converged in 3 iterations.
+309. 1.35 with step 0.0004 (0.6690) converged in 3 iterations.
+310. 1.35 with step 0.0002 (0.6690) converged in 2 iterations.
+311. 1.35 with step 0.0001 (0.8194) converged in 2 iterations.
+312. 1.35 with step 0.0001 (1.0035) converged in 2 iterations.
+313. 1.35 with step 0.0000 (1.0300) converged in 2 iterations.
+314. 1.35 with step 0.0000 (1.0300) converged in 2 iterations.
+315. 1.35 with step 0.0000 (1.0300) converged in 2 iterations.
+316. 1.35 with step 0.0000 (1.0300) converged in 2 iterations.
+317. 1.35 with step 0.0001 (1.0300) converged in 2 iterations.
+318. 1.35 with step 0.0001 (1.0300) converged in 2 iterations.
+319. 1.36 with step 0.0002 (1.0300) converged in 2 iterations.
+320. 1.36 with step 0.0003 (1.0300) converged in 2 iterations.
+321. 1.36 with step 0.0006 (1.0300) converged in 3 iterations.
+322. 1.36 with step 0.0008 (1.0300) converged in 3 iterations.
+323. 1.36 with step 0.0010 (1.0300) converged in 3 iterations.
+324. 1.36 with step 0.0006 (1.0300) converged in 3 iterations.
+325. 1.36 with step 0.0003 (1.0300) converged in 3 iterations.
+326. 1.36 with step 0.0001 (1.0300) converged in 2 iterations.
+327. 1.36 with step 0.0001 (1.0300) converged in 2 iterations.
+328. 1.36 with step 0.0002 (1.0300) converged in 2 iterations.
+329. 1.36 with step 0.0004 (1.0300) converged in 3 iterations.
+330. 1.36 with step 0.0007 (1.0300) converged in 3 iterations.
+331. 1.36 with step 0.0010 (1.0300) converged in 3 iterations.
+332. 1.36 with step 0.0014 (1.0300) converged in 4 iterations.
+333. 1.36 with step 0.0010 (0.8920) converged in 3 iterations.
+334. 1.36 with step 0.0005 (0.8920) converged in 3 iterations.
+335. 1.36 with step 0.0002 (0.8920) converged in 3 iterations.
+336. 1.36 with step 0.0001 (0.8920) converged in 2 iterations.
+337. 1.36 with step 0.0001 (1.0300) converged in 2 iterations.
+338. 1.36 with step 0.0001 (1.0300) converged in 2 iterations.
+339. 1.36 with step 0.0002 (1.0300) converged in 3 iterations.
+340. 1.37 with step 0.0004 (1.0300) converged in 3 iterations.
+341. 1.37 with step 0.0006 (1.0300) converged in 3 iterations.
+342. 1.37 with step 0.0009 (1.0300) converged in 4 iterations.
+343. 1.37 with step 0.0008 (0.8920) converged in 4 iterations.
+344. 1.37 with step 0.0004 (0.7725) converged in 3 iterations.
+345. 1.37 with step 0.0002 (0.7725) converged in 3 iterations.
+346. 1.37 with step 0.0001 (0.7725) converged in 3 iterations.
+347. 1.37 with step 0.0001 (0.7725) converged in 3 iterations.
+348. 1.37 with step 0.0001 (0.7725) converged in 2 iterations.
+349. 1.37 with step 0.0000 (0.9461) converged in 2 iterations.
+350. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+351. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+352. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+353. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+354. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+355. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+356. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+357. 1.37 with step 0.0000 (1.0300) converged in 1 iterations.
+358. 1.37 with step 0.0000 (1.0300) converged in 1 iterations.
+359. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+360. 1.37 with step 0.0000 (1.0300) converged in 1 iterations.
+361. 1.37 with step 0.0000 (1.0300) converged in 1 iterations.
+362. 1.37 with step 0.0000 (1.0300) converged in 1 iterations.
+363. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+364. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+365. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+366. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+367. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+368. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+369. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+370. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+371. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+372. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+373. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+374. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+375. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+376. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+377. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+378. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+379. 1.37 with step 0.0000 (1.0300) converged in 2 iterations.
+380. 1.37 with step 0.0000 (1.0300) converged in 3 iterations.
+381. 1.37 with step 0.0001 (1.0300) converged in 3 iterations.
+382. 1.37 with step 0.0001 (1.0300) converged in 3 iterations.
+383. 1.37 with step 0.0001 (1.0300) converged in 3 iterations.
+384. 1.37 with step 0.0001 (1.0300) converged in 3 iterations.
+385. 1.37 with step 0.0000 (1.0300) converged in 4 iterations.
+386. 1.37 with step -0.0001 (0.8920) converged in 4 iterations.
+387. 1.37 with step -0.0002 (0.7725) converged in 3 iterations.
+388. 1.37 with step -0.0001 (0.7725) converged in 3 iterations.
+389. 1.37 with step -0.0001 (0.7725) converged in 2 iterations.
+390. 1.37 with step -0.0000 (0.9461) converged in 2 iterations.
+391. 1.37 with step -0.0000 (1.0300) converged in 2 iterations.
+392. 1.37 with step -0.0000 (1.0300) converged in 2 iterations.
+393. 1.37 with step -0.0000 (1.0300) converged in 2 iterations.
+394. 1.37 with step -0.0000 (1.0300) converged in 2 iterations.
+395. 1.37 with step -0.0001 (1.0300) converged in 3 iterations.
+396. 1.37 with step -0.0002 (1.0300) converged in 3 iterations.
+397. 1.37 with step -0.0003 (1.0300) converged in 3 iterations.
+398. 1.37 with step -0.0006 (1.0300) converged in 4 iterations.
+399. 1.37 with step -0.0006 (0.8920) converged in 3 iterations.
+400. 1.37 with step -0.0004 (0.8920) converged in 3 iterations.
+401. 1.37 with step -0.0002 (0.8920) converged in 3 iterations.
+402. 1.37 with step -0.0001 (0.8920) converged in 2 iterations.
+403. 1.36 with step -0.0001 (1.0300) converged in 2 iterations.
+404. 1.36 with step -0.0002 (1.0300) converged in 2 iterations.
+405. 1.36 with step -0.0003 (1.0300) converged in 3 iterations.
+406. 1.36 with step -0.0005 (1.0300) converged in 3 iterations.
+407. 1.36 with step -0.0006 (1.0300) converged in 3 iterations.
+408. 1.36 with step -0.0004 (1.0300) converged in 3 iterations.
+409. 1.36 with step -0.0002 (1.0300) converged in 2 iterations.
+410. 1.36 with step -0.0001 (1.0300) converged in 2 iterations.
+411. 1.36 with step -0.0002 (1.0300) converged in 3 iterations.
+412. 1.36 with step -0.0004 (1.0300) converged in 3 iterations.
+413. 1.36 with step -0.0008 (1.0300) converged in 3 iterations.
+414. 1.36 with step -0.0015 (1.0300) converged in 4 iterations.
+415. 1.36 with step -0.0025 (0.8920) converged in 4 iterations.
+416. 1.35 with step -0.0020 (0.7725) converged in 3 iterations.
+417. 1.35 with step -0.0014 (0.7725) converged in 3 iterations.
+418. 1.35 with step -0.0009 (0.7725) converged in 3 iterations.
+419. 1.35 with step -0.0005 (0.7725) converged in 3 iterations.
+420. 1.35 with step -0.0003 (0.7725) converged in 2 iterations.
+421. 1.35 with step -0.0002 (0.9461) converged in 2 iterations.
+422. 1.35 with step -0.0001 (1.0300) converged in 2 iterations.
+423. 1.35 with step -0.0001 (1.0300) converged in 2 iterations.
+424. 1.35 with step -0.0002 (1.0300) converged in 2 iterations.
+425. 1.35 with step -0.0003 (1.0300) converged in 2 iterations.
+426. 1.35 with step -0.0005 (1.0300) converged in 3 iterations.
+427. 1.35 with step -0.0010 (1.0300) converged in 3 iterations.
+428. 1.35 with step -0.0016 (1.0300) converged in 3 iterations.
+429. 1.34 with step -0.0018 (1.0300) converged in 3 iterations.
+430. 1.34 with step -0.0012 (1.0300) converged in 3 iterations.
+431. 1.34 with step -0.0007 (1.0300) converged in 3 iterations.
+432. 1.34 with step -0.0005 (1.0300) converged in 2 iterations.
+433. 1.34 with step -0.0010 (1.0300) converged in 3 iterations.
+434. 1.34 with step -0.0018 (1.0300) converged in 3 iterations.
+435. 1.33 with step -0.0034 (1.0300) converged in 3 iterations.
+436. 1.33 with step -0.0053 (1.0300) converged in 4 iterations.
+437. 1.32 with step -0.0046 (0.8920) converged in 3 iterations.
+438. 1.32 with step -0.0038 (0.8920) converged in 3 iterations.
+439. 1.31 with step -0.0029 (0.8920) converged in 3 iterations.
+440. 1.31 with step -0.0020 (0.8920) converged in 3 iterations.
+441. 1.31 with step -0.0039 (0.8920) converged in 3 iterations.
+442. 1.30 with step -0.0080 (0.8920) converged in 4 iterations.
+443. 1.28 with step -0.0098 (0.7725) converged in 4 iterations.
+444. 1.27 with step -0.0085 (0.6690) converged in 3 iterations.
+445. 1.26 with step -0.0084 (0.6690) converged in 3 iterations.
+446. 1.26 with step -0.0082 (0.6690) converged in 3 iterations.
+447. 1.25 with step -0.0080 (0.6690) converged in 3 iterations.
+448. 1.24 with step -0.0077 (0.6690) converged in 3 iterations.
+449. 1.23 with step -0.0074 (0.6690) converged in 3 iterations.
+450. 1.22 with step -0.0069 (0.6690) converged in 3 iterations.
+451. 1.22 with step -0.0063 (0.6690) converged in 3 iterations.
+452. 1.21 with step -0.0057 (0.6690) converged in 3 iterations.
+453. 1.20 with step -0.0049 (0.6690) converged in 3 iterations.
+454. 1.20 with step -0.0042 (0.6690) converged in 3 iterations.
+455. 1.20 with step -0.0034 (0.6690) converged in 3 iterations.
+456. 1.19 with step -0.0026 (0.6690) converged in 3 iterations.
+457. 1.19 with step -0.0017 (0.6690) converged in 3 iterations.
+458. 1.19 with step -0.0007 (0.6690) converged in 3 iterations.
+459. 1.19 with step 0.0004 (0.6690) converged in 3 iterations.
+460. 1.20 with step 0.0015 (0.6690) converged in 3 iterations.
+461. 1.20 with step 0.0027 (0.6690) converged in 3 iterations.
+462. 1.21 with step 0.0040 (0.6690) converged in 3 iterations.
+463. 1.21 with step 0.0052 (0.6690) converged in 3 iterations.
+464. 1.22 with step 0.0067 (0.6690) converged in 3 iterations.
+465. 1.23 with step 0.0087 (0.6690) converged in 3 iterations.
+466. 1.25 with step 0.0107 (0.6690) converged in 3 iterations.
+467. 1.26 with step 0.0126 (0.6690) converged in 3 iterations.
+468. 1.28 with step 0.0145 (0.6690) converged in 3 iterations.
+469. 1.30 with step 0.0163 (0.6690) converged in 3 iterations.
+470. 1.32 with step 0.0187 (0.6690) converged in 3 iterations.
+471. 1.35 with step 0.0216 (0.6690) converged in 3 iterations.
+472. 1.37 with step 0.0215 (0.6690) converged in 3 iterations.
+473. 1.39 with step 0.0174 (0.6690) converged in 3 iterations.
+474. 1.40 with step 0.0117 (0.6690) converged in 3 iterations.
+475. 1.41 with step 0.0067 (0.6690) converged in 3 iterations.
+476. 1.41 with step 0.0037 (0.6690) converged in 2 iterations.
+477. 1.41 with step 0.0024 (0.8194) converged in 2 iterations.
+478. 1.42 with step 0.0015 (1.0035) converged in 2 iterations.
+479. 1.42 with step 0.0026 (1.0300) converged in 2 iterations.
+480. 1.42 with step 0.0050 (1.0300) converged in 2 iterations.
+481. 1.43 with step 0.0083 (1.0300) converged in 2 iterations.
+482. 1.44 with step 0.0080 (1.0300) converged in 2 iterations.
+483. 1.44 with step 0.0046 (1.0300) converged in 2 iterations.
+484. 1.45 with step 0.0033 (1.0300) converged in 2 iterations.
+485. 1.45 with step 0.0063 (1.0300) converged in 2 iterations.
+486. 1.46 with step 0.0115 (1.0300) converged in 3 iterations.
+487. 1.48 with step 0.0190 (1.0300) converged in 3 iterations.
+488. 1.51 with step 0.0285 (1.0300) converged in 3 iterations.
+489. 1.54 with step 0.0368 (1.0300) converged in 3 iterations.
+490. 1.57 with step 0.0393 (1.0300) converged in 4 iterations.
+491. 1.60 with step 0.0311 (0.8920) converged in 3 iterations.
+492. 1.62 with step 0.0263 (0.8920) converged in 3 iterations.
+493. 1.64 with step 0.0230 (0.8920) converged in 3 iterations.
+494. 1.65 with step 0.0207 (0.8920) converged in 3 iterations.
+495. 1.67 with step 0.0196 (0.8920) converged in 3 iterations.
+496. 1.69 with step 0.0186 (0.8920) converged in 3 iterations.
+497. 1.70 with step 0.0172 (0.8920) converged in 3 iterations.
+498. 1.72 with step 0.0171 (0.8920) converged in 3 iterations.
+499. 1.73 with step 0.0180 (0.8920) converged in 3 iterations.
+500. 1.75 with step 0.0192 (0.8920) converged in 3 iterations.
+501. 1.77 with step 0.0210 (0.8920) converged in 3 iterations.
+502. 1.79 with step 0.0233 (0.8920) converged in 3 iterations.
+503. 1.81 with step 0.0263 (0.8920) converged in 3 iterations.
+504. 1.84 with step 0.0303 (0.8920) converged in 3 iterations.
+505. 1.87 with step 0.0354 (0.8920) converged in 3 iterations.
+506. 1.91 with step 0.0420 (0.8920) converged in 4 iterations.
+507. 1.95 with step 0.0434 (0.7725) converged in 4 iterations.
+508. 1.99 with step 0.0407 (0.6690) converged in 4 iterations.
+509. 2.01 with step 0.0256 (0.5794) converged in 3 iterations.
+510. 2.02 with step 0.0113 (0.5794) converged in 3 iterations.
+511. 2.03 with step 0.0051 (0.5794) converged in 2 iterations.
+512. 2.03 with step 0.0029 (0.7096) converged in 2 iterations.
+513. 2.03 with step 0.0017 (0.8691) converged in 2 iterations.
+514. 2.04 with step 0.0022 (1.0300) converged in 2 iterations.
+515. 2.04 with step 0.0043 (1.0300) converged in 2 iterations.
+516. 2.05 with step 0.0081 (1.0300) converged in 3 iterations.
+517. 2.06 with step 0.0147 (1.0300) converged in 3 iterations.
+518. 2.08 with step 0.0247 (1.0300) converged in 3 iterations.
+519. 2.12 with step 0.0364 (1.0300) converged in 3 iterations.
+520. 2.15 with step 0.0416 (1.0300) converged in 3 iterations.
+521. 2.18 with step 0.0328 (1.0300) converged in 3 iterations.
+522. 2.20 with step 0.0153 (1.0300) converged in 3 iterations.
+523. 2.21 with step 0.0072 (1.0300) converged in 3 iterations.
+524. 2.21 with step 0.0043 (1.0300) converged in 2 iterations.
+525. 2.22 with step 0.0073 (1.0300) converged in 3 iterations.
+526. 2.23 with step 0.0117 (1.0300) converged in 3 iterations.
+527. 2.24 with step 0.0167 (1.0300) converged in 3 iterations.
+528. 2.26 with step 0.0152 (1.0300) converged in 3 iterations.
+529. 2.27 with step 0.0081 (1.0300) converged in 3 iterations.
+530. 2.27 with step 0.0050 (1.0300) converged in 2 iterations.
+531. 2.28 with step 0.0093 (1.0300) converged in 3 iterations.
+532. 2.30 with step 0.0156 (1.0300) converged in 3 iterations.
+533. 2.32 with step 0.0219 (1.0300) converged in 3 iterations.
+534. 2.35 with step 0.0313 (1.0300) converged in 4 iterations.
+535. 2.37 with step 0.0303 (0.8920) converged in 4 iterations.
+536. 2.39 with step 0.0130 (0.7725) converged in 3 iterations.
+537. 2.39 with step 0.0073 (0.7725) converged in 3 iterations.
+538. 2.40 with step 0.0038 (0.7725) converged in 3 iterations.
+539. 2.40 with step 0.0019 (0.7725) converged in 2 iterations.
+540. 2.40 with step 0.0022 (0.9461) converged in 2 iterations.
+541. 2.41 with step 0.0045 (1.0300) converged in 3 iterations.
+542. 2.41 with step 0.0074 (1.0300) converged in 3 iterations.
+543. 2.42 with step 0.0083 (1.0300) converged in 3 iterations.
+544. 2.43 with step 0.0051 (1.0300) converged in 3 iterations.
+545. 2.43 with step 0.0025 (1.0300) converged in 2 iterations.
+546. 2.43 with step 0.0012 (1.0300) converged in 2 iterations.
+547. 2.43 with step 0.0013 (1.0300) converged in 2 iterations.
+548. 2.43 with step 0.0022 (1.0300) converged in 2 iterations.
+549. 2.44 with step 0.0038 (1.0300) converged in 3 iterations.
+550. 2.44 with step 0.0061 (1.0300) converged in 3 iterations.
+551. 2.45 with step 0.0093 (1.0300) converged in 3 iterations.
+552. 2.46 with step 0.0112 (1.0300) converged in 3 iterations.
+553. 2.47 with step 0.0067 (1.0300) converged in 3 iterations.
+554. 2.47 with step 0.0037 (1.0300) converged in 3 iterations.
+555. 2.47 with step 0.0018 (1.0300) converged in 2 iterations.
+556. 2.48 with step 0.0028 (1.0300) converged in 3 iterations.
+557. 2.48 with step 0.0043 (1.0300) converged in 3 iterations.
+558. 2.49 with step 0.0053 (1.0300) converged in 3 iterations.
+559. 2.49 with step 0.0042 (1.0300) converged in 3 iterations.
+560. 2.49 with step 0.0018 (1.0300) converged in 3 iterations.
+561. 2.49 with step 0.0008 (1.0300) converged in 3 iterations.
+562. 2.49 with step 0.0012 (1.0300) converged in 3 iterations.
+563. 2.49 with step 0.0010 (1.0300) converged in 3 iterations.
+564. 2.49 with step 0.0004 (1.0300) converged in 3 iterations.
+565. 2.49 with step 0.0001 (1.0300) converged in 2 iterations.
+566. 2.49 with step 0.0000 (1.0300) converged in 2 iterations.
+567. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+568. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+569. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+570. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+571. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+572. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+573. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+574. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+575. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+576. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+577. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+578. 2.49 with step -0.0000 (1.0300) converged in 2 iterations.
+579. 2.49 with step -0.0001 (1.0300) converged in 2 iterations.
+580. 2.49 with step -0.0001 (1.0300) converged in 2 iterations.
+581. 2.49 with step -0.0002 (1.0300) converged in 3 iterations.
+582. 2.49 with step -0.0005 (1.0300) converged in 3 iterations.
+583. 2.49 with step -0.0009 (1.0300) converged in 3 iterations.
+584. 2.49 with step -0.0020 (1.0300) converged in 3 iterations.
+585. 2.48 with step -0.0042 (1.0300) converged in 4 iterations.
+586. 2.48 with step -0.0060 (0.8920) converged in 4 iterations.
+587. 2.47 with step -0.0039 (0.7725) converged in 3 iterations.
+588. 2.47 with step -0.0027 (0.7725) converged in 3 iterations.
+589. 2.47 with step -0.0016 (0.7725) converged in 2 iterations.
+590. 2.47 with step -0.0010 (0.9461) converged in 2 iterations.
+591. 2.47 with step -0.0017 (1.0300) converged in 3 iterations.
+592. 2.46 with step -0.0034 (1.0300) converged in 3 iterations.
+593. 2.46 with step -0.0061 (1.0300) converged in 3 iterations.
+594. 2.44 with step -0.0098 (1.0300) converged in 3 iterations.
+595. 2.43 with step -0.0113 (1.0300) converged in 3 iterations.
+596. 2.42 with step -0.0072 (1.0300) converged in 3 iterations.
+597. 2.42 with step -0.0040 (1.0300) converged in 3 iterations.
+598. 2.42 with step -0.0024 (1.0300) converged in 2 iterations.
+599. 2.41 with step -0.0042 (1.0300) converged in 3 iterations.
+600. 2.41 with step -0.0067 (1.0300) converged in 3 iterations.
+601. 2.40 with step -0.0086 (1.0300) converged in 3 iterations.
+602. 2.39 with step -0.0066 (1.0300) converged in 3 iterations.
+603. 2.39 with step -0.0038 (1.0300) converged in 3 iterations.
+604. 2.38 with step -0.0057 (1.0300) converged in 3 iterations.
+605. 2.37 with step -0.0107 (1.0300) converged in 3 iterations.
+606. 2.35 with step -0.0178 (1.0300) converged in 3 iterations.
+607. 2.31 with step -0.0322 (1.0300) converged in 4 iterations.
+608. 2.28 with step -0.0275 (0.8920) converged in 4 iterations.
+609. 2.27 with step -0.0160 (0.7725) converged in 3 iterations.
+610. 2.25 with step -0.0107 (0.7725) converged in 3 iterations.
+611. 2.25 with step -0.0063 (0.7725) converged in 3 iterations.
+612. 2.24 with step -0.0061 (0.7725) converged in 3 iterations.
+613. 2.23 with step -0.0103 (0.7725) converged in 3 iterations.
+614. 2.22 with step -0.0139 (0.7725) converged in 3 iterations.
+615. 2.20 with step -0.0119 (0.7725) converged in 3 iterations.
+616. 2.20 with step -0.0069 (0.7725) converged in 3 iterations.
+617. 2.19 with step -0.0037 (0.7725) converged in 2 iterations.
+618. 2.19 with step -0.0023 (0.9461) converged in 2 iterations.
+619. 2.19 with step -0.0013 (1.0300) converged in 2 iterations.
+620. 2.19 with step -0.0009 (1.0300) converged in 2 iterations.
+621. 2.19 with step -0.0011 (1.0300) converged in 2 iterations.
+622. 2.18 with step -0.0020 (1.0300) converged in 2 iterations.
+623. 2.18 with step -0.0036 (1.0300) converged in 2 iterations.
+624. 2.17 with step -0.0065 (1.0300) converged in 2 iterations.
+625. 2.16 with step -0.0116 (1.0300) converged in 3 iterations.
+626. 2.14 with step -0.0208 (1.0300) converged in 3 iterations.
+627. 2.10 with step -0.0352 (1.0300) converged in 4 iterations.
+628. 2.06 with step -0.0360 (0.8920) converged in 4 iterations.
+629. 2.03 with step -0.0267 (0.7725) converged in 4 iterations.
+630. 2.01 with step -0.0181 (0.6690) converged in 3 iterations.
+631. 1.99 with step -0.0134 (0.6690) converged in 3 iterations.
+632. 1.96 with step -0.0238 (0.6690) converged in 4 iterations.
+633. 1.93 with step -0.0272 (0.5794) converged in 4 iterations.
+634. 1.91 with step -0.0193 (0.5018) converged in 3 iterations.
+635. 1.90 with step -0.0157 (0.5018) converged in 3 iterations.
+636. 1.88 with step -0.0128 (0.5018) converged in 3 iterations.
+637. 1.87 with step -0.0105 (0.5018) converged in 3 iterations.
+638. 1.86 with step -0.0086 (0.5018) converged in 3 iterations.
+639. 1.86 with step -0.0070 (0.5018) converged in 3 iterations.
+640. 1.85 with step -0.0057 (0.5018) converged in 3 iterations.
+641. 1.85 with step -0.0046 (0.5018) converged in 3 iterations.
+642. 1.84 with step -0.0036 (0.5018) converged in 3 iterations.
+643. 1.84 with step -0.0028 (0.5018) converged in 3 iterations.
+644. 1.84 with step -0.0020 (0.5018) converged in 3 iterations.
+645. 1.84 with step -0.0013 (0.5018) converged in 3 iterations.
+646. 1.84 with step -0.0008 (0.5018) converged in 3 iterations.
+647. 1.84 with step -0.0002 (0.5018) converged in 3 iterations.
+648. 1.84 with step 0.0004 (0.5018) converged in 3 iterations.
+649. 1.84 with step 0.0011 (0.5018) converged in 3 iterations.
+650. 1.84 with step 0.0019 (0.5018) converged in 3 iterations.
+651. 1.84 with step 0.0026 (0.5018) converged in 3 iterations.
+652. 1.85 with step 0.0033 (0.5018) converged in 3 iterations.
+653. 1.85 with step 0.0040 (0.5018) converged in 3 iterations.
+654. 1.86 with step 0.0049 (0.5018) converged in 3 iterations.
+655. 1.87 with step 0.0058 (0.5018) converged in 3 iterations.
+656. 1.87 with step 0.0066 (0.5018) converged in 3 iterations.
+657. 1.88 with step 0.0074 (0.5018) converged in 3 iterations.
+658. 1.89 with step 0.0082 (0.5018) converged in 3 iterations.
+659. 1.90 with step 0.0092 (0.5018) converged in 3 iterations.
+660. 1.92 with step 0.0104 (0.5018) converged in 3 iterations.
+661. 1.93 with step 0.0116 (0.5018) converged in 3 iterations.
+662. 1.95 with step 0.0128 (0.5018) converged in 3 iterations.
+663. 1.96 with step 0.0141 (0.5018) converged in 3 iterations.
+664. 1.99 with step 0.0175 (0.5018) converged in 3 iterations.
+665. 2.01 with step 0.0208 (0.5018) converged in 3 iterations.
+666. 2.04 with step 0.0237 (0.5018) converged in 3 iterations.
+667. 2.07 with step 0.0261 (0.5018) converged in 3 iterations.
+668. 2.11 with step 0.0312 (0.5018) converged in 3 iterations.
+669. 2.17 with step 0.0446 (0.5018) converged in 3 iterations.
+670. 2.25 with step 0.0592 (0.5018) converged in 3 iterations.
+671. 2.34 with step 0.0716 (0.5018) converged in 3 iterations.
+672. 2.44 with step 0.0831 (0.5018) converged in 3 iterations.
+673. 2.56 with step 0.0951 (0.5018) converged in 3 iterations.
+674. 2.69 with step 0.1081 (0.5018) converged in 3 iterations.
+675. 2.84 with step 0.1223 (0.5018) converged in 3 iterations.
+676. 3.01 with step 0.1377 (0.5018) converged in 3 iterations.</code></pre><h2 id="Plot"><a class="docs-heading-anchor" href="#Plot">Plot</a><a id="Plot-1"></a><a class="docs-heading-anchor-permalink" href="#Plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">his = [1, 3, 5];
+
+fsz = 24;
+fig = Figure(fontsize=fsz, size=(1000, 600));
+
+for i in eachindex(his[his.&lt;=maximum(h)])
+    ax = Axis(fig[1, i],
+        ylabel=L&quot;$H_%$(his[i])$ Response (m)&quot;, yscale=log10);
+    lines!(ax, Oms, abs.(uh[his[i].+1, :, 1]), label=&quot;x1&quot;);
+    lines!(ax, Oms, abs.(uh[his[i].+1, :, 2]), label=&quot;x2&quot;);
+
+    ax = Axis(fig[2, i], xlabel=L&quot;Excitation Frequency $\Omega$&quot;,
+        ylabel=L&quot;$H_%$(his[i])$ Phase (rad)&quot;);
+    lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label=&quot;x1&quot;);
+    lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label=&quot;x2&quot;);
+end
+
+    fig</code></pre><img src="36f3d527.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../c_jenkhb/">« c_jenkhb</a><a class="docs-footer-nextpage" href="../d1_mdofgen_hystnl/">d1<em>mdofgen</em>hystnl »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Monday 18 August 2025 19:23">Monday 18 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

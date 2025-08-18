@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>c_jenkhb · juliajim</title><meta name="title" content="c_jenkhb · juliajim"/><meta property="og:title" content="c_jenkhb · juliajim"/><meta property="twitter:title" content="c_jenkhb · juliajim"/><meta name="description" content="Documentation for juliajim."/><meta property="og:description" content="Documentation for juliajim."/><meta property="twitter:description" content="Documentation for juliajim."/><meta property="og:url" content="https://github.com/Nidish96/juliajim/c_jenkhb/"/><meta property="twitter:url" content="https://github.com/Nidish96/juliajim/c_jenkhb/"/><link rel="canonical" href="https://github.com/Nidish96/juliajim/c_jenkhb/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/style.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">juliajim</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../a_hworld/">a_hworld</a></li><li><a class="tocitem" href="../b_duffhb/">b_duffhb</a></li><li class="is-active"><a class="tocitem" href>c_jenkhb</a><ul class="internal"><li><a class="tocitem" href="#Preamble:-Load-Packages"><span>Preamble: Load Packages</span></a></li><li><a class="tocitem" href="#Residue-Function"><span>Residue Function</span></a></li><li><a class="tocitem" href="#Setup"><span>Setup</span></a></li><li><a class="tocitem" href="#Continuation"><span>Continuation</span></a></li><li><a class="tocitem" href="#Plot"><span>Plot</span></a></li></ul></li><li><a class="tocitem" href="../d0_mdofgen_instnl/">d0<em>mdofgen</em>instnl</a></li><li><a class="tocitem" href="../d1_mdofgen_hystnl/">d1<em>mdofgen</em>hystnl</a></li><li><a class="tocitem" href="../d2_mdofgen_ahb/">d2<em>mdofgen</em>ahb</a></li><li><a class="tocitem" href="../d3_mdofgen_epmc/">d3<em>mdofgen</em>epmc</a></li><li><a class="tocitem" href="../d4_mdofgen_newmark/">d4<em>mdofgen</em>newmark</a></li></ul></li><li><a class="tocitem" href="../reference/">Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>c_jenkhb</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>c_jenkhb</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Nidish96/juliajim/blob/master/examples/c_jenkhb.jl#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="ex_c"><a class="docs-heading-anchor" href="#ex_c">Example c</a><a id="ex_c-1"></a><a class="docs-heading-anchor-permalink" href="#ex_c" title="Permalink"></a></h1><h2 id="Preamble:-Load-Packages"><a class="docs-heading-anchor" href="#Preamble:-Load-Packages">Preamble: Load Packages</a><a id="Preamble:-Load-Packages-1"></a><a class="docs-heading-anchor-permalink" href="#Preamble:-Load-Packages" title="Permalink"></a></h2><pre><code class="language-julia hljs">using GLMakie
+using LaTeXStrings
+using LinearAlgebra
+using NonlinearSolve
+using ForwardDiff
+using DSP
+using Infiltrator
+
+using Revise
+using juliajim.HARMONIC
+using juliajim.CONTINUATION</code></pre><h2 id="Residue-Function"><a class="docs-heading-anchor" href="#Residue-Function">Residue Function</a><a id="Residue-Function-1"></a><a class="docs-heading-anchor-permalink" href="#Residue-Function" title="Permalink"></a></h2><pre><code class="language-julia hljs">function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
+    (; z0, w0, kt, fs, F) = pars;
+
+    Om = Uw[end];
+    Nhc = sum((h.==0)+2(h.!=0));
+
+    # Linear Portion
+    E, dEdw = HARMONICSTIFFNESS(1.0, 2z0*w0, w0^2, Om, h);
+
+    # AFT For nonlinear force
+    ut  = AFT(Uw[1:end-1], h, Nt, :f2t);
+
+    # Construct Residue
+    if !(R === nothing &amp;&amp; dRdU === nothing)
+        ft = kt*ut;
+        if !(dRdU === nothing)
+            cst = AFT(eltype(Uw).(I(Nhc)), h, Nt, :f2t);
+            dfdat = kt.*cst;
+        end
+
+        for _ in 1:2
+            for (ti, tim1) in zip(1:Nt, circshift(1:Nt,1))
+                fsp = kt*(ut[ti]-ut[tim1]) + ft[tim1];  # stick prediction
+                ft[ti] = clamp(fsp, -fs, fs);
+                if !(dRdU === nothing)
+                    if (abs(fsp)&lt;fs)
+                        dfdat[ti, :] = kt.*(cst[ti,:]-cst[tim1,:]) + dfdat[tim1,:];
+                    else
+                        dfdat[ti, :] .= 0.0;
+                    end
+                end
+            end
+        end
+        if !(R === nothing)
+            Fnl = AFT(ft, h, Nt, :t2f);
+            R[:] = E*Uw[1:end-1] + Fnl - Fl*F;
+        end
+        if !(dRdU === nothing)
+            Jnl    = AFT(dfdat, h, Nt, :t2f);
+            dRdU[:, :] = E + Jnl;
+        end
+    end
+    if !(dRdw === nothing)
+        dRdw[:] = dEdw*Uw[1:end-1];
+    end
+    return nothing;
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">RESFUN! (generic function with 1 method)</code></pre><h2 id="Setup"><a class="docs-heading-anchor" href="#Setup">Setup</a><a id="Setup-1"></a><a class="docs-heading-anchor-permalink" href="#Setup" title="Permalink"></a></h2><pre><code class="language-julia hljs">pars = (z0 = 0.5e-2, w0 = 2., kt = 5.0, fs=1.0, F = 0.1);
+
+# h = (0:5);
+h = 1:2:5;
+Om = 0.1;
+
+Nhc = sum((h.==0)+2(h.!=0));
+Nt = 2^9;
+
+Fl = zeros(Nhc);
+_,_,zinds,rinds,iinds = HINDS(1, h)
+Fl[rinds[1]] = 1.0;
+
+fun = NonlinearFunction((r,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;R=r),
+    jac=(J,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
+    paramjac=(Jp,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
+
+E = zeros(Nhc, Nhc);
+HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om, h);
+U0 = E\ (Fl*pars.F);
+
+prob = NonlinearProblem(fun, U0, Om);
+sol = solve(prob, show_trace=Val(true))
+
+R = zeros(Nhc);
+Jf = zeros(Nhc, Nhc+1);
+J = @view Jf[:, 1:Nhc];
+Jp = @view Jf[:, end];</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	1.84128022e-17      	NaN
+1       	1.84128022e-17      	2.22627759e-18
+Final   	1.84128022e-17
+----------------------</code></pre><h2 id="Continuation"><a class="docs-heading-anchor" href="#Continuation">Continuation</a><a id="Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Continuation" title="Permalink"></a></h2><pre><code class="language-julia hljs">Om0 = 0.02pars.w0;
+Om1 = 2pars.w0;
+
+HARMONICSTIFFNESS!(E, nothing, 1.0, 2pars.z0*pars.w0, pars.w0^2+pars.kt, Om0, h);
+U0 = E\ (Fl*pars.F);
+
+fun = NonlinearFunction((r,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;R=r),
+    jac=(J,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;dRdU=J),
+    paramjac=(Jp,u,p)-&gt;RESFUN!([u;p],Fl,pars,h,Nt;dRdw=Jp));
+
+dOm = 0.04pars.w0;
+# dOm = 0.1;
+cpars = (parm=:riks, nmax=300, Dsc=:auto, minDsc=1e-2);
+sols, its, dss, xis, Dsc = CONTINUATE(U0, fun, [Om0, Om1], dOm; cpars...);
+
+uh = zeros(Complex, maximum(h)+1, length(sols));
+uh[h.+1, :] = hcat([[s.up[zinds]; s.up[rinds]+1im*s.up[iinds]] for s in sols]...);
+Oms = [s.up[end] for s in sols];</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	2.77555756e-17      	0.00000000e+00
+1       	2.62851264e-17      	3.65628091e-18
+Final   	2.62851264e-17
+----------------------
+2. 0.12 with step 0.0800 (2.0000) converged in 1 iterations.
+3. 0.28 with step 0.1600 (2.0000) converged in 2 iterations.
+4. 0.51 with step 0.2263 (1.4142) converged in 2 iterations.
+5. 0.83 with step 0.3198 (1.0000) converged in 2 iterations.
+6. 1.27 with step 0.4489 (0.7071) converged in 3 iterations.
+7. 1.72 with step 0.4755 (0.4082) converged in 3 iterations.
+8. 2.11 with step 0.4920 (0.4000) converged in 3 iterations.
+9. 2.39 with step 0.3822 (0.4000) converged in 3 iterations.
+10. 2.58 with step 0.2627 (0.4000) converged in 3 iterations.
+11. 2.70 with step 0.1770 (0.4000) converged in 3 iterations.
+12. 2.78 with step 0.1166 (0.4000) converged in 3 iterations.
+13. 2.84 with step 0.0720 (0.4000) converged in 3 iterations.
+14. 2.87 with step 0.0418 (0.4000) converged in 3 iterations.
+15. 2.89 with step 0.0250 (0.4000) converged in 3 iterations.
+16. 2.90 with step 0.0204 (0.4000) converged in 3 iterations.
+17. 2.92 with step 0.0175 (0.4000) converged in 6 iterations.
+18. 2.92 with step 0.0007 (0.4000) converged in 3 iterations.
+19. 2.92 with step 0.0007 (0.4000) converged in 3 iterations.
+20. 2.92 with step 0.0010 (0.4000) converged in 3 iterations.
+21. 2.92 with step 0.0017 (0.4000) converged in 3 iterations.
+22. 2.93 with step 0.0039 (0.4000) converged in 3 iterations.
+23. 2.94 with step 0.0077 (0.4000) converged in 4 iterations.
+24. 2.95 with step 0.0117 (0.4000) converged in 4 iterations.
+25. 2.96 with step 0.0096 (0.4000) converged in 3 iterations.
+26. 2.96 with step 0.0060 (0.4000) converged in 3 iterations.
+27. 2.97 with step 0.0039 (0.4000) converged in 3 iterations.
+28. 2.97 with step 0.0023 (0.4000) converged in 2 iterations.
+29. 2.97 with step 0.0014 (0.4000) converged in 3 iterations.
+30. 2.97 with step 0.0014 (0.4000) converged in 2 iterations.
+31. 2.98 with step 0.0014 (0.4000) converged in 2 iterations.
+32. 2.98 with step 0.0015 (0.4000) converged in 2 iterations.
+33. 2.98 with step 0.0015 (0.4000) converged in 2 iterations.
+34. 2.98 with step 0.0015 (0.4000) converged in 2 iterations.
+35. 2.98 with step 0.0021 (0.4000) converged in 2 iterations.
+36. 2.98 with step 0.0030 (0.4000) converged in 2 iterations.
+37. 2.99 with step 0.0043 (0.4000) converged in 3 iterations.
+38. 3.00 with step 0.0060 (0.4000) converged in 3 iterations.
+39. 3.00 with step 0.0089 (0.4000) converged in 3 iterations.
+40. 3.02 with step 0.0130 (0.4000) converged in 3 iterations.
+41. 3.04 with step 0.0197 (0.4000) converged in 4 iterations.
+42. 3.06 with step 0.0232 (0.4000) converged in 4 iterations.
+43. 3.07 with step 0.0151 (0.4000) converged in 4 iterations.
+44. 3.08 with step 0.0066 (0.4000) converged in 3 iterations.
+45. 3.08 with step 0.0025 (0.4000) converged in 4 iterations.
+46. 3.11 with step 0.0153 (0.4000) converged in 3 iterations.
+47. 3.13 with step 0.0189 (0.4000) converged in 3 iterations.
+48. 3.16 with step 0.0239 (0.4000) converged in 3 iterations.
+49. 3.22 with step 0.0403 (0.4000) converged in 3 iterations.
+50. 3.34 with step 0.0723 (0.4000) converged in 3 iterations.
+51. 3.53 with step 0.1233 (0.4000) converged in 3 iterations.
+52. 3.84 with step 0.1948 (0.4000) converged in 3 iterations.
+53. 4.28 with step 0.2930 (0.4000) converged in 4 iterations.</code></pre><h2 id="Plot"><a class="docs-heading-anchor" href="#Plot">Plot</a><a id="Plot-1"></a><a class="docs-heading-anchor-permalink" href="#Plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">his = [1, 3, 5];
+
+fsz = 24;
+fig = Figure(fontsize=fsz, size=(1000, 600));
+
+ax1s = [];
+ax2s = [];
+for i in eachindex(his[his.&lt;=maximum(h)])
+    ax = Axis(fig[1, i],
+        ylabel=L&quot;$H_%$(his[i])$ Response (m)&quot;, yscale=log10);
+    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :]));
+    push!(ax1s, ax)
+
+    ax = Axis(fig[2, i], xlabel=L&quot;Excitation Frequency $\Omega$&quot;,
+        ylabel=L&quot;$H_%$(his[i])$ Phase (rad)&quot;);
+    scatterlines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :])));
+    push!(ax2s, ax)
+end
+linkxaxes!(vcat(ax1s, ax2s)...)
+
+    fig</code></pre><img src="7b1d32fb.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../b_duffhb/">« b_duffhb</a><a class="docs-footer-nextpage" href="../d0_mdofgen_instnl/">d0<em>mdofgen</em>instnl »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Monday 18 August 2025 19:23">Monday 18 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
