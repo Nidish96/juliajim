@@ -27,7 +27,7 @@ DocMeta.setdocmeta!(
 
 makedocs(;
     modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS],
-    doctest = false,
+    doctest = true,
     linkcheck = true,
     authors = "Nidish Narayanaa Balaji <nidish@iitm.ac.in>",
     repo = "https://github.com/Nidish96/juliajim/blob/{commit}{path}#{line}",

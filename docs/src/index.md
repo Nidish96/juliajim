@@ -41,7 +41,7 @@ If you're just here for the...
       * For Harmonic Balance forced response computations, see Examples [C1](@ref ex_c1), [C2](@ref ex_c2), and [C3](@ref ex_c3).
       * For Harmonic Balance Extended Periodic Motion Concept (EPMC) Nonlinear Modal Analysis, see [Example C4](@ref ex_c4).
       * For transient simulation utilities, see [Example C5](@ref ex_c5), which uses a Newmark-$\beta$ implementation.
-      * Out of the above, all examples except [Example C1](@ref_c1) use a hysteretic nonlinearity.
+      * Out of the above, all examples except [Example C1](@ref ex_c1) use a hysteretic nonlinearity.
 
 # Why yet another package?
 
