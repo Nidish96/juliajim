@@ -77,6 +77,21 @@ struct MDOFGEN
 end
 
 # ** Routine to Add a nonlinearity to an MDOFGEN object
+"""
+# Description
+Add a nonlinearity to the MDOFGEN object.
+
+# Arguments
+- m::MDOFGEN     : `MDOFGEN` object
+- type::Symbol   : One of `:Inst` (Instantaneous nonlinearity), `:Hyst` (Hysteretic nonlinearity), `:Fdom` (Frequency Domain nonlinearity), `:Dla` (Dynamic Lagrangian)
+- func::Function : Nonlinearity function returning the nonlinear force. Different signatures for different types:
+  - :Inst : (t,u,ud) returning (f, dfdu, dfdud)
+  - :Hyst : (t,u,uprev,fprev) returning (f, dfdu, dfduprev, dfdfprev)
+  - :Fdom : (Unl, h, N) returning (F, dFdU, dFdw)
+  - :Dlag : Not implemented yet
+- L              : 
+- Lf             : (default nothing)
+"""
 function ADDNL(m::MDOFGEN, type::Symbol, func::Function, L, Lf=nothing)
     push!(m.NLTs, NONLINEARITY(type, func, L, Lf));
 

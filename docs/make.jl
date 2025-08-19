@@ -47,7 +47,16 @@ makedocs(;
         )))
     ),
     pages = ["Home" => "index.md",
-             "Examples" => [ f => "$(f).md" for f in fils],
+             "Examples" => ["A: Harmonic Utilities" => "a_hworld.md",
+                            "B: Numerical Continuation" =>
+                            ["1: Duffing Oscillator" => "b1_duffhb.md",
+                             "2: Frictional Oscillator" => "b2_jenkhb.md"],
+                            "C: Examples with the MDOFUTILS Suite" =>
+                            ["1: Forced Response of a 2DoF Oscillator with Instantaneous Nonlinearity" => "c1_mdofgen_instnl.md",
+                             "2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity" => "c2_mdofgen_hystnl.md",
+                             "3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator" => "c3_mdofgen_ahb.md",
+                             "4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC" => "c4_mdofgen_epmc.md",
+                             "5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme" => "c5_mdofgen_newmark.md"]],
              "Reference" => "reference.md"],
 )
 

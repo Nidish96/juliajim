@@ -2,7 +2,7 @@
 # CurrentModule = juliajim
 # ```
 
-# # [Example b: Numerical Continuation on a Duffing Oscillator](@id ex_b)
+# # [Example b: Numerical Continuation on a Duffing Oscillator](@id ex_b1)
 
 # This example exposes the core functionality of [`juliajim.CONTINUATION`](@ref) through a very minimal example. The governing equations for the oscillator are taken as
 # ```math
@@ -10,10 +10,10 @@
 # ```
 
 # The steps that will be followed in this file are as follows:
-# 1. [First](@ref exb_res) we define a "harmonic residue" function for the Duffing oscillator in a way that returns the residue, its Jacobian with respect to the vector of harmonics (see [`Example a`](@ref ex_a)), and also with respect to the excitation frequency.
-# 2. [Next](@ref exb_setup) we define the parameters for the problem and setup the necessary variables for the Harmonic Balance (and AFT).
-# 3. [Then](@ref exb_cont) we conduct the actual continuation after setting up parameters for this.
-# 4. [Finally](@ref exb_plot) the results are plotted in terms of the different harmonics present.
+# 1. [First](@ref exb1_res) we define a "harmonic residue" function for the Duffing oscillator in a way that returns the residue, its Jacobian with respect to the vector of harmonics (see [`Example a`](@ref ex_a)), and also with respect to the excitation frequency.
+# 2. [Next](@ref exb1_setup) we define the parameters for the problem and setup the necessary variables for the Harmonic Balance (and AFT).
+# 3. [Then](@ref exb1_cont) we conduct the actual continuation after setting up parameters for this.
+# 4. [Finally](@ref exb1_plot) the results are plotted in terms of the different harmonics present.
 
 # ## Preamble: Load packages
 using GLMakie
@@ -28,7 +28,7 @@ using Revise #src
 using juliajim.HARMONIC
 using juliajim.CONTINUATION
 
-# ## [Define Residue Function](@id exb_res)
+# ## [Define Residue Function](@id exb1_res)
 
 # We setup the Harmonic Balance residue function such that it takes as input the list of harmonics and the excitation frequency as a single vector. This is convenient for bordered continuation strategies. 
 
@@ -71,7 +71,7 @@ function RESFUN!(Uw, Fl, pars, h, Nt; R=nothing, dRdU=nothing, dRdw=nothing)
     return nothing;
 end
 
-# ## [Setup](@id exb_setup)
+# ## [Setup](@id exb1_setup)
 
 # We now setup the parameters of the system and forcing vector for Harmonic balance. 
 
@@ -113,7 +113,7 @@ sol = solve(prob, show_trace=Val(true));
 # Inspecting the solution would show that the solution has only odd-harmonic content, as expected from a simple system with a cubic spring:
 sol.u	   
 
-# ## [Continuation](@id exb_cont)
+# ## [Continuation](@id exb1_cont)
 # Now we are ready to conduct the actual continuation. First things first, we setup the starting and ending frequencies (`Om0`, `Om1`) and the starting step length `dOm`. **In `juliajim` the units of the step length are always in the same units as the continuation parameter, the excitation frequency in this case.**
 
 Om0 = 2pars.w0;
@@ -134,7 +134,7 @@ uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[h.+1, :] = hcat([[s.up[zinds]; s.up[rinds]+1im*s.up[iinds]] for s in sols]...);
 Oms = [s.up[end] for s in sols];
 
-# ## [Plotting](@id exb_plot)
+# ## [Plotting](@id exb1_plot)
 
 # Now we choose a few harmonics and plot them using [`GLMakie`](https://docs.makie.org/stable/explanations/backends/glmakie.html) (I highly recommend Makie for interativity as well as for its rich feature-set). The output should show the primary resonance (visible in all harmonics) as well as secondary superharmonic resonances (visible in the higher harmonics).
 
