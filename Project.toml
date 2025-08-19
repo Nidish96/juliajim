@@ -54,3 +54,6 @@ SymbolServer = "7.4.0"
 Test = "1.11.0"
 ToeplitzMatrices = "0.8.5"
 UnPack = "1.0.2"
+
+[sources]
+FastTransformsForwardDiff = {url = "https://github.com/Nidish96/FastTransformsForwardDiff.jl"}
