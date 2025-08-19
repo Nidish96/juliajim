@@ -77,12 +77,25 @@ yf
 # #### Convenience Routine for Harmonic Selection: [`HSEL`](@ref)
 
 # Since harmonic selection in the 2D (and general N-D) case is not as trivial as writing `0:3` for the 1D case (different combinations of the indices must be considered on the tensor-grid while accounting for redundancies. The convenience routine [`HSEL`](@ref) helps to do this - one can specify the maximum harmonic order (`Nhmax` below) and the number of components (`C` below) and obtain a \(H\times C\) matrix of indices.
-
 C = 2;
 Nhmax = 4;
 
 h = HSEL(Nhmax, 1:C);  # Second argument is the list of frequencies
 Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+
+# #### Convenient Routine for Harmonic Indices: [`HINDS`](@ref)
+
+# It is often necessary to also know the indices of the cosine and sine harmonics individually. The [`HINDS`](@ref) routine helps with this.
+h = (0:4);
+zinds, hinds, rinds0, rinds, iinds = HINDS(1, h)
+
+# Here, `zinds` and `hinds` store the indices that have to be used for a complex representation (\(\begin{bmatrix} a_0&a_1-ib_1&a_2-ib_2&\dots \end{bmatrix}\)) and `rinds0`, `rinds,` and `iinds` store the indices \hat{t} have to be used for the real Fourier coefficients representation. Specifically, `rinds0` are the indices for the zeroth harmonic, `rinds` are the indices for the cosine harmonics and `iinds` are the indices for the sine harmonics.
+
+# The routine can also be called when there are multiple Degrees-of-Freedom. See below for the case of 3 DoFs. This should also clarify the ordering convention used in this package.
+h = (0:4);
+zinds, hinds, rinds0, rinds, iinds = HINDS(3, h)
+
+# Note that the routine also supports multi-frequency cases (`h` with multiple columns). 
 
 # ## The "Harmonic" Stiffness
 
@@ -111,10 +124,11 @@ Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
 # ```math
 # \begin{bmatrix}
 # \mx{K} & \\
-# \mx{K}-\Omega^2 \mx{M} & \Omega \mx{C} & \\
-# -\Omega \mx{C} & \mx{K}-\Omega^2 \mx{M} \\
-# &&K-(2\Omega)^2 \mx{M} & (2\Omega) \mx{C}\\
-# && -(2\Omega) \mx{C}
+# &\mx{K}-\Omega^2 \mx{M} & \Omega \mx{C} & \\
+# &-\Omega \mx{C} & \mx{K}-\Omega^2 \mx{M} \\
+# &&&\mx{K}-(2\Omega)^2 \mx{M} & (2\Omega) \mx{C}\\
+# &&& -(2\Omega) \mx{C} & \mx{K}-(2\Omega)^2 \mx{M} \\
+# &&&&&\ddots&&&&
 # \end{bmatrix}
 # \begin{bmatrix} \vc{a}_0\\ \vc{a}_1\\ \vc{b}_1\\ \vc{a}_2\\ \vc{b}_2\\ \vdots \end{bmatrix} =
 # \begin{bmatrix} \vc{f}_{a0}\\ \vc{f}_{a1}\\ \vc{f}_{b1}\\ \vc{f}_{a2}\\ \vc{f}_{b2}\\ \vdots \end{bmatrix}.
@@ -163,9 +177,9 @@ end
 set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie # src
-    scr = GLMakie.Screen(); # src
-end # src
+if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie #src
+    scr = GLMakie.Screen(); #src
+end #src
 
 ax = Axis(fig[1, 1],
     xlabel="Excitation Frequency (rad/s)",

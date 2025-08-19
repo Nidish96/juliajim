@@ -35,7 +35,7 @@ makedocs(;
     format = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
         canonical = "https://github.com/Nidish96/juliajim",
-        assets = ["assets/style.css"],
+        assets = ["assets/custom.css"],
         size_threshold = 1_000_000,
         size_threshold_warn = 400_000,
         mathengine = Documenter.MathJax(Dict(:TeX => Dict(

@@ -17,6 +17,19 @@ Note that this is still under heavy development. It is functional but the docume
 
 This is a set of Julia routines to help with computational research in nonlinear structural dynamics. Most of the content is derived from my earlier efforts (functional but badly maintained) with MATLAB/Octave at [https://github.com/Nidish96/octave-jim](https://github.com/Nidish96/octave-jim).
 
+## Installation
+
+The development is not yet complete and the package is not registered either. But you can try out the package by installing it manually from Github as follows:
+```julia
+] add https://github.com/Nidish96/juliajim
+```
+or, with `Pkg`
+```julia
+using Pkg
+Pkg.add(url="https://github.com/Nidish96/juliajim")
+```
+After this you can just do `using juliajim` and get cracking.
+
 ## Why yet another package?
 
 Each programming language/environment/specification you choose (MATLAB, Python, Julia, C/C++, etc.) has its own host of libraries that can do a lot of what juliajim sets out to do. Notable examples include [Trilinos](https://trilinos.github.io/) (C++) and the [SciML ecosystem](https://sciml.ai/) (Julia), which can do what juliajim sets out and (FAR!) more.
@@ -36,7 +49,7 @@ Furthermore, very few tools provide a lot of convenience for harmonic balance si
 
 ## Design Philosophy
 
-I am taking care to ensure that the project is as small as possible in order to ensure that the routines developed here can be part of something bigger. Furthermore, the different parts of the package (Harmonic, Continuation) are written in order to be fully functional independently. For instance, the HB routines in the former portion of the toolbox can be used to write residue that can be used with [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl) for doing numerical continuation if the provided routines are deemed insufficient. 
+I am taking care to ensure that the project is as small as possible in order to ensure that the routines developed here can be part of something bigger. Furthermore, the different parts of the package ([`HARMONIC`](@ref), [`CONTINUATION`](@ref)) are written in order to be fully functional independently. For instance, the HB routines in the former portion of the toolbox can be used to write residue that can be used with [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl) for doing numerical continuation if the provided routines in [`CONTINUATION`](@ref) are deemed insufficient. 
 
 [`MDOFUTILS`](@ref) and its suite of routines (including frequency domain residues, time domain marchers, etc.) are my way of using the two main parts of the package to provide a functional interface for nonlinear dynamics research.
 
@@ -50,5 +63,5 @@ If you're just here for the...
   * Continuation Utilities, start by looking at [`CONTINUATE`](@ref juliajim.CONTINUATION.CONTINUATE).
   * Integrated nonlinear dynamics, start by looking at [`MDOFUTILS`](@ref).
       * Harmonic Balance Utilities, start by looking at [`HBRESFUN!`](@ref juliajim.MDOFUTILS.HBRESFUN!)
-      * Transient Simulation Utilities, start by looking at [NEWMARKMARCH](@ref juliajim.MDOFUTILS.NEWMARKMARCH)
+      * Transient Simulation Utilities, start by looking at [`NEWMARKMARCH`](@ref juliajim.MDOFUTILS.NEWMARKMARCH)
       * All of the above.
