@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC · juliajim</title><meta name="title" content="4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC · juliajim"/><meta property="og:title" content="4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC · juliajim"/><meta property="twitter:title" content="4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC · juliajim"/><meta name="description" content="Documentation for juliajim."/><meta property="og:description" content="Documentation for juliajim."/><meta property="twitter:description" content="Documentation for juliajim."/><meta property="og:url" content="https://github.com/Nidish96/juliajim/c4_mdofgen_epmc/"/><meta property="twitter:url" content="https://github.com/Nidish96/juliajim/c4_mdofgen_epmc/"/><link rel="canonical" href="https://github.com/Nidish96/juliajim/c4_mdofgen_epmc/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">juliajim</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../a_hworld/">A: Harmonic Utilities</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">B: Numerical Continuation</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../b1_duffhb/">1: Duffing Oscillator</a></li><li><a class="tocitem" href="../b2_jenkhb/">2: Frictional Oscillator</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox" checked/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">C: Examples with the MDOFUTILS Suite</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../c1_mdofgen_instnl/">1: Forced Response of a 2DoF Oscillator with Instantaneous Nonlinearity</a></li><li><a class="tocitem" href="../c2_mdofgen_hystnl/">2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity</a></li><li><a class="tocitem" href="../c3_mdofgen_ahb/">3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator</a></li><li class="is-active"><a class="tocitem" href>4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC</a><ul class="internal"><li><a class="tocitem" href="#Preamble:-Load-Packages"><span>Preamble: Load Packages</span></a></li><li><a class="tocitem" href="#System-Setup"><span>System Setup</span></a></li><li><a class="tocitem" href="#Linear-Modal-Analysis"><span>Linear Modal Analysis</span></a></li><li><a class="tocitem" href="#Trial"><span>Trial</span></a></li><li><a class="tocitem" href="#EPMC-Residue"><span>EPMC Residue</span></a></li><li><a class="tocitem" href="#"><span></span></a></li><li><a class="tocitem" href="#Continuation"><span>Continuation</span></a></li><li><a class="tocitem" href="#Plot"><span>Plot</span></a></li></ul></li><li><a class="tocitem" href="../c5_mdofgen_newmark/">5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme</a></li></ul></li></ul></li><li><a class="tocitem" href="../reference/">Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li><a class="is-disabled">C: Examples with the MDOFUTILS Suite</a></li><li class="is-active"><a href>4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Nidish96/juliajim/blob/master/examples/c4_mdofgen_epmc.jl#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="ex_d3"><a class="docs-heading-anchor" href="#ex_d3">Example d3</a><a id="ex_d3-1"></a><a class="docs-heading-anchor-permalink" href="#ex_d3" title="Permalink"></a></h1><h2 id="Preamble:-Load-Packages"><a class="docs-heading-anchor" href="#Preamble:-Load-Packages">Preamble: Load Packages</a><a id="Preamble:-Load-Packages-1"></a><a class="docs-heading-anchor-permalink" href="#Preamble:-Load-Packages" title="Permalink"></a></h2><pre><code class="language-julia hljs">using GLMakie
+using LinearAlgebra
+using SparseArrays
+using ForwardDiff
+using NonlinearSolve
+using DSP
+
+using Revise
+using juliajim.HARMONIC
+using juliajim.CONTINUATION
+using juliajim.MDOFUTILS</code></pre><h2 id="System-Setup"><a class="docs-heading-anchor" href="#System-Setup">System Setup</a><a id="System-Setup-1"></a><a class="docs-heading-anchor-permalink" href="#System-Setup" title="Permalink"></a></h2><pre><code class="language-julia hljs">M = I(2);
+K = [2 -1;-1 2];
+C = 0.01*M+0.001*K;
+
+mdl = MDOFGEN(M, C, K);
+
+# Nonlinearity
+kt = 1.0;
+fs = 1.0;
+fnl = (t,u,up,fp)-&gt; if all(abs.(fp+kt*(u-up)).&lt;fs)
+    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
+        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
+end
+L = [0.0 1.0];
+
+mdl = ADDNL(mdl, :Hyst, fnl, L);</code></pre><h2 id="Linear-Modal-Analysis"><a class="docs-heading-anchor" href="#Linear-Modal-Analysis">Linear Modal Analysis</a><a id="Linear-Modal-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Linear-Modal-Analysis" title="Permalink"></a></h2><pre><code class="language-julia hljs">Knl0 = L&#39;kt*L;
+K0 = mdl.K+Knl0;
+D, V = eigen(K0, mdl.M)
+W0s = sqrt.(D);
+Xis = diag(V&#39;mdl.C*V)
+
+mi = 1;  # Mode of interest</code></pre><h2 id="Trial"><a class="docs-heading-anchor" href="#Trial">Trial</a><a id="Trial-1"></a><a class="docs-heading-anchor-permalink" href="#Trial" title="Permalink"></a></h2><pre><code class="language-julia hljs">h = HSEL(3, 1.0);
+h = 1:2:3;
+h = 0:5;
+N = 256;
+t = (0:N-1)*2π/N;
+
+Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+
+_, _, zinds, rinds, iinds = HINDS(mdl.Ndofs, h)
+Fl = zeros(Nhc*mdl.Ndofs);
+Fl[rinds[1]] = 1.0;
+
+E, dEdw = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, W0s[mi], h);
+
+U0 = zeros(mdl.Ndofs*Nhc);
+U0[iinds[1:mdl.Ndofs]] = V[:, mi];</code></pre><h2 id="EPMC-Residue"><a class="docs-heading-anchor" href="#EPMC-Residue">EPMC Residue</a><a id="EPMC-Residue-1"></a><a class="docs-heading-anchor-permalink" href="#EPMC-Residue" title="Permalink"></a></h2><pre><code class="language-julia hljs">R = zeros(mdl.Ndofs*Nhc+2);
+dRdU = zeros(mdl.Ndofs*Nhc+2, mdl.Ndofs*Nhc+2);
+dRda = zeros(mdl.Ndofs*Nhc+2);
+
+EPMCRESFUN!([U0; W0s[mi]; Xis[mi]; -2], mdl, Fl, h, N; R=R, dRdUwx=dRdU, dRda=dRda)</code></pre><h2 id><a class="docs-heading-anchor" href="#"></a><a id="-1"></a><a class="docs-heading-anchor-permalink" href="#" title="Permalink"></a></h2><pre><code class="language-julia hljs">A0 = -2.0;
+
+U0 = zeros(mdl.Ndofs*Nhc);
+# U0[rinds[1:mdl.Ndofs]] = (10^A0)*V[:, mi];
+U0[iinds[1:mdl.Ndofs]] = V[:, mi];
+
+fun = NonlinearFunction((r,uwx,p)-&gt;EPMCRESFUN!([uwx;p], mdl, Fl, h, N; R=r),
+    jac=(J,uwx,p)-&gt;EPMCRESFUN!([uwx;p], mdl, Fl, h, N; dRdUwx=J),
+    paramjac=(Jp,uwx,p)-&gt;EPMCRESFUN!([uwx;p], mdl, Fl, h, N; dRda=Jp));
+
+prob = NonlinearProblem(fun, [U0;W0s[mi];Xis[mi]], A0);
+sol = solve(prob, show_trace=Val(true), maxiters=100);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	4.47213595e-06      	0.00000000e+00
+1       	7.63931298e-08      	2.76393076e-04
+2       	1.33226763e-15      	3.81965696e-08
+Final   	1.33226763e-15
+----------------------</code></pre><h2 id="Continuation"><a class="docs-heading-anchor" href="#Continuation">Continuation</a><a id="Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Continuation" title="Permalink"></a></h2><pre><code class="language-julia hljs">A0 = -1.;
+A1 = 3.;
+da = 0.05;
+
+cpars = (parm=:arclength, nmax=1000, Dsc=:none, itopt=4, dpbnds=[da/5, 2da]);
+sols, its, dss, xis, Dsc = CONTINUATE([U0;W0s[mi];Xis[mi]], fun, [A0, A1], da; cpars...);
+
+uh = zeros(Complex, maximum(h)+1, length(sols), 2);
+for i in 1:2
+    uh[h.+1, :, i] = hcat([[s.up[zinds[i:2:end]];
+                            s.up[rinds[i:2:end]]+1im*s.up[iinds[i:2:end]]]
+                          for s in sols]...);
+end
+Oms = [s.up[end-2] for s in sols];
+Zts = [s.up[end-1] for s in sols]./2Oms;
+As = [10^s.up[end] for s in sols];</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	4.47213595e-05      	0.00000000e+00
+1       	7.63931298e-08      	2.76393076e-04
+2       	1.33226763e-15      	3.81965696e-08
+Final   	1.33226763e-15
+----------------------
+2. -0.95 with step 0.0500 (0.0500) converged in 1 iterations.
+3. -0.85 with step 0.1000 (0.1000) converged in 1 iterations.
+4. -0.75 with step 0.1000 (0.1000) converged in 1 iterations.
+5. -0.65 with step 0.1000 (0.1000) converged in 1 iterations.
+6. -0.55 with step 0.1000 (0.1000) converged in 1 iterations.
+7. -0.45 with step 0.1000 (0.1000) converged in 1 iterations.
+8. -0.35 with step 0.1000 (0.1000) converged in 1 iterations.
+9. -0.25 with step 0.1000 (0.1000) converged in 1 iterations.
+10. -0.15 with step 0.1000 (0.1000) converged in 1 iterations.
+11. -0.05 with step 0.1000 (0.1000) converged in 1 iterations.
+12. 0.05 with step 0.1000 (0.1000) converged in 1 iterations.
+13. 0.15 with step 0.1000 (0.1000) converged in 1 iterations.
+14. 0.25 with step 0.1000 (0.1000) converged in 1 iterations.
+15. 0.33 with step 0.1000 (0.1000) converged in 5 iterations.
+16. 0.40 with step 0.0634 (0.0894) converged in 3 iterations.
+17. 0.48 with step 0.0760 (0.1000) converged in 4 iterations.
+18. 0.57 with step 0.0842 (0.1000) converged in 3 iterations.
+19. 0.66 with step 0.0904 (0.1000) converged in 3 iterations.
+20. 0.75 with step 0.0938 (0.1000) converged in 3 iterations.
+21. 0.85 with step 0.0956 (0.1000) converged in 3 iterations.
+22. 0.95 with step 0.0967 (0.1000) converged in 3 iterations.
+23. 1.05 with step 0.0976 (0.1000) converged in 3 iterations.
+24. 1.14 with step 0.0983 (0.1000) converged in 3 iterations.
+25. 1.24 with step 0.0988 (0.1000) converged in 3 iterations.
+26. 1.34 with step 0.0992 (0.1000) converged in 3 iterations.
+27. 1.44 with step 0.0995 (0.1000) converged in 3 iterations.
+28. 1.54 with step 0.0996 (0.1000) converged in 3 iterations.
+29. 1.64 with step 0.0998 (0.1000) converged in 3 iterations.
+30. 1.74 with step 0.0998 (0.1000) converged in 3 iterations.
+31. 1.84 with step 0.0999 (0.1000) converged in 3 iterations.
+32. 1.94 with step 0.0999 (0.1000) converged in 3 iterations.
+33. 2.04 with step 0.1000 (0.1000) converged in 3 iterations.
+34. 2.14 with step 0.1000 (0.1000) converged in 3 iterations.
+35. 2.24 with step 0.1000 (0.1000) converged in 3 iterations.
+36. 2.34 with step 0.1000 (0.1000) converged in 3 iterations.
+37. 2.44 with step 0.1000 (0.1000) converged in 2 iterations.
+38. 2.54 with step 0.1000 (0.1000) converged in 2 iterations.
+39. 2.64 with step 0.1000 (0.1000) converged in 2 iterations.
+40. 2.74 with step 0.1000 (0.1000) converged in 2 iterations.
+41. 2.84 with step 0.1000 (0.1000) converged in 2 iterations.
+42. 2.94 with step 0.1000 (0.1000) converged in 2 iterations.
+43. 3.04 with step 0.1000 (0.1000) converged in 2 iterations.</code></pre><h2 id="Plot"><a class="docs-heading-anchor" href="#Plot">Plot</a><a id="Plot-1"></a><a class="docs-heading-anchor-permalink" href="#Plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">his = [1, 3, 5];
+
+set_theme!(theme_latexfonts());
+fsz = 20;
+fig = Figure(fontsize=fsz, size=(1000, 600));
+
+axs = [];
+for i in eachindex(his[his.&lt;=maximum(h)])
+    ax = Axis(fig[1, i],
+        ylabel=L&quot;$H_%$(his[i])$ Response (m)&quot;, xscale=log10, yscale=log10);
+    scatterlines!(ax, As, abs.(uh[his[i].+1, :, 1]), label=&quot;x1&quot;);
+    scatterlines!(ax, As, abs.(uh[his[i].+1, :, 2]), label=&quot;x2&quot;);
+    push!(axs, ax)
+
+    ax = Axis(fig[2, i], xlabel=L&quot;Modal Amplitude $a$&quot;,
+        ylabel=L&quot;$H_%$(his[i])$ Phase (rad)&quot;, xscale=log10);
+    scatterlines!(ax, As, unwrap(angle.(uh[his[i].+1, :, 1])), label=&quot;x1&quot;);
+    scatterlines!(ax, As, unwrap(angle.(uh[his[i].+1, :, 2])), label=&quot;x2&quot;);
+    push!(axs, ax)
+end
+ax = Axis(fig[1, length(his)+1],
+    ylabel=L&quot;Natural Frequency $\omega_n$ (rad/s)&quot;, xscale=log10);
+scatterlines!(ax, As, Oms);
+push!(axs, ax)
+
+ax = Axis(fig[2, length(his)+1], xlabel=L&quot;Modal Amplitude $a$&quot;,
+    ylabel=&quot;Damping Factor (%)&quot;, xscale=log10);
+scatterlines!(ax, As, 100Zts);
+push!(axs, ax)
+
+linkxaxes!(axs...)
+
+    fig</code></pre><img src="7506befd.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../c3_mdofgen_ahb/">« 3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator</a><a class="docs-footer-nextpage" href="../c5_mdofgen_newmark/">5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Tuesday 19 August 2025 12:29">Tuesday 19 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
