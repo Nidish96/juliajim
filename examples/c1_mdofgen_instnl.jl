@@ -49,6 +49,8 @@ fnl = (t,u,ud)->return β.*u.^3, 3β.*u.^2, zeros(size(u));;
 L = [0.0 1.0];
 
 # We "add" the nonlinearity to the `MDOFGEN` object (`mdl` here) using the [`ADDNL`](@ref MDOFUTILS.ADDNL) routine. The second argument here specifies that the nonlinearity can be evaluated "instantaneously", like a cubic spring (UNlike a Jenkins element, as in [`Example b2`](@ref ex_b2). [`ADDNL`](@ref MDOFUTILS.ADDNL) also supports non-self adjoint forcing - check its documentation for this.
+# Under the hood, this creates an object of the [`NONLINEARITY`](@ref juliajim.MDOFUTILS.NONLINEARITY) struct and pushes it into the field `NLTs` (which is a vector of [`NONLINEARITY`](@ref juliajim.MDOFUTILS.NONLINEARITY) objects) of the [`MDOFGEN`](@ref juliajim.MDOFUTILS.MDOFGEN) object. Each `NONLINEARITY` object contains a type, the force evaluation function and a DoF selection (and force distribution) matrix.
+
 mdl = ADDNL(mdl, :Inst, fnl, L);
 
 # ## [Setup HB](@id exc1_hbsetup)

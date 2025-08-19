@@ -30,7 +30,20 @@ Pkg.add(url="https://github.com/Nidish96/juliajim")
 ```
 After this you can just do `using juliajim` and get cracking.
 
-## Why yet another package?
+## Getting Started
+
+Although formal documentation is highly lacking, a series of examples with progressively increasing complexity designed to expose most of the features of the toolbox are provided here. Each example is documented to a reasonable degree. Going through the examples should already help you get started on the analysis. The following is a road-map for navigating the examples:
+
+If you're just here for the...
+  * Fourier Utilities, start by looking at [Example A](@ref ex_a).
+  * Continuation Utilities, start by looking at Examples [B1](@ref ex_b1) and [B2](@ref ex_b2).
+  * Integrated nonlinear dynamics, start by looking at Examples C1-C5. Note:
+      * For Harmonic Balance forced response computations, see Examples [C1](@ref ex_c1), [C2](@ref ex_c2), and [C3](@ref ex_c3).
+      * For Harmonic Balance Extended Periodic Motion Concept (EPMC) Nonlinear Modal Analysis, see [Example C4](@ref ex_c4).
+      * For transient simulation utilities, see [Example C5](@ref ex_c5), which uses a Newmark-$\beta$ implementation.
+      * Out of the above, all examples except [Example C1](@ref_c1) use a hysteretic nonlinearity.
+
+# Why yet another package?
 
 Each programming language/environment/specification you choose (MATLAB, Python, Julia, C/C++, etc.) has its own host of libraries that can do a lot of what juliajim sets out to do. Notable examples include [Trilinos](https://trilinos.github.io/) (C++) and the [SciML ecosystem](https://sciml.ai/) (Julia), which can do what juliajim sets out and (FAR!) more.
 
@@ -39,13 +52,6 @@ My vision for this tool is this: **I'd like to be able to specify a system once 
 Although a lot of the existing tools come very close to acheiving this, they don't span nearly all the kinds of nonlinearities. For instance, it is presently quite non-trivial to use any existing code as is for simulating systems with something as simple as an elastic dry-friction element (a hysteretically saturated linear spring).
 
 Furthermore, very few tools provide a lot of convenience for harmonic balance simulations. A notable exception to this is the MATLAB tool [NLvib](https://github.com/maltekrack/NLvib) (a very well designed set of minimal routines that work really well). The main reason that juliajim is not just a fork of NLvib is Julia - I'm convinced of the several advantages of Julia and want to ensure a useful package exists in Julia that I can throw myself behind. Furthermore, since I started using Julia MATLAB has started feeling really annoying (read: https://mateusaraujo.info/2024/04/03/matlab-is-dead-long-live-julia/ ).
-
-### Other Projects to Look at
-+ [NLvib](https://github.com/maltekrack/NLvib): A Matlab toolbox for harmonic balance, shooting, and continuation.
-+ [tmdsimpy](https://github.com/tmd-lab/tmdsimpy): A Python package with very similar goals as juliajim.
-+ [octave-jim](https://github.com/Nidish96/octave-jim): My old code - its a mess that works.
-+ [HarmonicBalance.jl](https://github.com/QuantumEngineeredSystems/HarmonicBalance.jl): A Julia toolbox for harmonic balance. 
-+ [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl): A great set of continuation and bifurcation routines.
 
 ## Design Philosophy
 
@@ -56,12 +62,11 @@ I am taking care to ensure that the project is as small as possible in order to 
 ### Conventions
   * All scripts are tagged by an alphabet. 
   * All routines are upper case. 
-  
-# Getting Started
-If you're just here for the...
-  * Fourier Utilities, start by looking at [`AFT`](@ref juliajim.HARMONIC.AFT).
-  * Continuation Utilities, start by looking at [`CONTINUATE`](@ref juliajim.CONTINUATION.CONTINUATE).
-  * Integrated nonlinear dynamics, start by looking at [`MDOFUTILS`](@ref).
-      * Harmonic Balance Utilities, start by looking at [`HBRESFUN!`](@ref juliajim.MDOFUTILS.HBRESFUN!)
-      * Transient Simulation Utilities, start by looking at [`NEWMARKMARCH`](@ref juliajim.MDOFUTILS.NEWMARKMARCH)
-      * All of the above.
+
+## Other Projects to Look at
++ [NLvib](https://github.com/maltekrack/NLvib): A Matlab toolbox for harmonic balance, shooting, and continuation.
++ [tmdsimpy](https://github.com/tmd-lab/tmdsimpy): A Python package with very similar goals as juliajim.
++ [octave-jim](https://github.com/Nidish96/octave-jim): My old code - its a mess that works.
++ [HarmonicBalance.jl](https://github.com/QuantumEngineeredSystems/HarmonicBalance.jl): A Julia toolbox for harmonic balance. 
++ [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl): A great set of continuation and bifurcation routines.
+

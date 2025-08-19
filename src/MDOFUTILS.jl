@@ -489,16 +489,23 @@ end
 # ** Time Domain
 """
 # Description
+Evaluate the nonlinearities in the time domain for a single time instant.
 
 # Arguments
-- m::MDOFGEN : 
-- t          : 
-- U          : 
-- Ud         : 
-- tp         : (default nothing)
-- Up         : (default nothing)
-- Udp        : (default nothing)
-- Sp         : (default nothing)
+- m::MDOFGEN : MDOFGEN object.
+- t          : Time
+- U          : (m.Ndofs) Displacements
+- Ud         : (m.Ndofs) Velocities
+- tp         : (default nothing) Previous instant time
+- Up         : (default nothing) (m.Ndofs) Displacements at previous instant.
+- Udp        : (default nothing) (m.Ndofs) Velocities at previous instant.
+- Sp         : (default nothing) (length(m.NLTs)) Vector of vectors of internal states at previous instant. Each nonlinearity can have its own set of internal states.
+
+# Returns
+- F	: (m.Ndofs) force vector
+- dFdU	: (m.Ndofs, m.Ndofs) force-displacement derivative matrix
+- dFdUd	: (m.Ndofs, m.Ndofs) force-velocity derivative matrix
+- S	: (length(m.NLTs)) vector of vectors of internal states
 """
 function NLFORCE(m::MDOFGEN, t, U, Ud; tp=nothing, Up=nothing, Udp=nothing, Sp=nothing)
     eltp = eltype(U);

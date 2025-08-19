@@ -129,6 +129,8 @@ U0 = E\ (Fl*pars.F);
 
 sols, its, dss, xis, Dsc = CONTINUATE(U0, fun, [Om0, Om1], dOm; cpars...);
 
+# CONTINUATE returns, firstly, a vector of [`myNLSoln`](@ref juliajim.CONTINUATION.myNLSoln) objects. These store the solution vector `up`, local tanget `dupds`, and any Jacobians if required. 
+
 # In order to help with plotting and other postprocessing, it is sometimes helpful to express the harmonics in the complex notation. So we do that here before moving on to plotting.
 uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[h.+1, :] = hcat([[s.up[zinds]; s.up[rinds]+1im*s.up[iinds]] for s in sols]...);

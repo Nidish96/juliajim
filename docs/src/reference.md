@@ -12,7 +12,26 @@ Pages = ["reference.md"]
 Pages = ["reference.md"]
 ```
 
+### Main Module
+
 ```@autodocs
-Modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS]
+Modules = [juliajim]
 ```
 
+### Module Harmonic
+
+```@autodocs
+Modules = [juliajim.HARMONIC]
+```
+
+### Module CONTINUATION
+
+```@autodocs
+Modules = [juliajim.CONTINUATION]
+```
+
+### Module MDOFUTILS
+
+```@autodocs
+Modules = [juliajim.MDOFUTILS]
+```
