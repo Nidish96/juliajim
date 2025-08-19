@@ -1,0 +1,5 @@
+code.nohighlight.hljs.ansi {
+    overflow-x: auto;
+    overflow-y: scroll;
+    max-height: 25vh;
+}
