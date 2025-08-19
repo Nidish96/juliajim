@@ -1,4 +1,4 @@
-# # [Example d2](@id ex_d2)
+# # [Example C3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator](@id ex_c3)
 # ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra

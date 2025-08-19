@@ -2,7 +2,7 @@
 # CurrentModule = juliajim.HARMONIC
 # ```
 
-# # [Example a: Introduction to the AFT Routines](@id ex_a)
+# # [Example A: Introduction to the AFT Routines](@id ex_a)
 # This example is intended to showcase the Alternating Frequency Time (AFT) routines in [`juliajim.HARMONIC`](@ref).
 
 # At its core, it is just a bunch of utility routines that allow time-to-frequency and frequency-to-time transformations. These can also be used for Chebyshev polynomial expansions, as will be seen below.

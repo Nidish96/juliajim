@@ -1,4 +1,4 @@
-# # [Example d4](@id ex_d4)
+# # [Example C5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme](@id ex_c5)
 # ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra

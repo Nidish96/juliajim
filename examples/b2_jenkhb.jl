@@ -2,7 +2,7 @@
 # CurrentModule = juliajim
 # ```
 
-# # [Example b2: Numerical Continuation on a Frictional Oscillator](@id ex_b2)
+# # [Example B2: Numerical Continuation on a Frictional Oscillator](@id ex_b2)
 
 # The scope as well as the approach of this example are very similar to [Example b1](@ref ex_b1), with a key difference: this example involves a hysteretic nonlinearity. This poses a very important difference in how the nonlinear force and its harmonics are computed.
 

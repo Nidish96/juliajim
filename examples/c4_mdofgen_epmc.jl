@@ -1,4 +1,4 @@
-# # [Example d3](@id ex_d3)
+# # [Example C4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC](@id ex_c4)
 # ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra

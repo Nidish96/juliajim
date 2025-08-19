@@ -250,6 +250,7 @@ function NLEVAL!(Uw::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
             end
         end
     end
+    return FNL;
 end
 
 # *** Forced Response

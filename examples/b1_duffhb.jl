@@ -2,7 +2,7 @@
 # CurrentModule = juliajim
 # ```
 
-# # [Example b: Numerical Continuation on a Duffing Oscillator](@id ex_b1)
+# # [Example B1: Numerical Continuation on a Duffing Oscillator](@id ex_b1)
 
 # This example exposes the core functionality of [`juliajim.CONTINUATION`](@ref) through a very minimal example. The governing equations for the oscillator are taken as
 # ```math
