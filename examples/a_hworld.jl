@@ -104,12 +104,18 @@ Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
 
 # ```math
 # \vc{u} = \begin{bmatrix} \vc{a}_0\\ \vc{a}_1\\ \vc{b}_1\\ \vc{a}_2\\ \vc{b}_2\\ \vdots \end{bmatrix}.
-# ```math
+# ```
 
 # Substituting the harmonic ansatz into the governing equations and projecting the resulting residue onto the Fourier basis functions leads to:
 
 # ```math
-# \begin{bmatrix} \mx{K} & \\ \mx{K}-\Omega^2 \mx{M}&\Omega \mx{C} & \\-\Omega \mx{C} & \mx{K}-\Omega^2 \mx{M} \\ &&K-(2\Omega)^2 \mx{M} & (2\Omega) \mx{C}\\&& -(2\Omega) \mx{C} &\\ &&&&\ddot \end{bmatrix}
+# \begin{bmatrix}
+# \mx{K} & \\
+# \mx{K}-\Omega^2 \mx{M} & \Omega \mx{C} & \\
+# -\Omega \mx{C} & \mx{K}-\Omega^2 \mx{M} \\
+# &&K-(2\Omega)^2 \mx{M} & (2\Omega) \mx{C}\\
+# && -(2\Omega) \mx{C}
+# \end{bmatrix}
 # \begin{bmatrix} \vc{a}_0\\ \vc{a}_1\\ \vc{b}_1\\ \vc{a}_2\\ \vc{b}_2\\ \vdots \end{bmatrix} =
 # \begin{bmatrix} \vc{f}_{a0}\\ \vc{f}_{a1}\\ \vc{f}_{b1}\\ \vc{f}_{a2}\\ \vc{f}_{b2}\\ \vdots \end{bmatrix}.
 # ```
