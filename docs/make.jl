@@ -37,7 +37,14 @@ makedocs(;
         canonical = "https://github.com/Nidish96/juliajim",
         assets = ["assets/style.css"],
         size_threshold = 1_000_000,
-        size_threshold_warn = 400_000
+        size_threshold_warn = 400_000,
+        mathengine = Documenter.MathJax(Dict(:TeX => Dict(
+            :Macros => Dict(
+                :vc => ["\\underline{#1}", 1],
+                :mx => ["\\mathbf{\\underline{\\underline{#1}}}\\,", 1],
+            ),
+            :packages => ["base", "amsmath", "xcolor", "amssymb", "wasysym", "soul"] 
+        )))
     ),
     pages = ["Home" => "index.md",
              "Examples" => [ f => "$(f).md" for f in fils],
