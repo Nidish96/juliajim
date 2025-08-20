@@ -21,12 +21,12 @@ This is a set of Julia routines to help with computational research in nonlinear
 
 The development is not yet complete and the package is not registered either. But you can try out the package by installing it manually from Github as follows:
 ```julia
-] add https://github.com/Nidish96/juliajim
+] dev https://github.com/Nidish96/juliajim
 ```
 or, with `Pkg`
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/Nidish96/juliajim")
+Pkg.develop(url="https://github.com/Nidish96/juliajim")
 ```
 After this you can just do `using juliajim` and get cracking.
 
