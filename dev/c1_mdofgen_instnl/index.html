@@ -801,16 +801,21 @@ Final   	1.43114687e-17
 fsz = 24;
 fig = Figure(fontsize=fsz, size=(1000, 600));
 
+axs = [];
 for i in eachindex(his[his.&lt;=maximum(h)])
     ax = Axis(fig[1, i],
         ylabel=L&quot;$H_%$(his[i])$ Response (m)&quot;, yscale=log10);
     lines!(ax, Oms, abs.(uh[his[i].+1, :, 1]), label=&quot;x1&quot;);
     lines!(ax, Oms, abs.(uh[his[i].+1, :, 2]), label=&quot;x2&quot;);
+    push!(axs, ax);
 
     ax = Axis(fig[2, i], xlabel=L&quot;Excitation Frequency $\Omega$&quot;,
         ylabel=L&quot;$H_%$(his[i])$ Phase (rad)&quot;);
     lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label=&quot;x1&quot;);
     lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label=&quot;x2&quot;);
+    push!(axs, ax)
 end
 
-    fig</code></pre><img src="36f3d527.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../b2_jenkhb/">« 2: Frictional Oscillator</a><a class="docs-footer-nextpage" href="../c2_mdofgen_hystnl/">2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Thursday 21 August 2025 08:47">Thursday 21 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+linkxaxes!(axs...);
+
+    fig</code></pre><img src="36f3d527.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../b2_jenkhb/">« 2: Frictional Oscillator</a><a class="docs-footer-nextpage" href="../c2_mdofgen_hystnl/">2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Thursday 21 August 2025 16:41">Thursday 21 August 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
