@@ -64,7 +64,7 @@ yf
 # ```math
 # y(t) = a_0 + \sum_{n=1}^H a_n cos( h1_n \tau_1 + h2_n \tau_2) + b_n sin( h1_n \tau_1 + h2_n\tau_2 ),\,\text{with } \tau_i = \Omega_i t.
 # ```
-# Here, \(h1, h2\) are index arrays storing the harmonic coefficient corresponding to the two frequencies present. The scaled time coordinates (aka Torus coordinates) \(\tau_1,\tau_2\) are defined as above such that the signal `y(t)` can be written as the torus function `Y(\tau_1,\tau_2)`, which is periodic on the 2D domain. Note that $y(t)$ and $Y(\tau_1, \tau_2)$ are not the same, although we can reconstruct \(y(t)\) from \(Y(\tau_1,\tau_2)\). 
+# Here, $h1, h2$ are index arrays storing the harmonic coefficient corresponding to the two frequencies present. The scaled time coordinates (aka Torus coordinates) $(\tau_1,\tau_2)$ are defined as above such that the signal $y(t)$ can be written as the torus function $Y(\tau_1,\tau_2)$, which is periodic on the 2D domain. Note that $y(t)$ and $Y(\tau_1, \tau_2)$ are not the same, although we can reconstruct $y(t)$ from $Y(\tau_1,\tau_2)$. 
 
 # The usage of the routine is identical to before.
 ts = Iterators.product(t, t);

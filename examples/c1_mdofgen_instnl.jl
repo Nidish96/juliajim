@@ -123,17 +123,22 @@ if !isdefined(Main, :scr) && isdefined(Main, :GLMakie) #src
     scr = GLMakie.Screen(); #src
 end #src
 
+axs = [];
 for i in eachindex(his[his.<=maximum(h)])
     ax = Axis(fig[1, i],
         ylabel=L"$H_%$(his[i])$ Response (m)", yscale=log10);
     lines!(ax, Oms, abs.(uh[his[i].+1, :, 1]), label="x1");
     lines!(ax, Oms, abs.(uh[his[i].+1, :, 2]), label="x2");
+    push!(axs, ax);
 
     ax = Axis(fig[2, i], xlabel=L"Excitation Frequency $\Omega$",
         ylabel=L"$H_%$(his[i])$ Phase (rad)");
     lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 1])), label="x1");
     lines!(ax, Oms, unwrap(angle.(uh[his[i].+1, :, 2])), label="x2");
+    push!(axs, ax)
 end
+
+linkxaxes!(axs...);
 
 if isdefined(Main, :GLMakie) #src
     display(scr, fig); #src
