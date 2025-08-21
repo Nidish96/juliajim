@@ -55,6 +55,7 @@ yf = AFT(yt, h, N, :t2f);  # Time to Frequency
 YT = AFT(yf, h, N, :f2t);  # Frequency to Time
 
 # `yf` is the list of harmonics and `YT` is the time vector reconstructed from the harmonics. You should be able to verify that `yt` and `YT` are numerically the same.
+yf
 
 # ### AFT - 2 Frequency Case (Quasi-periodic signal)
 
