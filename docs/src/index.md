@@ -69,4 +69,3 @@ I am taking care to ensure that the project is as small as possible in order to 
 + [octave-jim](https://github.com/Nidish96/octave-jim): My old code - its a mess that works.
 + [HarmonicBalance.jl](https://github.com/QuantumEngineeredSystems/HarmonicBalance.jl): A Julia toolbox for harmonic balance. 
 + [BifurcationKit.jl](https://github.com/bifurcationkit/BifurcationKit.jl): A great set of continuation and bifurcation routines.
-
