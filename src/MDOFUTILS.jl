@@ -74,6 +74,11 @@ struct MDOFGEN
     MDOFGEN(M, C, K) = new(M, C, K, [], size(M,1), []);
     MDOFGEN(M, C, K, L) = new(M, C, K, L, size(M,1), []);
     MDOFGEN(MDL::MDOFGEN, NLTs) = new(MDL.M, MDL.C, MDL.K, MDL.L, MDL.Ndofs, NLTs);
+
+    # Convenn
+    MDOFGEN(M::Float64, C::Float64, K::Float64) = new([M;;], [C;;], [K;;], [], 1, []);
+    MDOFGEN(M::Float64, C::Float64, K::Float64, L::Float64) = new([M;;], [C;;], [K;;],
+        [L;;], 1, []);
 end
 
 # ** Routine to Add a nonlinearity to an MDOFGEN object
