@@ -358,7 +358,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     end
 
     # Recontextualize dp (such that first step is as requested)
-    ds = dp/Dsc[end]normalize(sols[end].dupds./Dsc)[end]sign(ps[2]-ps[1]);
+    ds = dp/Dsc[end]*normalize(sols[end].dupds./Dsc)[end]*sign(ps[2]-ps[1]);
     push!(dss,  ds);
     push!(xis,  1.0);
     dsbnds = dpbnds/dp*ds;
@@ -368,11 +368,12 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         parm=parm, Dsc=p[3], dup=du, Ralsc=p[4]),
         jac=(J,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
             parm=parm, Dsc=p[3], Jf=J, Ralsc=p[4]));
-    
+
+
     if (itopt == :auto) # Automatic itopt
         # itopt as no. of iterations required for first point.
         tgt_ = Dsc.*normalize(sols[end].dupds./Dsc);
-        up0_ = sols[end].up + dss[end]tgt_;
+        up0_ = sols[end].up + dss[end]*tgt_;
 
         # Get Ralsc
         exfun.f(Rf, up0_, (sols[end], dss[end], Dsc, 1.0));
@@ -386,17 +387,18 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         up0_ = copy(sols[end].up);
         prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, 1.0));
     end
-    
+
     if verbosity>0
         display(md"# Starting Continuation (_itopt = $(itopt), nxi = $(nxi)_)")
     end
-    
-    while (sols[end].up[end]sign(ps[2]-ps[1])<ps[2]sign(ps[2]-ps[1]) &&
-                                                   length(sols)<=nmax)
+
+    while (sols[end].up[end]*sign(ps[2]-ps[1])<ps[2]*sign(ps[2]-ps[1]) &&
+           length(sols)<=nmax)
+        
     	# Tangent Predictor
         Dsc_ = Dsc;
         tgt = Dsc_.*normalize(sols[end].dupds./Dsc_);
-        up0 = sols[end].up + dss[end]tgt;
+        up0 = sols[end].up + dss[end]*tgt;
 
         # Get Ralsc
         exfun.f(Rf, up0, (sols[end], dss[end], Dsc, 1.0));
