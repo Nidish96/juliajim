@@ -56,7 +56,8 @@ makedocs(;
                              "2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity" => "c2_mdofgen_hystnl.md",
                              "3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator" => "c3_mdofgen_ahb.md",
                              "4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC" => "c4_mdofgen_epmc.md",
-                             "5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme" => "c5_mdofgen_newmark.md"]],
+                             "5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme" => "c5_mdofgen_newmark.md"],
+                            "D: Bifurcation Analysis Example" => "d_forcedvdp.md"],
              "Reference" => "reference.md"],
 )
 
