@@ -42,8 +42,11 @@ struct NONLINEARITY
     L::Matrix{Float64}  # Selection matrix
     Lf			# Force shape matrix (can be empty)
 
-    NONLINEARITY(type, func, L) = new(type, func, L, []);
-    NONLINEARITY(type, func, L, Lf) = new(type, func, L, Lf);
+    NONLINEARITY(type, func, L::Matrix{Float64}) = new(type, func, L, []);
+    NONLINEARITY(type, func, L::Matrix{Float64}, Lf) = new(type, func, L, Lf);
+
+    NONLINEARITY(type, func, L::Float64) = new(type, func, [L;;], []);
+    NONLINEARITY(type, func, L::Float64, Lf) = new(type, func, [L;;], Lf);
 end
 
 """
@@ -65,20 +68,21 @@ struct MDOFGEN
     K::Matrix{Float64}  # Stiffness Matrix
     
     L			# Displacement Transform Matrix (can be empty)
-
-    Ndofs::Int64  # Number of DOFs
-
+    Ndofs::Int64        # Number of DOFs
     NLTs::Vector{NONLINEARITY}
     
     # Constructors
-    MDOFGEN(M, C, K) = new(M, C, K, [], size(M,1), []);
-    MDOFGEN(M, C, K, L) = new(M, C, K, L, size(M,1), []);
+    MDOFGEN(M::Matrix{Float64}, C::Matrix{Float64}, K::Matrix{Float64}) =
+        new(M, C, K, [], size(M,1), []);
+    MDOFGEN(M::Matrix{Float64}, C::Matrix{Float64}, K::Matrix{Float64},
+        L::Matrix{Float64}) = new(M, C, K, L, size(M,1), []);
     MDOFGEN(MDL::MDOFGEN, NLTs) = new(MDL.M, MDL.C, MDL.K, MDL.L, MDL.Ndofs, NLTs);
 
     # Convenn
-    MDOFGEN(M::Float64, C::Float64, K::Float64) = new([M;;], [C;;], [K;;], [], 1, []);
-    MDOFGEN(M::Float64, C::Float64, K::Float64, L::Float64) = new([M;;], [C;;], [K;;],
-        [L;;], 1, []);
+    MDOFGEN(M::Float64, C::Float64, K::Float64) =
+        new([M;;], [C;;], [K;;], [], 1, []);
+    MDOFGEN(M::Float64, C::Float64, K::Float64, L::Float64) =
+        new([M;;], [C;;], [K;;], [L;;], 1, []);
 end
 
 # ** Routine to Add a nonlinearity to an MDOFGEN object
@@ -97,7 +101,7 @@ Add a nonlinearity to the MDOFGEN object.
 - L              : 
 - Lf             : (default nothing)
 """
-function ADDNL(m::MDOFGEN, type::Symbol, func::Function, L, Lf=nothing)
+function ADDNL(m::MDOFGEN, type::Symbol, func, L, Lf=nothing)
     push!(m.NLTs, NONLINEARITY(type, func, L, Lf));
 
     m = MDOFGEN(m, m.NLTs);
@@ -702,3 +706,5 @@ function NEWMARKMARCH(m::MDOFGEN, T0, T1, dt, U0, Ud0, Fex;
     end
     return U, Ud, Udd, S, PHI;
 end
+
+

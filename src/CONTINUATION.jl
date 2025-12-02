@@ -47,6 +47,7 @@ Constructor for myNLSoln. Can specify one or all the arguments (point, jacobian,
 If both J and Jp are provided, the unit tangent dupds is computed using `nullspace([J Jp])[:,1]`.
 """
 function myNLSoln(up::nvTypes=nothing; J::nmTypes=nothing, Jp::nvTypes=nothing, save_jacs::Bool=false)
+    # Constructor
     if J === nothing || Jp === nothing
         dupds = nothing;
     else
@@ -99,6 +100,24 @@ function Base.:-(v1::myNLSoln, v2::myNLSoln)
     return myNLSoln(dup, dJ, dJp, ddupds);
 end
 
+"""
+# Base.getproperty(sols::Vector{myNLSoln}, sym::Symbol)
+
+This will allow accessing elements of myNLSoln from vectors of structs.
+
+# Arguments
+- sols::Vector{myNLSoln} : 
+- sym::Symbol            : 
+"""
+function Base.getproperty(sols::Vector{myNLSoln}, sym::Symbol)
+    if sym in fieldnames(myNLSoln)
+        return [getfield(s, sym) for s in sols]
+    else
+        # Fall back to default behavior for other properties (like :size, :length, etc.)
+        return getfield(sols, sym)
+    end
+end
+
 # * Continuation Utilities
 
 # ** Extended Residue Function
@@ -145,7 +164,8 @@ The function involves very naive autodiff calls. Does not respect or try to dete
 
 """
 function EXTRESFUN!(up, fun, sol0, ds; parm=:arclength, Dsc=ones(eltype(up), length(up)), Ralsc=1.0, dup=nothing, Jf=nothing)
-
+    # Extended (Bordered) Residue Function
+    
     # Residue Evaluation
     if dup !== nothing
         du = @view dup[1:end-1]
@@ -299,6 +319,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],
     minDsc::Float64=eps()^(4//5))
 
+    # Continuation Routine
     if dpbnds === nothing
         dpbnds = [dp/5, 5dp];
     end
@@ -330,10 +351,11 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     else
         ForwardDiff.jacobian!(J, (R,u)->fun.f(R,u,ps[1]), R, solp0.u);
     end
+
     if fun.paramjac !== nothing
         fun.paramjac(Jp, solp0.u, ps[1]);
     else
-        ForwardDiff.jacobian!(Jp, (R,p)->fun.f(R,solp0.u,p), R, [ps[1]]);
+        ForwardDiff.jacobian!(Jp, (R,p)->fun.f(R,solp0.u,p[1]), R, [ps[1]]);
     end
 
     push!(sols, myNLSoln([solp0.u;ps[1]]; J=copy(J), Jp=copy(Jp),

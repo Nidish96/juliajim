@@ -10,12 +10,25 @@ using Infiltrator
 # * Exports
 export AFT, HINDS, HSEL, FSEVAL, HARMONICSTIFFNESS, HARMONICSTIFFNESS!
 export DFOUR, DFOUR!, PRODMAT_FOUR, ACT, DCHEB, PRODMAT_CHEB
+export NHC
     
 # * Custom Abstract Types
 const MxTypes = Union{Float64, Matrix{Float64}, Matrix{Int64}, AbstractMatrix{Bool}};
 const hTypes = Union{Int,VecOrMat{Int},AbstractRange{Int}};
 
 # * Fourier Routines ############################################################
+"""
+    NHC(h::hTypes)
+
+ Returns the number of harmonics in a chosen harmonic set h. 
+
+# Arguments
+- h::hTypes : 
+"""
+function NHC(h::hTypes)
+    return sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+end
+
 # ** Alternating Frequency-Time Transform
 
 """
