@@ -110,11 +110,7 @@ E0, _ = HARMONICSTIFFNESS(0., -2mdl.M, 0, 1, h);
 E0 = collect(E0);
 stab = zeros(length(Oms));
 for (i,(J,Om)) in enumerate(zip(sols.J, Oms))
-````
-
-evs = eigvals(J[2:end,2:end], Om*collect(E0[2:end,2:end]));  # Multiharmonic
-
-````@example d2_forcedvdp
+    # evs = eigvals(J[2:end,2:end], Om*collect(E0[2:end,2:end]));  # Multiharmonic
     evs = eigvals(J[2:3,2:3], Om*E0[2:3,2:3]);
     stab[i] = sum(real(evs).>=0);
 end
@@ -160,11 +156,7 @@ We loop over the two detected bifurcation points
 
 ````@example d2_forcedvdp
 for (bi, bifi) in enumerate(bifis)
-````
-
-# Eigenanalysis to obtain unstable manifold (eigenvectors)
-
-````@example d2_forcedvdp
+    # Eigenanalysis to obtain unstable manifold (eigenvectors)
     eVals, eVecs = eigen(sols.J[bifi][2:3, 2:3], Oms[bifi]*collect(E0[2:3,2:3]));
     eVecsC = eVecs[1,:]-1im.*eVecs[2,:];  # Complexify
 
@@ -174,100 +166,57 @@ for (bi, bifi) in enumerate(bifis)
     Wself = Oms[bifi] + sig;  # Self Excited Frequency
     eVecsC = eVecsC*exp(-1im*angle(eVecsC[ei]));  # Normalize phase
     Pvec = normalize([real(eVecsC[ei]), -imag(eVecsC[ei])]);  # Perturbation Vector
-nothing #hide
-````
 
-Setup Initial Guess
-
-````@example d2_forcedvdp
+    # Setup Initial Guess
     Uhq0 = zeros(Nhcq);
     Uhq0[[rindsq[hq2s]; iindsq[hq2s]]] = sols.up[bifi][[rinds[1:length(hq2s)];
                                                         iinds[1:length(hq2s)]]];
-nothing #hide
-````
 
-Perturbation Vector
-
-````@example d2_forcedvdp
+    # Perturbation Vector
     Phq0 = zeros(Nhcq);
     Phq0[[rindsq[hq1s[1]]; iindsq[hq1s[1]]]] = Pvec;
-nothing #hide
-````
-
-Perturbation amplitude
-
-````@example d2_forcedvdp
+    # Perturbation amplitude
     qamp = 1.0;
-nothing #hide
-````
+    # We choose this arbitrarily for now. It is possible to use the
+    # method of normal forms to fix this exactly, see [next example](@ref ex_d3).
 
-We choose this arbitrarily for now. It is possible to use the
-method of normal forms to fix this exactly, see [next example](@ref ex_d3).
-
-### Apply phase constraint and converge with deflation
-
-````@example d2_forcedvdp
+    ### Apply phase constraint and converge with deflation
     cL = I(Nhcq+2)[:, setdiff(1:Nhcq+2, iindsq[hq1s[1]])];
     uC = cL'*[Uhq0; Wself; Oms[bifi]];
-nothing #hide
-````
+    # The matrix `cL` is defined so that the original solution vector `Uw`
+    # (which includes harmonics and both the frequency components) can be
+    # recovered by \(Uw = cL \hat{Uw}\).
 
-The matrix `cL` is defined so that the original solution vector `Uw`
-(which includes harmonics and both the frequency components) can be
-recovered by \(Uw = cL \hat{Uw}\).
-
-````@example d2_forcedvdp
     funq = NonlinearFunction((r,u,p)-> QPHBRESFUN!([u;p], mdl, Flq, hq, Nq;
         R=r,cL=cL,U0=uC),
         jac=(J,u,p)->QPHBRESFUN!([u;p], mdl, Flq, hq, Nq;
             dRdU=J,cL=cL,U0=uC),
         paramjac=(Jp,u,p)->QPHBRESFUN!([u;p], mdl, Flq, hq, Nq;
             dRdw=Jp,cL=cL,U0=uC));
-nothing #hide
-````
+    # The [`QPHBRESFUN!`](@ref juliajim.MDOFUTILS.QPHBRESFUN!) function
+    # supports deflation specification through the keyword argument U0.
 
-The [`QPHBRESFUN!`](@ref juliajim.MDOFUTILS.QPHBRESFUN!) function
-supports deflation specification through the keyword argument U0.
-
-````@example d2_forcedvdp
     u0 = cL[1:end-1,:]'*[Uhq0+qamp*Phq0; Wself];
     probq = NonlinearProblem(funq, u0[1:end-1], Oms[bifi]);
     solq = solve(probq, show_trace=Val(true));
-nothing #hide
-````
 
-Get one point before (without deflation)
-
-````@example d2_forcedvdp
+    # Get one point before (without deflation)
     funr = NonlinearFunction((r,u,p)-> QPHBRESFUN!([u;p], mdl, Flq, hq, Nq; R=r,cL=cL),
         jac=(J,u,p)->QPHBRESFUN!([u;p], mdl, Flq, hq, Nq; dRdU=J,cL=cL));
     probq = NonlinearProblem(funr, u0[1:end-1], Oms[bifi-dxis[bi]]);
     solprev = solve(probq, show_trace=Val(true));
-nothing #hide
-````
 
-### Continue away from the bifurcation point
-
-````@example d2_forcedvdp
+    ### Continue away from the bifurcation point
     Om0b = Oms[bifi];
     Om1b = (dxis[bi]<0) ? Om0 : Om1;
     dOmb = 0.2;
     cparsb = (parm=:arclength, nmax=100, save_jacs=true);
 
     solsb, _, _, _, _ = CONTINUATE(solq.u, funq, [Om0b, Om1b], dOmb; cparsb...);
-nothing #hide
-````
-
-Prepend previous point & expand constraint
-
-````@example d2_forcedvdp
+    # Prepend previous point & expand constraint
     sup = [cL*up for up in [[solprev.u;Oms[bifi-dxis[bi]]], solsb.up...]];
-nothing #hide
-````
 
-Obtain Harmonics
-
-````@example d2_forcedvdp
+    # Obtain Harmonics
     uhq = zeros(Complex, size(hq,1), length(sup));
     uhq[[inds0q; hindsq], :] = hcat([[up[zindsq];up[rindsq,:]+1im*up[iindsq,:]]
                                     for up in sup]...);
