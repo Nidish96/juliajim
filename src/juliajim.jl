@@ -16,4 +16,9 @@ module MDOFUTILS
 include("./MDOFUTILS.jl")
 end
 
+"Some routines for Nonlinear Dynamics."
+module NLDYN
+include("./NLDYN.jl")
+end
+
 end

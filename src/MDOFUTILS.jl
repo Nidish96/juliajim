@@ -11,7 +11,14 @@ using ..HARMONIC
 export NONLINEARITY, MDOFGEN
 export ADDNL
 export NLEVAL!, HBRESFUN!, HBRESFUN_A!, EPMCRESFUN!
+export QPHBRESFUN!
 export NLFORCE, NEWMARKMARCH
+export DEFLATEDRES!
+
+# * Custom Abstract Types
+const VcTypes = Union{Float64, Vector{Float64}, Vector{Int64}, AbstractVector{Bool}};
+const MxTypes = Union{Float64, Matrix{Float64}, Matrix{Int64}, AbstractMatrix{Bool}};
+
 # * Define Structs
 """
 NONLINEARITY
@@ -128,13 +135,19 @@ function NLEVAL!(Uw::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
     m::MDOFGEN, h, N::Int64;
     tol::Float64=eps()^(4//5), FNL=nothing, dFNLdU=nothing, dFNLdw=nothing)
     
-    Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
-    t = (0:N-1)*2π/N;
-    w = Uw[end];
+    Nhc = NHC(h);
+    w = Uw[m.Ndofs*Nhc+1:end];
     eltp = eltype(Uw);
+    C = length(w);  # Number of frequency components
+    t = (0:N-1)*2π/N;
     
     D1 = zeros(eltp, Nhc, Nhc);
-    HARMONICSTIFFNESS!(D1, nothing, 0, 1.0, 0, [w], h);
+    if !(dFNLdw === nothing) && C>1
+        dD1dw = [zeros(eltp, Nhc, Nhc) for _ in w];
+    else
+        dD1dw = nothing;
+    end
+    HARMONICSTIFFNESS!(D1, dD1dw, 0, 1.0, 0, w, h);
 
     cst = AFT(float(I(Nhc)), h, N, :f2t);
     sct = AFT(D1, h, N, :f2t);
@@ -145,15 +158,22 @@ function NLEVAL!(Uw::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
     if !(dFNLdU === nothing)
         dFNLdU[:] = zeros(eltp, m.Ndofs*Nhc, m.Ndofs*Nhc);
     end
-    if !(dFNLdw === nothing)    
-        dFNLdw[:] = zeros(eltp, m.Ndofs*Nhc);
+    if !(dFNLdw === nothing)
+        if C==1
+            dFNLdw[:] = zeros(eltp, m.Ndofs*Nhc);
+        else
+            dFNLdw[:] = zeros(eltp, m.Ndofs*Nhc, C);
+        end
     end
     for ni in 1:length(m.NLTs)
         Ndnl = size(m.NLTs[ni].L, 1);
-        Unl = (m.NLTs[ni].L*reshape(Uw[1:end-1], m.Ndofs,Nhc))';  # Nhc, Ndnl
+        Unl = (m.NLTs[ni].L*reshape(Uw[1:end-C], m.Ndofs,Nhc))';  # Nhc, Ndnl
 
         unlt = AFT(Unl, h, N, :f2t); # N, Ndnl
         unldot = AFT(D1*Unl, h, N, :f2t);  # N, Ndnl
+        if !(dFNLdw === nothing) && C>1
+            unldw = [AFT(dDw*Unl, h, N, :f2t) for dDw in dD1dw];  # (N, Ndnl), C
+        end            
         if m.NLTs[ni].type==:Inst
             # Instantaneous Nonlinearity
             ft, dfdu, dfdud = m.NLTs[ni].func(t, unlt, unldot);
@@ -180,9 +200,16 @@ function NLEVAL!(Uw::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
                 end
             end
             if !(dFNLdw === nothing)
-                dFdw = AFT(dfdud .* unldot / w, h, N, :t2f);
+                if length(w)==1
+                    dFdw = AFT(dfdud .* unldot / w[1], h, N, :t2f);
+                else
+                    dFdw = [AFT(dfdud.*udw, h,N, :t2f) for udw in unldw];
+                end
             end
         elseif m.NLTs[ni].type==:Hyst
+            if C>1
+                error("Hysteretic Nonlinearities not implemented for C>1");
+            end
             K0 = m.NLTs[ni].func(0, repeat([zeros(Ndnl)], 3)...)[2];
             ft = unlt*K0'
             dfdai = reshape(repeat(K0, 1,1,Nhc), 1, Ndnl,Ndnl,Nhc).*
@@ -245,17 +272,32 @@ function NLEVAL!(Uw::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
                                kron(I(Nhc), m.NLTs[ni].L);
             end
             if !(dFNLdw === nothing)
-                dFNLdw[:] += reshape(m.NLTs[ni].L' * dFdw', Nhc * m.Ndofs, 1);
+                if C==1
+                    dFNLdw[:] += reshape(m.NLTs[ni].L' * dFdw', Nhc * m.Ndofs, 1);
+                else
+                    for i in 1:C
+                        dFNLdw[:, i] += reshape(m.NLTs[ni].L' * dFdw[i]',
+                            Nhc * m.Ndofs, 1);
+                    end
+                end
             end
         else  # Non-self adjoint forcing
             if !(FNL === nothing)
-                FNL += reshape(m.NLTs[ni].Lf * F', Nhc * m.Ndofs, 1);
+                FNL[:] += reshape(m.NLTs[ni].Lf * F', Nhc * m.Ndofs, 1);
             end
             if !(dFNLdU === nothing)
-                dFNLdU += kron(I(Nhc), m.NLTs[ni].Lf) * J * kron(I(Nhc), m.NLTs[ni].L)
+                dFNLdU[:,:] += kron(I(Nhc), m.NLTs[ni].Lf) * J *
+                               kron(I(Nhc), m.NLTs[ni].L);
             end
             if !(dFNLdw === nothing)
-                dFNLdw += reshape(m.NLTs[ni].Lf * dFdw', Nhc * m.Ndofs, 1)
+                if C==1
+                    dFNLdw[:] += reshape(m.NLTs[ni].Lf * dFdw', Nhc * m.Ndofs, 1);
+                else
+                    for i in 1:C
+                        dFNLdw[:, i] += reshape(m.NLTs[ni].Lf * dFdw[i]',
+                            Nhc * m.Ndofs, 1);
+                    end
+                end
             end
         end
     end
@@ -282,7 +324,12 @@ function HBRESFUN!(Uw, m::MDOFGEN,
     h, N::Int64;
     tol::Float64=eps()^(4//5), R=nothing, dRdU=nothing, dRdw=nothing)
     w = Uw[end];
-    Nhc = sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+    Nhc = NHC(h);
+    Res = R;
+    if R === nothing
+        Res = zeros(m.Ndofs*Nhc);
+    end
+
 
     E = spzeros(eltype(Uw), Nhc*m.Ndofs, Nhc*m.Ndofs);
     if !(dRdw === nothing)
@@ -293,11 +340,11 @@ function HBRESFUN!(Uw, m::MDOFGEN,
     HARMONICSTIFFNESS!(E, dEdw, m.M, m.C, m.K, [w], h);
 
     # Evaluate Nonlinearity in Frequency Domain
-    NLEVAL!(Uw, m, h, N; tol=tol, FNL=R, dFNLdU=dRdU, dFNLdw=dRdw);
+    NLEVAL!(Uw, m, h, N; tol=tol, FNL=Res, dFNLdU=dRdU, dFNLdw=dRdw);
     
     # Residue
-    if !(R === nothing)
-        R[:] = E*Uw[1:end-1]+R-Fl;
+    if !(Res === nothing)
+        Res[:] = E*Uw[1:end-1]+Res-Fl;
     end
     if !(dRdU === nothing)
         dRdU[:, :] = E+dRdU;
@@ -305,7 +352,7 @@ function HBRESFUN!(Uw, m::MDOFGEN,
     if !(dRdw === nothing)
         dRdw[:] = dEdw[1]*Uw[1:end-1]+dRdw;
     end
-    return nothing;
+    return Res;
 end
 
 """
@@ -493,6 +540,166 @@ function EPMCRESFUN!(Uwxa, m::MDOFGEN, Fl, h, N::Int64;
     end
     
     return nothing;
+end
+
+# *** Quasi Periodic
+"""
+Returns the quasi periodic forced response residue.
+Also allows for specifying a constrained form. If provided, the matrix cL and vector
+cLb are interpreted such that the unknown vector gets written as
+`` U = {}^cL Û + {}^cL_b, ``
+where `Û` is of size `(D Nhc+C,1)`, containing the frequencies also in the end.
+
+The matrix `{}^cL` is used to project the residue vector `{}^cL^T R`. By choosing its size appropriately, one can make the system square.
+
+The last element in `U` is always interpreted as the continuation parameter.
+
+# Arguments
+- Uw               : 
+- m::MDOFGEN       : 
+- Fl::Union{Vector : 
+- Matrix           : 
+- SparseMatrixCSC  : 
+- Nothing}         : 
+- h                : 
+- N::Int64         : 
+- tol::Float64     : (default eps()^(4//5))
+- R                : (default nothing)
+- dRdU             : (default nothing)
+- dRdw             : (default nothing)
+- cL               : (default nothing)
+- cLb              : (default nothing)
+- U0               : (default nothing) Solution to deflate from. 2-norm is used for deflation.
+"""
+function QPHBRESFUN!(Uw, m::MDOFGEN,
+    Fl::Union{Vector, Matrix, SparseMatrixCSC, Nothing},
+    h, N::Int64;
+    tol::Float64=eps()^(4//5), R=nothing, dRdU=nothing, dRdw=nothing,
+    cL=nothing, cLb=nothing, U0=nothing)
+
+    if !(U0 === nothing)
+        funtmp = (uw,res,jac,jacp)-> QPHBRESFUN!(uw, m, Fl, h, N; tol=tol,
+            R=res, dRdU=jac, dRdw=jacp, cL=cL, cLb=cLb);
+        
+        DEFLATEDRES!(Uw, U0, funtmp, R=R, J=dRdU, Jp=dRdw)
+        return R;
+    end
+
+    
+    # Actual Residue computation
+    Nhc = NHC(h);
+    if !(cL === nothing)
+        Uw = cL*Uw;
+        if !(cLb === nothing)
+            Uw += cLb;
+        end
+        Res = zeros(m.Ndofs*Nhc);
+        if !(dRdU === nothing) || !(dRdw === nothing)
+            J = zeros(m.Ndofs*Nhc, m.Ndofs*Nhc);
+            Jw = zeros(m.Ndofs*Nhc, size(h,2));
+        else
+            J = nothing;
+            Jw = nothing;
+        end
+    else
+        Res = R;
+        J = dRdU;
+        Jw = dRdw;
+        if R === nothing
+            Res = zeros(m.Ndofs*Nhc); # Always compute the residue
+        end
+    end
+    
+    ws = Uw[m.Ndofs*Nhc+1:end];  # Frequency Components
+    C = length(ws);
+    @assert C==size(h,2)
+
+    E = spzeros(eltype(Uw), Nhc*m.Ndofs, Nhc*m.Ndofs);
+    if !(dRdw === nothing)
+        dEdw = [spzeros(eltype(Uw), Nhc*m.Ndofs, Nhc*m.Ndofs) for _ in ws];
+    else
+        dEdw = nothing;
+    end
+    HARMONICSTIFFNESS!(E, dEdw, m.M, m.C, m.K, ws, h);
+
+    # Evaluate Nonlinearity in Frequency Domain
+    NLEVAL!(Uw, m, h, N; tol=tol, FNL=Res, dFNLdU=J, dFNLdw=Jw);
+    
+    # Residue
+    if !(Res === nothing)
+        Res[:] = E*Uw[1:end-C]+Res-Fl;
+    end
+    if !(dRdU === nothing)
+        J[:, :] = E+J;
+    end
+    if !(dRdw === nothing)
+        for i in 1:C
+            Jw[:, i] = dEdw[i]*Uw[1:end-C]+Jw[:, i];
+        end
+    end
+
+    if !(cL === nothing)
+        if !(R === nothing)
+            R[:] = Res;
+        end
+        if !(dRdU === nothing) || !(dRdw === nothing)
+            Joa = [J Jw]*cL;
+        end
+        if !(dRdU === nothing)
+            dRdU[:, :] = Joa[:, 1:end-1];
+        end
+        if !(dRdw === nothing)
+            dRdw[:] = Joa[:, end];
+        end
+    end
+    return Res;
+end
+
+# *** Deflation
+"""
+# Description
+
+# Arguments
+- U  : 
+- U0 : Vector{Float64} or Vector{Vector{Float64}}
+- resfun!     : function!(u, Res, Jac, Jacp)
+- R  : (default nothing)
+- J  : (default nothing)
+- Jp : (default nothing)
+"""
+function DEFLATEDRES!(U, U0, resfun!; R=nothing, J=nothing, Jp=nothing)
+    
+    Res = R;
+    if (R === nothing)
+        Res = zeros(eltype(U), length(U)-1);
+    end
+
+    Jac = J;
+    Jacp = Jp;
+    if (J === nothing)
+        Jac = zeros(eltype(U), length(U)-1, length(U)-1);
+    end
+    if (Jp === nothing)
+        Jacp = zeros(eltype(U), length(U)-1);
+    end
+
+    # Compute residue
+    resfun!(U, Res, Jac, Jacp)
+
+    # Deflation
+    if eltype(U0) <: Vector
+        des = sum(norm.([U].-U0).^(-2));
+        ddesdU = sum(-2([U].-U0)./norm.([U].-U0).^4)';
+    else
+        des = 1/norm(U-U0)^2;
+        ddesdU = -2(U-U0)'/norm(U-U0)^4;
+    end
+
+    # In residue
+    Jacfull = [Jac Jacp]*des + Res*ddesdU;
+    Jac[:, :] = Jacfull[:, 1:end-1];
+    Jacp[:]   = Jacfull[:, end];
+    Res[:]    = Res*des;
 end
 
 # ** Time Domain
@@ -706,5 +913,3 @@ function NEWMARKMARCH(m::MDOFGEN, T0, T1, dt, U0, Ud0, Fex;
     end
     return U, Ud, Udd, S, PHI;
 end
-
-

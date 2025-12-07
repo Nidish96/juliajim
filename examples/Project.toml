@@ -1,6 +1,7 @@
 [deps]
 Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
 DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
+Debugger = "31a5f54b-26ea-5ae9-a837-f05ce5417438"
 FastTransformsForwardDiff = "77fa7db0-1c81-401d-9fde-3592fc42b8bc"
 ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
@@ -9,6 +10,12 @@ LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 NonlinearSolve = "8913a72c-1f9b-4ce2-8d82-65094dcecaec"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+TensorOperations = "6aa20fa7-93e2-5fca-9bc0-fbd0db3c71a2"
 juliajim = "dfeb43dd-e7d5-4223-99c6-bbf17d8d0dc1"
+
+[sources]
+FastTransformsForwardDiff = {rev = "main", url = "https://github.com/Nidish96/FastTransformsForwardDiff.jl"}
+juliajim = {path = ".."}

@@ -26,7 +26,11 @@ const hTypes = Union{Int,VecOrMat{Int},AbstractRange{Int}};
 - h::hTypes : 
 """
 function NHC(h::hTypes)
-    return sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+    if h isa Int
+        return 2;
+    else
+        return sum(all(h.==0, dims=2) + 2any(h.!=0, dims=2));
+    end
 end
 
 # ** Alternating Frequency-Time Transform
@@ -70,8 +74,12 @@ for the general Multi frequency case.
 """
 function AFT(yin, h, N, dir)
     # function AFT(yin::AbstractArray{Float64}, h::hTypes, N::Int, dir::Symbol)
+    if h isa Int
+        h = [h];
+    end
+
     C = size(h, 2);
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+    Nhc = NHC(h);
     Ny = size(yin, 2);
 
     Nf = Int(N / 2) + 1;
@@ -187,7 +195,7 @@ are not provided, it returns the mapping matrix.
 function FSEVAL(h, t, U=nothing)
 # function FSEVAL(h::hTypes, t::Union{StepRangeLen{Float64}, VecOrMat{Float64}},
 #                 U::Union{Nothing,VecOrMat{Float64}}=nothing)
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+    Nhc = NHC(h);
     Nt = size(t, 1);
 
     _, hn0i, zinds, rinds, iinds = HINDS(1, h)
@@ -254,10 +262,15 @@ function HARMONICSTIFFNESS(M, D, K, ws, h)
 #                            D::MxTypes,
 #                            K::MxTypes,
 #                            ws::Union{Float64, Vector{Float64}},
-#                            h::hTypes)
+    #                            h::hTypes)
+
+    if h isa Int
+        h = [h];
+    end
+
     H = size(h,1);
     C = size(h,2);
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+    Nhc = NHC(h);
 
     hn = kron(h, ones(2,1));
     E1 = kron(sparse(I, H, H), [0 1;-1 0])
@@ -313,9 +326,13 @@ HARMONICSTIFFNESS!(E, dEdw, M, D, K, ws, h);
 ```
 """
 function HARMONICSTIFFNESS!(E, dEdw, M, D, K, ws, h)
+    if h isa Int
+        h = [h];
+    end
+
     H = size(h,1);
     C = size(h,2);
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+    Nhc = NHC(h);
 
     hn = kron(h, ones(2,1));
     E1 = kron(sparse(I, H, H), [0 1;-1 0])
@@ -329,8 +346,9 @@ function HARMONICSTIFFNESS!(E, dEdw, M, D, K, ws, h)
     end
     if !(dEdw === nothing)
         tmp = hn*ws;
-        dEdw[:] = [kron(hn[:,i].*E1, D) -
-            kron(spdiagm(2tmp[:] .* hn[:,i]), M) for i in 1:C];
+        for i in 1:C
+            dEdw[i][:,:] = kron(hn[:,i].*E1, D) - kron(spdiagm(2tmp[:] .* hn[:,i]), M);
+        end
     end
 end
 
@@ -468,7 +486,7 @@ function PRODMAT_FOUR(U, h, Hmax=nothing, D=nothing, L=nothing)
     h = hfull;
 
     # Compute D
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h .!= 0, dims=2));
+    Nhc = NHC(h);
     a0 = U[1];
     as = [0; U[2:2:end]];
     bs = [0; U[3:2:end]];
@@ -523,8 +541,9 @@ end
 - dir::Symbol      : 
 """
 function ACT(yin, h, N, dir)
-# function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
-    Nhc = sum(all(h.==0, dims=2) + 2*any(h.!=0, dims=2));
+    # function ACT(yin::VecOrMat{Float64}, h::hTypes, N::Int64, dir::Symbol)
+
+    Nhc = NHC(h);
     Ny = size(yin, 2);
     C = size(h,2);
     if C>1
