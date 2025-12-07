@@ -12,3 +12,6 @@ NonlinearSolve = "8913a72c-1f9b-4ce2-8d82-65094dcecaec"
 Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 juliajim = "dfeb43dd-e7d5-4223-99c6-bbf17d8d0dc1"
+
+[sources]
+juliajim = {path = ".."}

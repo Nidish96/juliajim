@@ -57,8 +57,11 @@ makedocs(;
                              "3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator" => "c3_mdofgen_ahb.md",
                              "4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC" => "c4_mdofgen_epmc.md",
                              "5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme" => "c5_mdofgen_newmark.md"],
-                            "D: Bifurcation Analysis Example" => "d_forcedvdp.md"],
-             "Reference" => "reference.md"],
+                            "D: Bifurcation Analysis Examples" =>
+                            ["1: Deflation to Locate Multiple roots" => "d1_deflation.jl",
+                             "2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator" => "d2_forcedvdp.jl",
+                             "3: Branch Switching Using Normal Forms" => "d3_normalform.jl"],
+                            "Reference" => "reference.md"]]
 )
 
 deploydocs(
