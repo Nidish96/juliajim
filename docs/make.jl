@@ -1,7 +1,7 @@
 using Documenter
 using Literate
 
-using juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS
+using juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS, juliajim.NLDYN
 
 # * Generate Example file documentation with Literate.jl
 # Literate.markdown("../examples/a_hworld.jl", "./src", documenter=true)
@@ -26,7 +26,7 @@ DocMeta.setdocmeta!(
 )
 
 makedocs(;
-    modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS],
+    modules = [juliajim, juliajim.HARMONIC, juliajim.CONTINUATION, juliajim.MDOFUTILS, juliajim.NLDYN],
     doctest = true,
     linkcheck = true,
     authors = "Nidish Narayanaa Balaji <nidish@iitm.ac.in>",

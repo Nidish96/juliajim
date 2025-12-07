@@ -2,7 +2,7 @@
 # CurrentModule = juliajim
 # ```
 
-# ## * [Example D3: Branch Switching Using Normal Forms](@id ex_d3)
+# ## [Example D3: Branch Switching Using Normal Forms](@id ex_d3)
 
 # This example is a direct continuation of [Example D2](@ref ex_d2). In that example we did a branch switching analysis by arbitrarily choosing the amplitude of perturbation. Here, we use the [`NORMALFORMFIT`](@ref juliajim.NLDYN.NORMALFORMFIT) function to fit the system to a cubic nonlinear "normal form" (through a similarity transformation eliminating certain terms).
 

@@ -2,7 +2,7 @@
 # CurrentModule = juliajim
 # ```
 
-# ## * [Example D2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator](@id ex_d2)
+# ## [Example D2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator](@id ex_d2)
 
 # This example is designed to demonstrate stability analysis and branch switching across a (secondary) Hopf bifurcation that occurs in a forced Van der Pol oscillator.
 

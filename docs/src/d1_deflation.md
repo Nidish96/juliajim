@@ -6,7 +6,7 @@ EditURL = "../../examples/d1_deflation.jl"
 CurrentModule = juliajim
 ```
 
-## * [Example D1: Deflation to Locate Multiple roots](@id ex_d1)
+## [Example D1: Deflation to Locate Multiple roots](@id ex_d1)
 
 It is sometimes the case that we are trying to solve for the solution of a system of equations that has multiple zeros where one is (or a few are) already known. Case in point in dynamical systems: computing bifurcated branches emanating from a "main" branch of solutions.
 
@@ -16,7 +16,7 @@ where \(||x||_2\) denotes the 2-norm. The limit \(u\to u_0\) may or may not exis
 
 \(R_d(u)\) discourages the solver from approaching the known solution \(u_0\), allowing us to converge to another solution if it exists and if our initial guess is close enough.
 
-[`juliajim`](@ref juliajim) implements [`DEFLATEDRES`](@ref juliajim.MDOFUTILS.DEFLATEDRES) which is a deflation wrapper routine that can be used on top of any existing residue function to achieve deflation.
+[`juliajim`](@ref juliajim) implements [`DEFLATEDRES!`](@ref juliajim.MDOFUTILS.DEFLATEDRES!) which is a deflation wrapper routine that can be used on top of any existing residue function to achieve deflation.
 
 This example demonstrates this through a simple 2-state system of polynomial equations with two known roots:
 \[ R(u; p) = \begin{bmatrix} u_2\\-p u_1-u_2+\frac{u_1^3}{4} \end{bmatrix}, \]
