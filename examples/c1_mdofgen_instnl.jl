@@ -33,8 +33,8 @@ using juliajim.MDOFUTILS
 # ## [System Setup](@id exc1_setup)
 # We specify the linear "MCK" matrices of the system here. Also check out the documentation for the [`MDOFGEN`](@ref juliajim.MDOFUTILS.MDOFGEN) struct. 
 
-M = I(2);
-K = [2 -1;-1 2];
+M = collect(1.0I(2));
+K = [2. -1.;-1. 2.];
 C = 0.01*M+0.001*K;
 
 mdl = MDOFGEN(M, C, K);
@@ -99,8 +99,10 @@ sol = solve(prob, show_trace=Val(true));
 
 Om0 = 0.1;
 Om1 = 3;
-dOm = 0.01;
-cpars = (parm=:arclength, nmax=2000, Dsc=:auto, minDsc=1e-5);
+# dOm = 0.01;
+# cpars = (parm=:arclength, nmax=2000, Dsc=:auto, minDsc=1e-5);  # 1e-5
+dOm = 0.1;
+cpars = (parm=:arclength, nmax=2000, Dsc=:none);  # TODO: Needs tuning!!
 
 sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 

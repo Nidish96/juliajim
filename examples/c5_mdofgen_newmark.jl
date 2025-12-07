@@ -35,8 +35,8 @@ using juliajim.MDOFUTILS
 
 # ## [System Setup](@id exc5_setup)
 
-M = I(2);
-K = [2 -1;-1 2];
+M = collect(1.0I(2));
+K = [2. -1.;-1. 2.];
 C = 0.01*M+0.001*K;
 
 mdl = MDOFGEN(M, C, K);

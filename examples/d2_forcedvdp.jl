@@ -193,9 +193,9 @@ end
 set_theme!(theme_latexfonts())
 fsz = 24;
 fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie
-   scr = GLMakie.Screen();
-end
+if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie #src
+   scr = GLMakie.Screen(); #src
+end #src
 
 ax = Axis(fig[1, 1], xlabel=L"Excitation Frequency $\Omega$", ylabel="Response");
 scatterlines!(ax, Oms./(stab.==0), [norm(u) for u in eachcol(uh)], label="Stable")
@@ -209,8 +209,10 @@ end
 axislegend(ax, nbanks=3, position=:ct)
 xlims!(Om0, Om1)
 ylims!(0, 3.75)
-if Makie.current_backend()==GLMakie
-   display(scr, fig);
-else
-   display(fig)
-end
+
+if Makie.current_backend()==GLMakie #src
+   display(scr, fig); #src
+else #src
+    display(fig) #src
+    fig
+end #src
