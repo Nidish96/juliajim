@@ -35,3 +35,9 @@ Modules = [juliajim.CONTINUATION]
 ```@autodocs
 Modules = [juliajim.MDOFUTILS]
 ```
+
+### Module NLDYN
+
+```@autodocs
+Modules = [juliajim.NLDYN]
+```
