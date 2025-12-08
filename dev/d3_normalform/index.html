@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>3: Branch Switching Using Normal Forms · juliajim</title><meta name="title" content="3: Branch Switching Using Normal Forms · juliajim"/><meta property="og:title" content="3: Branch Switching Using Normal Forms · juliajim"/><meta property="twitter:title" content="3: Branch Switching Using Normal Forms · juliajim"/><meta name="description" content="Documentation for juliajim."/><meta property="og:description" content="Documentation for juliajim."/><meta property="twitter:description" content="Documentation for juliajim."/><meta property="og:url" content="https://github.com/Nidish96/juliajim/d3_normalform/"/><meta property="twitter:url" content="https://github.com/Nidish96/juliajim/d3_normalform/"/><link rel="canonical" href="https://github.com/Nidish96/juliajim/d3_normalform/"/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script><link href="../assets/custom.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">juliajim</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../a_hworld/">A: Harmonic Utilities</a></li><li><input class="collapse-toggle" id="menuitem-2-2" type="checkbox"/><label class="tocitem" for="menuitem-2-2"><span class="docs-label">B: Numerical Continuation</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../b1_duffhb/">1: Duffing Oscillator</a></li><li><a class="tocitem" href="../b2_jenkhb/">2: Frictional Oscillator</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-3" type="checkbox"/><label class="tocitem" for="menuitem-2-3"><span class="docs-label">C: Examples with the MDOFUTILS Suite</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../c1_mdofgen_instnl/">1: Forced Response of a 2DoF Oscillator with Instantaneous Nonlinearity</a></li><li><a class="tocitem" href="../c2_mdofgen_hystnl/">2: Forced Response of a 2DoF Oscillator with Hysteretic Nonlinearity</a></li><li><a class="tocitem" href="../c3_mdofgen_ahb/">3: Response Constrained Forced Response of a 2DoF Hysteretic Oscillator</a></li><li><a class="tocitem" href="../c4_mdofgen_epmc/">4: Nonlinear Normal Modes of a 2DoF Hysteretic Oscillator using EPMC</a></li><li><a class="tocitem" href="../c5_mdofgen_newmark/">5: Transient Response of a 2DoF Hysteretic Oscillator using Newmark Scheme</a></li></ul></li><li><input class="collapse-toggle" id="menuitem-2-4" type="checkbox" checked/><label class="tocitem" for="menuitem-2-4"><span class="docs-label">D: Bifurcation Analysis Examples</span><i class="docs-chevron"></i></label><ul class="collapsed"><li><a class="tocitem" href="../d1_deflation/">1: Deflation to Locate Multiple roots</a></li><li><a class="tocitem" href="../d2_forcedvdp/">2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator</a></li><li class="is-active"><a class="tocitem" href>3: Branch Switching Using Normal Forms</a><ul class="internal"><li><a class="tocitem" href="#ex_d3"><span>Example D3: Branch Switching Using Normal Forms</span></a></li><li><a class="tocitem" href="#Preamble:-Load-Packages"><span>Preamble: Load Packages</span></a></li><li><a class="tocitem" href="#System-Setup"><span>System Setup</span></a></li><li><a class="tocitem" href="#Setup-HB"><span>Setup HB</span></a></li><li><a class="tocitem" href="#Setup-HB-Residue,-Get-First-Point"><span>Setup HB Residue, Get First Point</span></a></li><li><a class="tocitem" href="#Continuation"><span>Continuation</span></a></li><li><a class="tocitem" href="#Bifurcation-Analysis"><span>Bifurcation Analysis</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../reference/">Reference</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li><a class="is-disabled">D: Bifurcation Analysis Examples</a></li><li class="is-active"><a href>3: Branch Switching Using Normal Forms</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>3: Branch Switching Using Normal Forms</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Nidish96/juliajim/blob/master/examples/d3_normalform.jl#" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h2 id="ex_d3"><a class="docs-heading-anchor" href="#ex_d3">Example D3: Branch Switching Using Normal Forms</a><a id="ex_d3-1"></a><a class="docs-heading-anchor-permalink" href="#ex_d3" title="Permalink"></a></h2><p>This example is a direct continuation of <a href="../d2_forcedvdp/#ex_d2">Example D2</a>. In that example we did a branch switching analysis by arbitrarily choosing the amplitude of perturbation. Here, we use the <a href="../reference/#juliajim.NLDYN.NORMALFORMFIT-Tuple{Any, Any, Any}"><code>NORMALFORMFIT</code></a> function to fit the system to a cubic nonlinear &quot;normal form&quot; (through a similarity transformation eliminating certain terms).</p><p>The normal form can easily be interpreted to provide an estimate for the bifurcated branch amplitudes. It can be seen that the normal form approach provides a near exact estimate of the bifurcated branch amplitude in the end of this example.</p><h2 id="Preamble:-Load-Packages"><a class="docs-heading-anchor" href="#Preamble:-Load-Packages">Preamble: Load Packages</a><a id="Preamble:-Load-Packages-1"></a><a class="docs-heading-anchor-permalink" href="#Preamble:-Load-Packages" title="Permalink"></a></h2><pre><code class="language-julia hljs">using GLMakie
+using LinearAlgebra
+using SparseArrays
+using NonlinearSolve
+using DSP
+
+using Revise
+using juliajim.HARMONIC
+using juliajim.CONTINUATION
+using juliajim.MDOFUTILS
+using juliajim.NLDYN</code></pre><h2 id="System-Setup"><a class="docs-heading-anchor" href="#System-Setup">System Setup</a><a id="System-Setup-1"></a><a class="docs-heading-anchor-permalink" href="#System-Setup" title="Permalink"></a></h2><p>Here we setup the system with parameters.</p><pre><code class="language-julia hljs">pars = (c=0.02, k=4., F=1., eta=0.1);
+
+mdl = MDOFGEN(1.0, -pars.c, pars.k);
+fnl = (t,u,ud) -&gt; return pars.eta.*u.^2 .*ud, 2pars.eta.*u.*ud, pars.eta.*u.^2;
+mdl = ADDNL(mdl, :Inst, fnl, 1.0);</code></pre><h2 id="Setup-HB"><a class="docs-heading-anchor" href="#Setup-HB">Setup HB</a><a id="Setup-HB-1"></a><a class="docs-heading-anchor-permalink" href="#Setup-HB" title="Permalink"></a></h2><pre><code class="language-julia hljs">h = 0:5;
+N = 128;
+t = range(0, 2π, N+1)[1:N];
+
+Nhc = NHC(h);
+
+inds0, hinds, zinds, rinds, iinds = HINDS(mdl.Ndofs, h);
+Fl = zeros(Nhc*mdl.Ndofs, 1);
+Fl[rinds[1]] = pars.F;
+
+Om0 = 0.1;
+Om1 = 2.0;
+E, dEdw = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Om0, h);
+
+Uw0 = [E\Fl; Om0];</code></pre><h2 id="Setup-HB-Residue,-Get-First-Point"><a class="docs-heading-anchor" href="#Setup-HB-Residue,-Get-First-Point">Setup HB Residue, Get First Point</a><a id="Setup-HB-Residue,-Get-First-Point-1"></a><a class="docs-heading-anchor-permalink" href="#Setup-HB-Residue,-Get-First-Point" title="Permalink"></a></h2><pre><code class="language-julia hljs">fun = NonlinearFunction((r,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; R=r),
+    jac=(J,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; dRdU=J),
+    paramjac=(Jp,u,p)-&gt;HBRESFUN!([u;p], mdl, Fl, h, N; dRdw=Jp));
+
+prob = NonlinearProblem(fun, Uw0[1:end-1], Uw0[end]);
+sol = solve(prob, show_trace=Val(true));</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	3.93569199e-05      	4.27816013e+00
+1       	9.39503268e-13      	1.40930725e-05
+2       	1.11022302e-16      	2.66616371e-13
+Final   	1.11022302e-16
+----------------------</code></pre><h2 id="Continuation"><a class="docs-heading-anchor" href="#Continuation">Continuation</a><a id="Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Continuation" title="Permalink"></a></h2><pre><code class="language-julia hljs">Om0 = 0.1;
+Om1 = 4.0;
+dOm = 0.2;
+cpars = (parm=:arclength, nmax=100, save_jacs=true);
+
+sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	3.93569199e-05      	2.12075205e+01
+1       	9.39503268e-13      	1.40930725e-05
+2       	1.11022302e-16      	2.66616371e-13
+Final   	1.11022302e-16
+----------------------
+2. 0.30 with step 0.2000 (0.2000) converged in 3 iterations.
+3. 0.50 with step 0.1998 (0.2000) converged in 3 iterations.
+4. 0.70 with step 0.1995 (0.2000) converged in 3 iterations.
+5. 0.90 with step 0.1986 (0.2000) converged in 3 iterations.
+6. 1.09 with step 0.1970 (0.2000) converged in 3 iterations.
+7. 1.28 with step 0.1927 (0.2000) converged in 3 iterations.
+8. 1.45 with step 0.1817 (0.2000) converged in 4 iterations.
+9. 1.57 with step 0.1347 (0.1732) converged in 4 iterations.
+10. 1.65 with step 0.0898 (0.1500) converged in 3 iterations.
+11. 1.71 with step 0.0668 (0.1500) converged in 3 iterations.
+12. 1.75 with step 0.0490 (0.1500) converged in 3 iterations.
+13. 1.78 with step 0.0366 (0.1500) converged in 3 iterations.
+14. 1.81 with step 0.0280 (0.1500) converged in 3 iterations.
+15. 1.83 with step 0.0219 (0.1500) converged in 3 iterations.
+16. 1.84 with step 0.0175 (0.1500) converged in 3 iterations.
+17. 1.85 with step 0.0143 (0.1500) converged in 3 iterations.
+18. 1.87 with step 0.0119 (0.1500) converged in 3 iterations.
+19. 1.87 with step 0.0101 (0.1500) converged in 3 iterations.
+20. 1.88 with step 0.0087 (0.1500) converged in 3 iterations.
+21. 1.89 with step 0.0078 (0.1500) converged in 3 iterations.
+22. 1.90 with step 0.0070 (0.1500) converged in 3 iterations.
+23. 1.90 with step 0.0065 (0.1500) converged in 3 iterations.
+24. 1.91 with step 0.0061 (0.1500) converged in 3 iterations.
+25. 1.91 with step 0.0058 (0.1500) converged in 3 iterations.
+26. 1.92 with step 0.0055 (0.1500) converged in 3 iterations.
+27. 1.93 with step 0.0054 (0.1500) converged in 3 iterations.
+28. 1.93 with step 0.0052 (0.1500) converged in 3 iterations.
+29. 1.94 with step 0.0051 (0.1500) converged in 3 iterations.
+30. 1.94 with step 0.0050 (0.1500) converged in 3 iterations.
+31. 1.95 with step 0.0050 (0.1500) converged in 3 iterations.
+32. 1.95 with step 0.0049 (0.1500) converged in 3 iterations.
+33. 1.96 with step 0.0049 (0.1500) converged in 3 iterations.
+34. 1.96 with step 0.0048 (0.1500) converged in 3 iterations.
+35. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
+36. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
+37. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
+38. 1.98 with step 0.0048 (0.1500) converged in 3 iterations.
+39. 1.98 with step 0.0047 (0.1500) converged in 3 iterations.
+40. 1.99 with step 0.0047 (0.1500) converged in 3 iterations.
+41. 1.99 with step 0.0047 (0.1500) converged in 3 iterations.
+42. 2.00 with step 0.0047 (0.1500) converged in 3 iterations.
+43. 2.00 with step 0.0047 (0.1500) converged in 3 iterations.
+44. 2.01 with step 0.0047 (0.1500) converged in 3 iterations.
+45. 2.01 with step 0.0047 (0.1500) converged in 3 iterations.
+46. 2.02 with step 0.0048 (0.1500) converged in 3 iterations.
+47. 2.02 with step 0.0048 (0.1500) converged in 3 iterations.
+48. 2.03 with step 0.0048 (0.1500) converged in 3 iterations.
+49. 2.03 with step 0.0048 (0.1500) converged in 3 iterations.
+50. 2.04 with step 0.0048 (0.1500) converged in 3 iterations.
+51. 2.04 with step 0.0048 (0.1500) converged in 3 iterations.
+52. 2.05 with step 0.0049 (0.1500) converged in 3 iterations.
+53. 2.05 with step 0.0049 (0.1500) converged in 3 iterations.
+54. 2.06 with step 0.0049 (0.1500) converged in 3 iterations.
+55. 2.06 with step 0.0050 (0.1500) converged in 3 iterations.
+56. 2.07 with step 0.0051 (0.1500) converged in 3 iterations.
+57. 2.07 with step 0.0051 (0.1500) converged in 3 iterations.
+58. 2.08 with step 0.0052 (0.1500) converged in 3 iterations.
+59. 2.08 with step 0.0054 (0.1500) converged in 3 iterations.
+60. 2.09 with step 0.0055 (0.1500) converged in 3 iterations.
+61. 2.09 with step 0.0058 (0.1500) converged in 3 iterations.
+62. 2.10 with step 0.0061 (0.1500) converged in 3 iterations.
+63. 2.11 with step 0.0064 (0.1500) converged in 3 iterations.
+64. 2.11 with step 0.0069 (0.1500) converged in 3 iterations.
+65. 2.12 with step 0.0076 (0.1500) converged in 3 iterations.
+66. 2.13 with step 0.0085 (0.1500) converged in 3 iterations.
+67. 2.14 with step 0.0098 (0.1500) converged in 3 iterations.
+68. 2.15 with step 0.0114 (0.1500) converged in 3 iterations.
+69. 2.17 with step 0.0136 (0.1500) converged in 3 iterations.
+70. 2.19 with step 0.0166 (0.1500) converged in 3 iterations.
+71. 2.21 with step 0.0206 (0.1500) converged in 3 iterations.
+72. 2.24 with step 0.0261 (0.1500) converged in 3 iterations.
+73. 2.28 with step 0.0338 (0.1500) converged in 3 iterations.
+74. 2.33 with step 0.0448 (0.1500) converged in 3 iterations.
+75. 2.40 with step 0.0607 (0.1500) converged in 3 iterations.
+76. 2.50 with step 0.0822 (0.1500) converged in 4 iterations.
+77. 2.60 with step 0.0919 (0.1299) converged in 3 iterations.
+78. 2.71 with step 0.1070 (0.1299) converged in 3 iterations.
+79. 2.83 with step 0.1169 (0.1299) converged in 3 iterations.
+80. 2.95 with step 0.1225 (0.1299) converged in 3 iterations.
+81. 3.08 with step 0.1256 (0.1299) converged in 3 iterations.
+82. 3.21 with step 0.1273 (0.1299) converged in 3 iterations.
+83. 3.34 with step 0.1282 (0.1299) converged in 3 iterations.
+84. 3.47 with step 0.1288 (0.1299) converged in 3 iterations.
+85. 3.60 with step 0.1291 (0.1299) converged in 3 iterations.
+86. 3.72 with step 0.1294 (0.1299) converged in 3 iterations.
+87. 3.85 with step 0.1295 (0.1299) converged in 3 iterations.
+88. 3.98 with step 0.1296 (0.1299) converged in 3 iterations.
+89. 4.11 with step 0.1297 (0.1299) converged in 2 iterations.</code></pre><p>Obtain Harmonics</p><pre><code class="language-julia hljs">uh = zeros(Complex, maximum(h)+1, length(sols));
+uh[[inds0; hinds], :] = hcat([[up[zinds];up[rinds,:]+1im*up[iinds,:]] for up in sols.up]...);
+Oms = [up[end] for up in sols.up];</code></pre><h3 id="Stability-Analysis"><a class="docs-heading-anchor" href="#Stability-Analysis">Stability Analysis</a><a id="Stability-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Stability-Analysis" title="Permalink"></a></h3><pre><code class="language-julia hljs">E0, _ = HARMONICSTIFFNESS(0., -2mdl.M, 0, 1, h);
+E0 = collect(E0);
+stab = zeros(length(Oms));
+for (i,(J,Om)) in enumerate(zip(sols.J, Oms))
+    evs = eigvals(J[2:3,2:3], Om*E0[2:3,2:3]);
+    stab[i] = sum(real(evs).&gt;=0);
+end</code></pre><h2 id="Bifurcation-Analysis"><a class="docs-heading-anchor" href="#Bifurcation-Analysis">Bifurcation Analysis</a><a id="Bifurcation-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Bifurcation-Analysis" title="Permalink"></a></h2><h3 id="Setup-QPHB-for-Branch-Switching"><a class="docs-heading-anchor" href="#Setup-QPHB-for-Branch-Switching">Setup QPHB for Branch Switching</a><a id="Setup-QPHB-for-Branch-Switching-1"></a><a class="docs-heading-anchor-permalink" href="#Setup-QPHB-for-Branch-Switching" title="Permalink"></a></h3><pre><code class="language-julia hljs">Nhmax = 3;
+hq = HSEL(Nhmax, [1.,1.]);
+
+inds0q,hindsq, zindsq,rindsq,iindsq = HINDS(1, hq);
+Nhcq = NHC(hq);
+Nq = 32;
+
+h01 = findall(vec(all(hq.==0, dims=2)));
+hq1s = setdiff(findall(hq[:,2].==0), h01).-length(h01);  # w1 alone
+hq2s = setdiff(findall(hq[:,1].==0), h01).-length(h01);  # w2 alone
+
+Flq = zeros(Nhcq);
+Flq[rindsq[hq2s[1]]] = pars.F;</code></pre><h3 id="Detection"><a class="docs-heading-anchor" href="#Detection">Detection</a><a id="Detection-1"></a><a class="docs-heading-anchor-permalink" href="#Detection" title="Permalink"></a></h3><pre><code class="language-julia hljs">bifis = findall(stab[1:end-1].!=stab[2:end]);
+bifis[2] += 1;
+dxis = [-1, 1];
+
+bi = 2;
+bifi = bifis[bi];
+eVals, eVecs = eigen(sols.J[bifi][2:3, 2:3], Oms[bifi]*collect(E0[2:3,2:3]));
+eVecsC = eVecs[1,:]-1im.*eVecs[2,:];  # Complexify
+
+ei = argmax(abs.(eVecsC));  # Only one should &quot;survive&quot; for the Hopf bifurcation
+
+sig = imag(eVals[ei]);
+Wself = Oms[bifi] + sig;  # Self Excited Frequency
+Pvec = normalize([real(eVecsC[ei]), -imag(eVecsC[ei])]);  # Perturbation Vector</code></pre><p>Setup Initial Guess</p><pre><code class="language-julia hljs">Uhq0 = zeros(Nhcq);
+Uhq0[[rindsq[hq2s]; iindsq[hq2s]]] = sols.up[bifi][[rinds[1:length(hq2s)];
+                                                    iinds[1:length(hq2s)]]];</code></pre><h3 id="Fit-the-HB-Residue-to-a-Local-Normal-form"><a class="docs-heading-anchor" href="#Fit-the-HB-Residue-to-a-Local-Normal-form">Fit the HB Residue to a Local Normal form</a><a id="Fit-the-HB-Residue-to-a-Local-Normal-form-1"></a><a class="docs-heading-anchor-permalink" href="#Fit-the-HB-Residue-to-a-Local-Normal-form" title="Permalink"></a></h3><pre><code class="language-julia hljs">Fl1 = Fl[[rinds[1], iinds[1]]];  # Single harmonic excitation
+uh1 = sols.up[bifi][[rinds[1], iinds[1]]];  # Bifurcated Solution
+vh1 = [normalize(real(eVecs[:,ei])) normalize(imag(eVecs[:,ei]))];  # Projector
+
+uh0 = sols.up[bifi-dxis[bi]][[rinds[1], iinds[1]]];  # Previous Solution
+d_amp = norm(vh1&#39;*(uh1-uh0));
+
+E0f, _ = HARMONICSTIFFNESS(0, -2mdl.M, 0, Oms[bifi], 1)
+xyfun = (u) -&gt; vh1\ (E0f\HBRESFUN!([uh1+vh1*u; Oms[bifi]], mdl, Fl1, 1, N));
+
+A, B, C, H = NORMALFORMFIT(xyfun, d_amp/10, 100);
+λ = sum(diag(A))/2;
+α = sum(C[[1,4,5,8]])/4;
+
+pVal, pVec = eigen(A);
+vi = argmax(abs.(pVec[1,:]+1im*pVec[2,:]));
+Pvec = vh1*pVec[:,vi];
+Pvec = normalize([real(pVec[1]+1im*pVec[2]), imag(pVec[1]+1im*pVec[2])]);</code></pre><p>Perturbation Vector</p><pre><code class="language-julia hljs">Phq0 = zeros(Nhcq);
+Phq0[[rindsq[hq1s[1]]; iindsq[hq1s[1]]]] = Pvec;</code></pre><p>Perturbation Amplitude</p><pre><code class="language-julia hljs">qamp = √(-λ/α);</code></pre><h3 id="Apply-phase-constraint-and-converge-with-deflation"><a class="docs-heading-anchor" href="#Apply-phase-constraint-and-converge-with-deflation">Apply phase constraint and converge with deflation</a><a id="Apply-phase-constraint-and-converge-with-deflation-1"></a><a class="docs-heading-anchor-permalink" href="#Apply-phase-constraint-and-converge-with-deflation" title="Permalink"></a></h3><pre><code class="language-julia hljs">cL = I(Nhcq+2)[:, setdiff(1:Nhcq+2, iindsq[hq1s[1]])];
+uC = cL&#39;*[Uhq0; Wself; Oms[bifi]];
+
+funq = NonlinearFunction((r,u,p)-&gt; QPHBRESFUN!([u;p], mdl, Flq, hq, Nq; R=r,cL=cL,U0=uC),
+    jac=(J,u,p)-&gt;QPHBRESFUN!([u;p], mdl, Flq, hq, Nq; dRdU=J,cL=cL,U0=uC),
+    paramjac=(Jp,u,p)-&gt;QPHBRESFUN!([u;p], mdl, Flq, hq, Nq; dRdw=Jp,cL=cL,U0=uC));
+
+u0 = cL&#39;*[Uhq0+qamp*Phq0; Wself; Oms[bifi]];
+probq = NonlinearProblem(funq, u0[1:end-1], u0[end]);
+solq = solve(probq, show_trace=Val(true));</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
+Algorithm: NewtonRaphson(
+    descent = NewtonDescent(),
+    autodiff = AutoForwardDiff(),
+    vjp_autodiff = AutoFiniteDiff(
+        fdtype = Val{:forward}(),
+        fdjtype = Val{:forward}(),
+        fdhtype = Val{:hcentral}(),
+        dir = true
+    ),
+    jvp_autodiff = AutoForwardDiff(),
+    concrete_jac = Val{false}()
+)
+
+----    	-------------       	-----------
+Iter    	f(u) inf-norm       	Step 2-norm
+----    	-------------       	-----------
+0       	3.35887714e-01      	NaN
+1       	3.91303380e-03      	3.42635489e-02
+2       	1.10285706e-05      	6.46964858e-04
+3       	2.48089687e-11      	1.43364308e-06
+4       	8.77690121e-16      	5.38662104e-12
+Final   	8.77690121e-16
+----------------------</code></pre><p>We can now verify that the converged solution does indeed have an amplitude that&#39;s almost exactly equal to the normal form prediction.</p><pre><code class="language-julia hljs">[cL[2,:]&#39;*[solq.u; Oms[bifi]], qamp]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">2-element Vector{Float64}:
+ 0.4061835821507414
+ 0.4061036816772308</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d2_forcedvdp/">« 2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Monday 8 December 2025 02:32">Monday 8 December 2025</span>. Using Julia version 1.12.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
