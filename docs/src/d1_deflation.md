@@ -10,17 +10,21 @@ CurrentModule = juliajim
 
 It is sometimes the case that we are trying to solve for the solution of a system of equations that has multiple zeros where one is (or a few are) already known. Case in point in dynamical systems: computing bifurcated branches emanating from a "main" branch of solutions.
 
-We use the method of deflation to discourage the solver from converging to the previously known solution(s) by penalizing the residue by the distance to that solution. Let us suppose that \(u_0\) is the previously known solution point and \(R(u)\) is the residue function that needs to be solved (\(u\in \mathbb{R}^n\), \(R: \mathbb{R}\to \mathbb{R}\)). We write the deflated residue
-\[ R_d(u) = \frac{1}{||u-u_0||_2^2} R(u), \]
-where \(||x||_2\) denotes the 2-norm. The limit \(u\to u_0\) may or may not exist for \(R_d(u)\) based on the speed at which \(R(u)\) goes to zero at \(u_0\), and this may affect the behavior of \(R_d(u)\). Notwithstanding this, we find using the 2-norm as above to be quite effective for most problems.
+We use the method of deflation to discourage the solver from converging to the previously known solution(s) by penalizing the residue by the distance to that solution. Let us suppose that $u_0$ is the previously known solution point and $R(u)$ is the residue function that needs to be solved ($u\in \mathbb{R}^n$, $R: \mathbb{R}\to \mathbb{R}$). We write the deflated residue
+```math
+R_d(u) = \frac{1}{||u-u_0||_2^2} R(u),
+```
+where $||x||_2$ denotes the 2-norm. The limit $u\to u_0$ may or may not exist for $R_d(u)$ based on the speed at which $R(u)$ goes to zero at $u_0$, and this may affect the behavior of $R_d(u)$. Notwithstanding this, we find using the 2-norm as above to be quite effective for most problems.
 
-\(R_d(u)\) discourages the solver from approaching the known solution \(u_0\), allowing us to converge to another solution if it exists and if our initial guess is close enough.
+$R_d(u)$ discourages the solver from approaching the known solution $u_0$, allowing us to converge to another solution if it exists and if our initial guess is close enough.
 
 [`juliajim`](@ref juliajim) implements [`DEFLATEDRES!`](@ref juliajim.MDOFUTILS.DEFLATEDRES!) which is a deflation wrapper routine that can be used on top of any existing residue function to achieve deflation.
 
 This example demonstrates this through a simple 2-state system of polynomial equations with two known roots:
-\[ R(u; p) = \begin{bmatrix} u_2\\-p u_1-u_2+\frac{u_1^3}{4} \end{bmatrix}, \]
-which is solved by \((u_1,u_2)=(-2\sqrt{p},0), (0,0), (2\sqrt{p},0)\).
+```math
+R(u; p) = \begin{bmatrix} u_2\\-p u_1-u_2+\frac{u_1^3}{4} \end{bmatrix},
+```
+which is solved by $(u_1,u_2)=(-2\sqrt{p},0), (0,0), (2\sqrt{p},0)$.
 
 ## Load Packages
 
@@ -67,7 +71,7 @@ This returns the solution
 sol1
 ````
 
-which is exactly \((2\sqrt{p},0)\) as expected.
+which is exactly $(2\sqrt{p},0)$ as expected.
 
 ## Deflated Solution
 
@@ -82,7 +86,7 @@ sol2 = solve(prob2, show_trace=Val(true));
 nothing #hide
 ````
 
-This returns the trivial solution \((0,0)\) for the above initial guess:
+This returns the trivial solution $(0,0)$ for the above initial guess:
 
 ````@example d1_deflation
 sol2
@@ -102,7 +106,7 @@ sol3 = solve(prob3, show_trace=Val(true));
 nothing #hide
 ````
 
-Now we recover the solution \((-2\sqrt{p},0)\)!
+Now we recover the solution $(-2\sqrt{p},0)$!
 
 ````@example d1_deflation
 sol3

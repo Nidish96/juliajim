@@ -26,7 +26,6 @@ using LinearAlgebra
 using SparseArrays
 using NonlinearSolve
 using DSP
-using Debugger
 
 using Revise
 using juliajim.HARMONIC
@@ -185,7 +184,7 @@ for (bi, bifi) in enumerate(bifis)
     uC = cL'*[Uhq0; Wself; Oms[bifi]];
     # The matrix `cL` is defined so that the original solution vector `Uw`
     # (which includes harmonics and both the frequency components) can be
-    # recovered by \(Uw = cL \hat{Uw}\).
+    # recovered by $Uw = cL \hat{Uw}$.
 
     funq = NonlinearFunction((r,u,p)-> QPHBRESFUN!([u;p], mdl, Flq, hq, Nq;
         R=r,cL=cL,U0=uC),
