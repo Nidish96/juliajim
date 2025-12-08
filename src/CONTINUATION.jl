@@ -355,7 +355,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     if fun.paramjac !== nothing
         fun.paramjac(Jp, solp0.u, ps[1]);
     else
-        ForwardDiff.jacobian!(Jp, (R,p)->fun.f(R,solp0.u,p[1]), R, [ps[1]]);
+        ForwardDiff.derivative!(Jp, (R,p)->fun.f(R,solp0.u,p), R, ps[1]);
     end
 
     push!(sols, myNLSoln([solp0.u;ps[1]]; J=copy(J), Jp=copy(Jp),
