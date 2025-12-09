@@ -101,6 +101,26 @@ function Base.:-(v1::myNLSoln, v2::myNLSoln)
 end
 
 """
+# Base.getproperty(sol::myNLSoln, sym::Symbol)
+
+This will allow accessing the solution (u) and parameter (p) from myNLSoln easily
+
+# Arguments
+- sol::myNLSoln : 
+- sym::Symbol   : 
+"""
+function Base.getproperty(sol::myNLSoln, sym::Symbol)
+    if sym === :u
+        return sol.up[1:end-1]
+    elseif sym === :p
+        return sol.up[end]        
+    else
+        return getfield(sol, sym)        
+    end
+
+end
+
+"""
 # Base.getproperty(sols::Vector{myNLSoln}, sym::Symbol)
 
 This will allow accessing elements of myNLSoln from vectors of structs.
@@ -112,6 +132,10 @@ This will allow accessing elements of myNLSoln from vectors of structs.
 function Base.getproperty(sols::Vector{myNLSoln}, sym::Symbol)
     if sym in fieldnames(myNLSoln)
         return [getfield(s, sym) for s in sols]
+    elseif sym == :u
+        return [s.u for s in sols]
+    elseif sym == :p
+        return [s.p for s in sols]
     else
         # Fall back to default behavior for other properties (like :size, :length, etc.)
         return getfield(sols, sym)

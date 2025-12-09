@@ -676,10 +676,10 @@ function DEFLATEDRES!(U, U0, resfun!; R=nothing, J=nothing, Jp=nothing)
 
     Jac = J;
     Jacp = Jp;
-    if (J === nothing)
+    if (J === nothing) && !(Jp === nothing)
         Jac = zeros(eltype(U), length(U)-1, length(U)-1);
     end
-    if (Jp === nothing)
+    if (Jp === nothing) && !(J === nothing)
         Jacp = zeros(eltype(U), length(U)-1);
     end
 
