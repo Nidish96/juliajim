@@ -696,9 +696,11 @@ function DEFLATEDRES!(U, U0, resfun!; R=nothing, J=nothing, Jp=nothing)
     end
 
     # In residue
-    Jacfull = [Jac Jacp]*des + Res*ddesdU;
-    Jac[:, :] = Jacfull[:, 1:end-1];
-    Jacp[:]   = Jacfull[:, end];
+    if Jac != nothing
+        Jacfull = [Jac Jacp]*des + Res*ddesdU;
+        Jac[:, :] = Jacfull[:, 1:end-1];
+        Jacp[:]   = Jacfull[:, end];
+    end
     Res[:]    = Res*des;
 end
 

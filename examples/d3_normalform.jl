@@ -9,7 +9,7 @@
 # The normal form can easily be interpreted to provide an estimate for the bifurcated branch amplitudes. It can be seen that the normal form approach provides a near exact estimate of the bifurcated branch amplitude in the end of this example.
 
 # ## Preamble: Load Packages
-using GLMakie
+# using GLMakie
 using LinearAlgebra
 using SparseArrays
 using NonlinearSolve
