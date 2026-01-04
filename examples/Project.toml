@@ -18,4 +18,3 @@ juliajim = "dfeb43dd-e7d5-4223-99c6-bbf17d8d0dc1"
 
 [sources]
 FastTransformsForwardDiff = {rev = "main", url = "https://github.com/Nidish96/FastTransformsForwardDiff.jl"}
-juliajim = {path = ".."}

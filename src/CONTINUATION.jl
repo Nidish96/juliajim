@@ -4,6 +4,7 @@ using Printf
 using ForwardDiff
 using Markdown
 using Infiltrator
+using Statistics
 
 # * Exports
 export myNLSoln, EXTRESFUN!, EXTRESFUN_scaled!
@@ -290,7 +291,7 @@ end
 # ** Continuation Routine
 
 """
-   CONTINUATE(u0, fun, ps, dp; kwargs...)
+   CONTINUATE(u0, fun, ps, dp; pkwargs...)
 
 Continuation routine. Solves the bordered problem with residue drawn from `EXTRESFUN!`.
 
@@ -341,11 +342,16 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
     nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],
-    minDsc::Float64=eps()^(4//5))
-
+    minDsc::Float64=0.,
+    pkwargs=(;abstol=1e-6, reltol=1e-6))
+    
     # Continuation Routine
     if dpbnds === nothing
         dpbnds = [dp/5, 5dp];
+    end
+    if minDsc ≈ 0
+        # eps()^(4//5)
+        minDsc = 1e3*mean(abs.(u0[u0.!=0]));  # Quite a heuristic
     end
 
     # Temporary Variables
@@ -363,8 +369,8 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     dss = Float64[];
     xis = Float64[];
 
-    # First Solution Point   
-    prob0 = NonlinearProblem(fun, u0, ps[1]);
+    # First Solution Point
+    prob0 = NonlinearProblem(fun, u0, ps[1]; pkwargs...);
     if verbosity>0
         display(md"");
         display(md"# Correcting the Initial Point")
@@ -425,13 +431,15 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         exfun.f(Rf, up0_, (sols[end], dss[end], Dsc, 1.0));
         Ralsc_ = norm(R)/dss[end];
         
-        prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, Ralsc_));
+        prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, Ralsc_);
+            pkwargs...);
         solp_ = solve(prob_);
         # itopt = max(solp_.stats.nsteps, 3);
         itopt = solp_.stats.nsteps;
     else
         up0_ = copy(sols[end].up);
-        prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, 1.0));
+        prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, 1.0);
+            pkwargs...);
     end
 
     if verbosity>0
