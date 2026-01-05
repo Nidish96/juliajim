@@ -30,7 +30,7 @@ using juliajim.MDOFUTILS
 # ## [System Setup](@id exc3_setup)
 # MCK matrices and nonlinearity setup: identical to [Example C2](@ref exc2_setup).
 
-M = collect(1.0I(2));
+M = [1. 0.;0. 1.];
 K = [2. -1.;-1. 2.];
 C = 0.01*M+0.001*K;
 
@@ -43,7 +43,7 @@ fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
     return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
         return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
 end
-L = [0.0 1.0];
+L = [0. 1.];
 
 mdl = ADDNL(mdl, :Hyst, fnl, L);
 
@@ -101,7 +101,7 @@ for i in 1:2
                             s.up[rinds[i:2:end]]+1im*s.up[iinds[i:2:end]]]
                           for s in sols]...);
 end
-Oms = [s.up[end] for s in sols];
+Oms = sols.p;
 Fs = [s.up[end-1] for s in sols];
 
 # ## [Plotting](@id exc3_plot)
@@ -157,8 +157,8 @@ end #src
 for i in eachindex(his[his.<=maximum(h)])
     ax = Axis(fig2[1, i],
         ylabel=L"$H_%$(his[i])$ Response (m/N)", yscale=log10);
-    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 1])./Fs, label="x1");
-    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 2])./Fs, label="x2");
+    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 1]./Fs), label="x1");
+    scatterlines!(ax, Oms, abs.(uh[his[i].+1, :, 2]./Fs), label="x2");
 
     ax = Axis(fig2[2, i], xlabel=L"Excitation Frequency $\Omega$",
         ylabel=L"$H_%$(his[i])$ Phase (rad)");

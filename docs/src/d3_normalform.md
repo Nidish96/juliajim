@@ -13,9 +13,9 @@ This example is a direct continuation of [Example D2](@ref ex_d2). In that examp
 The normal form can easily be interpreted to provide an estimate for the bifurcated branch amplitudes. It can be seen that the normal form approach provides a near exact estimate of the bifurcated branch amplitude in the end of this example.
 
 ## Preamble: Load Packages
+using GLMakie
 
 ````@example d3_normalform
-using GLMakie
 using LinearAlgebra
 using SparseArrays
 using NonlinearSolve
@@ -78,7 +78,7 @@ nothing #hide
 ````@example d3_normalform
 Om0 = 0.1;
 Om1 = 4.0;
-dOm = 0.2;
+dOm = 0.4;
 cpars = (parm=:arclength, nmax=100, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
@@ -90,7 +90,7 @@ Obtain Harmonics
 ````@example d3_normalform
 uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[[inds0; hinds], :] = hcat([[up[zinds];up[rinds,:]+1im*up[iinds,:]] for up in sols.up]...);
-Oms = [up[end] for up in sols.up];
+Oms = sols.p;
 nothing #hide
 ````
 

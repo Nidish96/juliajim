@@ -85,7 +85,7 @@ Just like in other examples we call the [`CONTINUATE`](@ref juliajim.CONTINUATIO
 ````@example d2_forcedvdp
 Om0 = 0.1;
 Om1 = 4.0;
-dOm = 0.2;
+dOm = 0.4;
 cpars = (parm=:arclength, nmax=100, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
