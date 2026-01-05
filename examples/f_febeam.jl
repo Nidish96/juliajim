@@ -2,10 +2,14 @@
 # CurrentModule = juliajim
 # ```
 #
-# ## [Example F: Finite Element Beam]
+# ## [Example F: Finite Element Beam with Nonlinear Support](@id ex_f)
 #
 # This example considers a finite element model of a Beam (Euler-Bernoulli) that has a nonlinear attachment in one end and is clamped in the other.
-
+# The same code can be used for simulating 3 different types of nonlinear attachments:
+# 1. A simple cubic spring of the form $\beta u^3$.
+# 2. A stiff string attachment with reaction force of the form $T \frac{w_T}{\sqrt{\ell_s^2+w_T^2}}$
+# 3. A non-smooth frictional joint.
+#
 # ## Preamble: Load Packages
 using GLMakie
 using LinearAlgebra
@@ -26,8 +30,25 @@ ell = 1.0;
 ρA = rho*w*h;
 EI = Ey*w*h^3/12;
 
+# Cubic Spring
 β = 500.0;  # Nonlinearity
 fnl = (t, u, ud) -> return β.*u.^3, 3β.*u.^2, zeros(size(u));
+
+# Stiffened String
+Ts = 1e2;
+ls = 0.10;
+fnl = (t, u, ud) -> return Ts.*u./sqrt.(ls^2 .+u.^2),
+    Ts*ls^2 ./sqrt.(ls^2 .+u.^2).^3, zeros(size(u));
+typ = :Inst;
+
+# Frictional Support
+kt = 500;
+fs = 1e-2kt;
+fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
+    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
+        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
+end
+typ = :Hyst;
 
 Ne = 10;  # Number of elements
 Nn = Ne+1;  # Number of nodes
@@ -66,19 +87,17 @@ Cb = ab[1]*Mb + ab[2]*Kb;
 
 # Setup Nonlinearity
 mdl = MDOFGEN(Mb, Cb, Kb);
-mdl = ADDNL(mdl, :Inst, fnl, Float64.(Lb[end-1:end-1,:]));
+mdl = ADDNL(mdl, typ, fnl, Float64.(Lb[end-1:end-1,:]));
 
-# * Setup HB
-h = 0:1;
-N = 128;
+# ## Setup HB
+h = 0:5;
+N = 256;
 
 Nhc = NHC(h);
 _, _, zinds, rinds, iinds = HINDS(mdl.Ndofs, h);
 
 Fl = zeros(Nhc*mdl.Ndofs);
 Fl[rinds[1:mdl.Ndofs]] = Fb;
-
-Famp = 1.0;
 
 Om0 = 10.0;
 Om1 = 450.0;
@@ -88,12 +107,13 @@ dOm = 10.0;
 E, _ = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Om0, h);
 U0_(Fa) = E\ (Fa*Fl);
 
-# * Setup nonlinear function
+# Setup nonlinear function
 fun(Fa) = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; R=r),
     jac=(J,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdU=J),
     paramjac=(Jp,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdw=Jp));
 
-Famp = 20.0  # 100
+# ## Forced Response Continuation
+Famp = 8.0  # 0.1, 1.0, 2.0, 4.0, 8.0, 16.0
 
 U0 = U0_(Famp);
 prob = NonlinearProblem(fun(Famp), U0, Om0; abstol=1e-6, reltol=1e-6);
@@ -104,26 +124,42 @@ cpars = (parm=:arclength, nmax=2000, Dsc=:auto);
 
 Om0 = 40.0;
 Om1 = 100.0;
-dOm = 5.0;
+dOm = 2.5;
 sols, _, _, _, _ = CONTINUATE(U0, fun(Famp), [Om0, Om1], dOm; cpars...);
 
 Uh = [Lb[end-1,:]'reshape(u, mdl.Ndofs,:) for u in sols.u];
 
-# * 
+# ### Stability Certification
+E0, _ = HARMONICSTIFFNESS(zeros(mdl.Ndofs,mdl.Ndofs), -2mdl.M,
+    zeros(mdl.Ndofs, mdl.Ndofs), [1.], h);
+indsh1 = [rinds[1:mdl.Ndofs]; iinds[1:mdl.Ndofs]];
+E0 = collect(E0);
+J = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
+stab = zeros(length(sols));
+for iw in 1:length(sols)
+    fun(Famp).jac(J, sols.u[iw], sols.p[iw])
+    eVs = eigvals(J[indsh1,indsh1], sols.p[iw]*E0[indsh1,indsh1]);
+    stab[iw] = sum(real(eVs).>=0);
+end
+
+# ## Plot Forced Response
 set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
-if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie
-   scr = GLMakie.Screen();
-end
+if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie #src
+   scr = GLMakie.Screen(); #src
+end #src
 
 ax = Axis(fig[1, 1], xlabel="Excitation Frequency (rad/s)",
-    ylabel="Response (m)");
-scatterlines!(ax, sols.p, norm.(Uh)/Famp)
+    ylabel="Response (m)", yscale=log10);
+scatterlines!(ax, sols.p./(stab.==0), norm.(Uh)/Famp)
+scatterlines!(ax, sols.p./(stab.!=0), norm.(Uh)/Famp)
 
-if Makie.current_backend()==GLMakie
-   display(scr, fig);
-else
-   display(fig)
-end
+xlims!(ax, Om0, Om1)
+if Makie.current_backend()==GLMakie #src
+   display(scr, fig); #src
+else #src
+    display(fig) #src
+    fig
+end #src
    

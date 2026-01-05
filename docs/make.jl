@@ -61,6 +61,7 @@ makedocs(;
                             ["1: Deflation to Locate Multiple roots" => "d1_deflation.md",
                              "2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator" => "d2_forcedvdp.md",
                              "3: Branch Switching Using Normal Forms" => "d3_normalform.md"],
+                            "F: Finite Element Beam with Nonlinear Support" => "f_febeam.md",
                             "Reference" => "reference.md"]]
 )
 
