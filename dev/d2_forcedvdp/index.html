@@ -55,7 +55,7 @@ Iter    	f(u) inf-norm       	Step 2-norm
 Final   	1.11022302e-16
 ----------------------</code></pre><h2 id="exd2_cont"><a class="docs-heading-anchor" href="#exd2_cont">Continuation</a><a id="exd2_cont-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_cont" title="Permalink"></a></h2><p>Just like in other examples we call the <a href="../reference/#juliajim.CONTINUATION.CONTINUATE-Tuple{Vector{Float64}, Any, Vector{Float64}, Float64}"><code>CONTINUATE</code></a> utility to obtain the periodic forced response.</p><pre><code class="language-julia hljs">Om0 = 0.1;
 Om1 = 4.0;
-dOm = 0.2;
+dOm = 0.4;
 cpars = (parm=:arclength, nmax=100, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
@@ -75,99 +75,82 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	3.93569199e-05      	0.00000000e+00
+0       	3.93569199e-05      	2.50000000e-01
 1       	9.39503268e-13      	1.40930725e-05
-2       	1.11022302e-16      	2.66616371e-13
-Final   	1.11022302e-16
+Final   	9.39503268e-13
 ----------------------
-2. 0.30 with step 0.2000 (0.2000) converged in 3 iterations.
-3. 0.50 with step 0.1998 (0.2000) converged in 3 iterations.
-4. 0.70 with step 0.1995 (0.2000) converged in 3 iterations.
-5. 0.90 with step 0.1986 (0.2000) converged in 3 iterations.
-6. 1.09 with step 0.1970 (0.2000) converged in 3 iterations.
-7. 1.28 with step 0.1927 (0.2000) converged in 3 iterations.
-8. 1.45 with step 0.1817 (0.2000) converged in 4 iterations.
-9. 1.57 with step 0.1347 (0.1732) converged in 4 iterations.
-10. 1.65 with step 0.0898 (0.1500) converged in 3 iterations.
-11. 1.71 with step 0.0668 (0.1500) converged in 3 iterations.
-12. 1.75 with step 0.0490 (0.1500) converged in 3 iterations.
-13. 1.78 with step 0.0366 (0.1500) converged in 3 iterations.
-14. 1.81 with step 0.0280 (0.1500) converged in 3 iterations.
-15. 1.83 with step 0.0219 (0.1500) converged in 3 iterations.
-16. 1.84 with step 0.0175 (0.1500) converged in 3 iterations.
-17. 1.85 with step 0.0143 (0.1500) converged in 3 iterations.
-18. 1.87 with step 0.0119 (0.1500) converged in 3 iterations.
-19. 1.87 with step 0.0101 (0.1500) converged in 3 iterations.
-20. 1.88 with step 0.0087 (0.1500) converged in 3 iterations.
-21. 1.89 with step 0.0078 (0.1500) converged in 3 iterations.
-22. 1.90 with step 0.0070 (0.1500) converged in 3 iterations.
-23. 1.90 with step 0.0065 (0.1500) converged in 3 iterations.
-24. 1.91 with step 0.0061 (0.1500) converged in 3 iterations.
-25. 1.91 with step 0.0058 (0.1500) converged in 3 iterations.
-26. 1.92 with step 0.0055 (0.1500) converged in 3 iterations.
-27. 1.93 with step 0.0054 (0.1500) converged in 3 iterations.
-28. 1.93 with step 0.0052 (0.1500) converged in 3 iterations.
-29. 1.94 with step 0.0051 (0.1500) converged in 3 iterations.
-30. 1.94 with step 0.0050 (0.1500) converged in 3 iterations.
-31. 1.95 with step 0.0050 (0.1500) converged in 3 iterations.
-32. 1.95 with step 0.0049 (0.1500) converged in 3 iterations.
-33. 1.96 with step 0.0049 (0.1500) converged in 3 iterations.
-34. 1.96 with step 0.0048 (0.1500) converged in 3 iterations.
-35. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
-36. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
-37. 1.97 with step 0.0048 (0.1500) converged in 3 iterations.
-38. 1.98 with step 0.0048 (0.1500) converged in 3 iterations.
-39. 1.98 with step 0.0047 (0.1500) converged in 3 iterations.
-40. 1.99 with step 0.0047 (0.1500) converged in 3 iterations.
-41. 1.99 with step 0.0047 (0.1500) converged in 3 iterations.
-42. 2.00 with step 0.0047 (0.1500) converged in 3 iterations.
-43. 2.00 with step 0.0047 (0.1500) converged in 3 iterations.
-44. 2.01 with step 0.0047 (0.1500) converged in 3 iterations.
-45. 2.01 with step 0.0047 (0.1500) converged in 3 iterations.
-46. 2.02 with step 0.0048 (0.1500) converged in 3 iterations.
-47. 2.02 with step 0.0048 (0.1500) converged in 3 iterations.
-48. 2.03 with step 0.0048 (0.1500) converged in 3 iterations.
-49. 2.03 with step 0.0048 (0.1500) converged in 3 iterations.
-50. 2.04 with step 0.0048 (0.1500) converged in 3 iterations.
-51. 2.04 with step 0.0048 (0.1500) converged in 3 iterations.
-52. 2.05 with step 0.0049 (0.1500) converged in 3 iterations.
-53. 2.05 with step 0.0049 (0.1500) converged in 3 iterations.
-54. 2.06 with step 0.0049 (0.1500) converged in 3 iterations.
-55. 2.06 with step 0.0050 (0.1500) converged in 3 iterations.
-56. 2.07 with step 0.0051 (0.1500) converged in 3 iterations.
-57. 2.07 with step 0.0051 (0.1500) converged in 3 iterations.
-58. 2.08 with step 0.0052 (0.1500) converged in 3 iterations.
-59. 2.08 with step 0.0054 (0.1500) converged in 3 iterations.
-60. 2.09 with step 0.0055 (0.1500) converged in 3 iterations.
-61. 2.09 with step 0.0058 (0.1500) converged in 3 iterations.
-62. 2.10 with step 0.0061 (0.1500) converged in 3 iterations.
-63. 2.11 with step 0.0064 (0.1500) converged in 3 iterations.
-64. 2.11 with step 0.0069 (0.1500) converged in 3 iterations.
-65. 2.12 with step 0.0076 (0.1500) converged in 3 iterations.
-66. 2.13 with step 0.0085 (0.1500) converged in 3 iterations.
-67. 2.14 with step 0.0098 (0.1500) converged in 3 iterations.
-68. 2.15 with step 0.0114 (0.1500) converged in 3 iterations.
-69. 2.17 with step 0.0136 (0.1500) converged in 3 iterations.
-70. 2.19 with step 0.0166 (0.1500) converged in 3 iterations.
-71. 2.21 with step 0.0206 (0.1500) converged in 3 iterations.
-72. 2.24 with step 0.0261 (0.1500) converged in 3 iterations.
-73. 2.28 with step 0.0338 (0.1500) converged in 3 iterations.
-74. 2.33 with step 0.0448 (0.1500) converged in 3 iterations.
-75. 2.40 with step 0.0607 (0.1500) converged in 3 iterations.
-76. 2.50 with step 0.0822 (0.1500) converged in 4 iterations.
-77. 2.60 with step 0.0919 (0.1299) converged in 3 iterations.
-78. 2.71 with step 0.1070 (0.1299) converged in 3 iterations.
-79. 2.83 with step 0.1169 (0.1299) converged in 3 iterations.
-80. 2.95 with step 0.1225 (0.1299) converged in 3 iterations.
-81. 3.08 with step 0.1256 (0.1299) converged in 3 iterations.
-82. 3.21 with step 0.1273 (0.1299) converged in 3 iterations.
-83. 3.34 with step 0.1282 (0.1299) converged in 3 iterations.
-84. 3.47 with step 0.1288 (0.1299) converged in 3 iterations.
-85. 3.60 with step 0.1291 (0.1299) converged in 3 iterations.
-86. 3.72 with step 0.1294 (0.1299) converged in 3 iterations.
-87. 3.85 with step 0.1295 (0.1299) converged in 3 iterations.
-88. 3.98 with step 0.1296 (0.1299) converged in 3 iterations.
-89. 4.11 with step 0.1297 (0.1299) converged in 2 iterations.</code></pre><p>Obtain Harmonics</p><pre><code class="language-julia hljs">uh = zeros(Complex, maximum(h)+1, length(sols));
+2. 0.50 with step 0.3999 (0.4000) converged in 2 iterations.
+3. 0.90 with step 0.3990 (0.4000) converged in 2 iterations.
+4. 1.28 with step 0.3939 (0.4000) converged in 3 iterations.
+5. 1.54 with step 0.2966 (0.3266) converged in 3 iterations.
+6. 1.68 with step 0.1724 (0.2666) converged in 3 iterations.
+7. 1.75 with step 0.0832 (0.2177) converged in 2 iterations.
+8. 1.79 with step 0.0540 (0.2177) converged in 2 iterations.
+9. 1.82 with step 0.0368 (0.2177) converged in 2 iterations.
+10. 1.85 with step 0.0263 (0.2177) converged in 2 iterations.
+11. 1.86 with step 0.0196 (0.2177) converged in 3 iterations.
+12. 1.87 with step 0.0124 (0.1778) converged in 2 iterations.
+13. 1.88 with step 0.0104 (0.1778) converged in 2 iterations.
+14. 1.89 with step 0.0091 (0.1778) converged in 2 iterations.
+15. 1.90 with step 0.0081 (0.1778) converged in 2 iterations.
+16. 1.91 with step 0.0074 (0.1778) converged in 2 iterations.
+17. 1.91 with step 0.0070 (0.1778) converged in 2 iterations.
+18. 1.92 with step 0.0066 (0.1778) converged in 2 iterations.
+19. 1.93 with step 0.0063 (0.1778) converged in 2 iterations.
+20. 1.93 with step 0.0062 (0.1778) converged in 2 iterations.
+21. 1.94 with step 0.0060 (0.1778) converged in 2 iterations.
+22. 1.94 with step 0.0059 (0.1778) converged in 2 iterations.
+23. 1.95 with step 0.0058 (0.1778) converged in 2 iterations.
+24. 1.96 with step 0.0058 (0.1778) converged in 2 iterations.
+25. 1.96 with step 0.0057 (0.1778) converged in 2 iterations.
+26. 1.97 with step 0.0057 (0.1778) converged in 2 iterations.
+27. 1.97 with step 0.0057 (0.1778) converged in 2 iterations.
+28. 1.98 with step 0.0056 (0.1778) converged in 2 iterations.
+29. 1.98 with step 0.0056 (0.1778) converged in 2 iterations.
+30. 1.99 with step 0.0056 (0.1778) converged in 2 iterations.
+31. 2.00 with step 0.0056 (0.1778) converged in 2 iterations.
+32. 2.00 with step 0.0056 (0.1778) converged in 2 iterations.
+33. 2.01 with step 0.0056 (0.1778) converged in 2 iterations.
+34. 2.01 with step 0.0056 (0.1778) converged in 2 iterations.
+35. 2.02 with step 0.0056 (0.1778) converged in 2 iterations.
+36. 2.02 with step 0.0056 (0.1778) converged in 2 iterations.
+37. 2.03 with step 0.0057 (0.1778) converged in 2 iterations.
+38. 2.04 with step 0.0057 (0.1778) converged in 2 iterations.
+39. 2.04 with step 0.0057 (0.1778) converged in 2 iterations.
+40. 2.05 with step 0.0058 (0.1778) converged in 2 iterations.
+41. 2.05 with step 0.0058 (0.1778) converged in 2 iterations.
+42. 2.06 with step 0.0059 (0.1778) converged in 2 iterations.
+43. 2.06 with step 0.0059 (0.1778) converged in 2 iterations.
+44. 2.07 with step 0.0061 (0.1778) converged in 2 iterations.
+45. 2.08 with step 0.0062 (0.1778) converged in 2 iterations.
+46. 2.08 with step 0.0064 (0.1778) converged in 2 iterations.
+47. 2.09 with step 0.0066 (0.1778) converged in 2 iterations.
+48. 2.10 with step 0.0070 (0.1778) converged in 2 iterations.
+49. 2.11 with step 0.0074 (0.1778) converged in 2 iterations.
+50. 2.11 with step 0.0081 (0.1778) converged in 2 iterations.
+51. 2.12 with step 0.0090 (0.1778) converged in 2 iterations.
+52. 2.13 with step 0.0103 (0.1778) converged in 2 iterations.
+53. 2.15 with step 0.0122 (0.1778) converged in 2 iterations.
+54. 2.16 with step 0.0149 (0.1778) converged in 2 iterations.
+55. 2.19 with step 0.0186 (0.1778) converged in 2 iterations.
+56. 2.21 with step 0.0239 (0.1778) converged in 2 iterations.
+57. 2.25 with step 0.0316 (0.1778) converged in 2 iterations.
+58. 2.30 with step 0.0432 (0.1778) converged in 2 iterations.
+59. 2.38 with step 0.0611 (0.1778) converged in 2 iterations.
+60. 2.48 with step 0.0879 (0.1778) converged in 3 iterations.
+61. 2.59 with step 0.0991 (0.1451) converged in 3 iterations.
+62. 2.69 with step 0.0968 (0.1185) converged in 2 iterations.
+63. 2.80 with step 0.1055 (0.1185) converged in 2 iterations.
+64. 2.91 with step 0.1108 (0.1185) converged in 2 iterations.
+65. 3.03 with step 0.1138 (0.1185) converged in 2 iterations.
+66. 3.14 with step 0.1156 (0.1185) converged in 2 iterations.
+67. 3.26 with step 0.1166 (0.1185) converged in 2 iterations.
+68. 3.38 with step 0.1172 (0.1185) converged in 2 iterations.
+69. 3.50 with step 0.1176 (0.1185) converged in 2 iterations.
+70. 3.61 with step 0.1179 (0.1185) converged in 1 iterations.
+71. 3.78 with step 0.1670 (0.1676) converged in 2 iterations.
+72. 3.95 with step 0.1672 (0.1676) converged in 1 iterations.
+73. 4.18 with step 0.2366 (0.2370) converged in 2 iterations.</code></pre><p>Obtain Harmonics</p><pre><code class="language-julia hljs">uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[[inds0; hinds], :] = hcat([[up[zinds];up[rinds,:]+1im*up[iinds,:]] for up in sols.up]...);
 Oms = [up[end] for up in sols.up];</code></pre><h3 id="Stability-Analysis"><a class="docs-heading-anchor" href="#Stability-Analysis">Stability Analysis</a><a id="Stability-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Stability-Analysis" title="Permalink"></a></h3><p>We now use an averaging formulation to obtain the stability coefficients based on just the first harmonics. This will work if the response is dominantly single harmonic.</p><pre><code class="language-julia hljs">E0, _ = HARMONICSTIFFNESS(0., -2mdl.M, 0, 1, h);
 E0 = collect(E0);
@@ -280,13 +263,15 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	4.26236496e-01      	1.20009872e+01
-1       	4.31045788e-01      	5.83746461e-01
-2       	2.04921987e-02      	8.12081627e-02
-3       	3.94766402e-04      	5.38533601e-03
-4       	2.36872527e-08      	5.03668194e-05
-5       	7.17900205e-16      	3.86599651e-09
-Final   	7.17900205e-16
+0       	2.74324712e-01      	9.28312881e+01
+1       	2.37721922e+00      	8.79693034e-01
+2       	6.66794766e-01      	1.89389940e-01
+3       	4.95056588e-01      	1.26110914e-01
+4       	1.22594686e-02      	2.07557118e-02
+5       	2.58972407e-05      	9.93024336e-04
+6       	4.26687126e-10      	1.77127223e-06
+7       	1.30732344e-15      	1.32874671e-11
+Final   	1.30732344e-15
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -305,11 +290,11 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	4.26236496e-01      	NaN
-1       	5.97121736e-01      	2.55683411e+00
-2       	1.28870749e-04      	2.75321611e-01
-3       	2.42335803e-11      	5.27179699e-05
-4       	2.22044605e-16      	2.64032159e-06
+0       	2.74324712e-01      	0.00000000e+00
+1       	4.14480092e-01      	1.97444792e+00
+2       	1.59223021e-04      	1.43328242e-01
+3       	1.95991844e-10      	3.20911518e-04
+4       	2.22044605e-16      	1.70504345e-06
 Final   	2.22044605e-16
 ----------------------
 
@@ -329,27 +314,50 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	7.17900205e-16      	0.00000000e+00
-1       	7.17900205e-16      	1.72860724e-16
-Final   	7.17900205e-16
+0       	1.30732344e-15      	NaN
+1       	1.30732344e-15      	7.39353061e-16
+Final   	1.30732344e-15
 ----------------------
-2. 1.40 with step -0.0430 (0.0927) converged in 3 iterations.
-3. 1.34 with step -0.0548 (0.0927) converged in 3 iterations.
-4. 1.27 with step -0.0662 (0.0927) converged in 3 iterations.
-5. 1.19 with step -0.0755 (0.0927) converged in 3 iterations.
-6. 1.11 with step -0.0819 (0.0927) converged in 3 iterations.
-7. 1.02 with step -0.0860 (0.0927) converged in 3 iterations.
-8. 0.93 with step -0.0885 (0.0927) converged in 3 iterations.
-9. 0.84 with step -0.0900 (0.0927) converged in 3 iterations.
-10. 0.75 with step -0.0910 (0.0927) converged in 3 iterations.
-11. 0.66 with step -0.0916 (0.0927) converged in 3 iterations.
-12. 0.56 with step -0.0884 (0.0927) converged in 4 iterations.
-13. 0.48 with step -0.0799 (0.0803) converged in 3 iterations.
-14. 0.40 with step -0.0800 (0.0803) converged in 3 iterations.
-15. 0.32 with step -0.0801 (0.0803) converged in 3 iterations.
-16. 0.24 with step -0.0802 (0.0803) converged in 3 iterations.
-17. 0.16 with step -0.0802 (0.0803) converged in 3 iterations.
-18. 0.08 with step -0.0803 (0.0803) converged in 3 iterations.
+2. 1.54 with step -0.0032 (0.0253) converged in 2 iterations.
+3. 1.54 with step -0.0037 (0.0253) converged in 2 iterations.
+4. 1.53 with step -0.0042 (0.0253) converged in 2 iterations.
+5. 1.53 with step -0.0047 (0.0253) converged in 2 iterations.
+6. 1.52 with step -0.0052 (0.0253) converged in 2 iterations.
+7. 1.52 with step -0.0058 (0.0253) converged in 2 iterations.
+8. 1.51 with step -0.0064 (0.0253) converged in 2 iterations.
+9. 1.50 with step -0.0070 (0.0253) converged in 2 iterations.
+10. 1.49 with step -0.0077 (0.0253) converged in 2 iterations.
+11. 1.48 with step -0.0084 (0.0253) converged in 1 iterations.
+12. 1.47 with step -0.0129 (0.0357) converged in 2 iterations.
+13. 1.46 with step -0.0145 (0.0357) converged in 2 iterations.
+14. 1.44 with step -0.0161 (0.0357) converged in 2 iterations.
+15. 1.42 with step -0.0178 (0.0357) converged in 2 iterations.
+16. 1.40 with step -0.0196 (0.0357) converged in 2 iterations.
+17. 1.38 with step -0.0214 (0.0357) converged in 2 iterations.
+18. 1.35 with step -0.0231 (0.0357) converged in 2 iterations.
+19. 1.33 with step -0.0248 (0.0357) converged in 2 iterations.
+20. 1.30 with step -0.0263 (0.0357) converged in 2 iterations.
+21. 1.27 with step -0.0278 (0.0357) converged in 2 iterations.
+22. 1.24 with step -0.0290 (0.0357) converged in 2 iterations.
+23. 1.21 with step -0.0301 (0.0357) converged in 2 iterations.
+24. 1.18 with step -0.0310 (0.0357) converged in 2 iterations.
+25. 1.15 with step -0.0318 (0.0357) converged in 2 iterations.
+26. 1.12 with step -0.0325 (0.0357) converged in 2 iterations.
+27. 1.08 with step -0.0330 (0.0357) converged in 2 iterations.
+28. 1.05 with step -0.0335 (0.0357) converged in 1 iterations.
+29. 1.00 with step -0.0479 (0.0505) converged in 2 iterations.
+30. 0.95 with step -0.0485 (0.0505) converged in 2 iterations.
+31. 0.90 with step -0.0489 (0.0505) converged in 2 iterations.
+32. 0.85 with step -0.0493 (0.0505) converged in 1 iterations.
+33. 0.78 with step -0.0701 (0.0715) converged in 2 iterations.
+34. 0.71 with step -0.0705 (0.0715) converged in 2 iterations.
+35. 0.64 with step -0.0707 (0.0715) converged in 2 iterations.
+36. 0.57 with step -0.0709 (0.0715) converged in 2 iterations.
+37. 0.50 with step -0.0711 (0.0715) converged in 1 iterations.
+38. 0.40 with step -0.1007 (0.1011) converged in 2 iterations.
+39. 0.30 with step -0.1009 (0.1011) converged in 1 iterations.
+40. 0.17 with step -0.1262 (0.1264) converged in 2 iterations.
+41. 0.04 with step -0.1263 (0.1264) converged in 2 iterations.
 
 Algorithm: NewtonRaphson(
     descent = NewtonDescent(),
@@ -367,14 +375,15 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.36405193e-01      	0.00000000e+00
-1       	7.49601118e-01      	6.91405590e-01
-2       	2.36050130e-01      	9.40475568e-02
-3       	3.14129833e-03      	2.10785546e-02
-4       	3.19059753e-05      	2.12721824e-03
-5       	8.04916347e-10      	6.95870205e-06
-6       	8.69860883e-16      	1.23402402e-10
-Final   	8.69860883e-16
+0       	1.19949781e-01      	1.22724583e-01
+1       	3.57329495e+00      	8.50479327e-01
+2       	1.50841143e+00      	9.92192320e-02
+3       	7.38530106e-02      	4.86705387e-02
+4       	1.44373704e-02      	2.27196843e-02
+5       	1.02437126e-04      	1.04384384e-03
+6       	1.89557744e-10      	3.85094377e-06
+7       	1.79483716e-15      	1.44870752e-10
+Final   	1.79483716e-15
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -393,12 +402,12 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.90828201e-01      	2.00000000e+00
-1       	1.22516367e+00      	2.28478892e+00
-2       	4.58750362e-04      	6.13313475e-02
-3       	2.49147397e-09      	1.54061051e-04
-4       	6.93889390e-18      	7.76146218e-07
-Final   	6.93889390e-18
+0       	2.11049557e-01      	6.71529523e+01
+1       	9.86366454e-01      	2.06015711e+00
+2       	5.17066673e-04      	6.41802281e-02
+3       	4.87344383e-09      	2.04408878e-04
+4       	1.38777878e-17      	1.98810021e-07
+Final   	1.38777878e-17
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -417,47 +426,50 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	8.69860883e-16      	NaN
-1       	8.69860883e-16      	2.28472834e-16
-Final   	8.69860883e-16
+0       	1.79483716e-15      	1.94574890e-01
+1       	1.79483716e-15      	6.20426010e-16
+Final   	1.79483716e-15
 ----------------------
-2. 2.41 with step 0.0094 (0.0433) converged in 3 iterations.
-3. 2.42 with step 0.0109 (0.0433) converged in 3 iterations.
-4. 2.44 with step 0.0125 (0.0433) converged in 3 iterations.
-5. 2.45 with step 0.0143 (0.0433) converged in 3 iterations.
-6. 2.47 with step 0.0164 (0.0433) converged in 3 iterations.
-7. 2.49 with step 0.0186 (0.0433) converged in 3 iterations.
-8. 2.51 with step 0.0209 (0.0433) converged in 3 iterations.
-9. 2.54 with step 0.0234 (0.0433) converged in 3 iterations.
-10. 2.56 with step 0.0260 (0.0433) converged in 3 iterations.
-11. 2.59 with step 0.0285 (0.0433) converged in 3 iterations.
-12. 2.63 with step 0.0309 (0.0433) converged in 3 iterations.
-13. 2.66 with step 0.0330 (0.0433) converged in 3 iterations.
-14. 2.70 with step 0.0349 (0.0433) converged in 3 iterations.
-15. 2.73 with step 0.0365 (0.0433) converged in 3 iterations.
-16. 2.77 with step 0.0378 (0.0433) converged in 3 iterations.
-17. 2.81 with step 0.0389 (0.0433) converged in 3 iterations.
-18. 2.85 with step 0.0397 (0.0433) converged in 3 iterations.
-19. 2.89 with step 0.0404 (0.0433) converged in 3 iterations.
-20. 2.93 with step 0.0410 (0.0433) converged in 3 iterations.
-21. 2.97 with step 0.0414 (0.0433) converged in 3 iterations.
-22. 3.02 with step 0.0417 (0.0433) converged in 3 iterations.
-23. 3.06 with step 0.0420 (0.0433) converged in 3 iterations.
-24. 3.10 with step 0.0422 (0.0433) converged in 3 iterations.
-25. 3.14 with step 0.0424 (0.0433) converged in 3 iterations.
-26. 3.19 with step 0.0425 (0.0433) converged in 3 iterations.
-27. 3.23 with step 0.0427 (0.0433) converged in 3 iterations.
-28. 3.27 with step 0.0428 (0.0433) converged in 3 iterations.
-29. 3.31 with step 0.0428 (0.0433) converged in 2 iterations.
-30. 3.37 with step 0.0526 (0.0531) converged in 3 iterations.
-31. 3.42 with step 0.0526 (0.0531) converged in 2 iterations.
-32. 3.48 with step 0.0646 (0.0650) converged in 3 iterations.
-33. 3.55 with step 0.0646 (0.0650) converged in 2 iterations.
-34. 3.63 with step 0.0792 (0.0796) converged in 3 iterations.
-35. 3.71 with step 0.0793 (0.0796) converged in 2 iterations.
-36. 3.81 with step 0.0972 (0.0975) converged in 3 iterations.
-37. 3.90 with step 0.0973 (0.0975) converged in 2 iterations.
-38. 4.02 with step 0.1192 (0.1195) converged in 2 iterations.</code></pre><h2 id="exd2_plot"><a class="docs-heading-anchor" href="#exd2_plot">Plotting</a><a id="exd2_plot-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">set_theme!(theme_latexfonts())
+2. 2.38 with step 0.0025 (0.0225) converged in 2 iterations.
+3. 2.38 with step 0.0028 (0.0225) converged in 2 iterations.
+4. 2.38 with step 0.0031 (0.0225) converged in 2 iterations.
+5. 2.39 with step 0.0034 (0.0225) converged in 1 iterations.
+6. 2.39 with step 0.0052 (0.0318) converged in 2 iterations.
+7. 2.40 with step 0.0059 (0.0318) converged in 2 iterations.
+8. 2.41 with step 0.0066 (0.0318) converged in 2 iterations.
+9. 2.41 with step 0.0073 (0.0318) converged in 2 iterations.
+10. 2.42 with step 0.0082 (0.0318) converged in 2 iterations.
+11. 2.43 with step 0.0090 (0.0318) converged in 2 iterations.
+12. 2.44 with step 0.0100 (0.0318) converged in 1 iterations.
+13. 2.46 with step 0.0156 (0.0450) converged in 2 iterations.
+14. 2.48 with step 0.0179 (0.0450) converged in 2 iterations.
+15. 2.50 with step 0.0203 (0.0450) converged in 2 iterations.
+16. 2.53 with step 0.0230 (0.0450) converged in 2 iterations.
+17. 2.55 with step 0.0257 (0.0450) converged in 2 iterations.
+18. 2.58 with step 0.0284 (0.0450) converged in 2 iterations.
+19. 2.61 with step 0.0311 (0.0450) converged in 2 iterations.
+20. 2.65 with step 0.0335 (0.0450) converged in 2 iterations.
+21. 2.69 with step 0.0357 (0.0450) converged in 2 iterations.
+22. 2.72 with step 0.0375 (0.0450) converged in 2 iterations.
+23. 2.76 with step 0.0390 (0.0450) converged in 2 iterations.
+24. 2.80 with step 0.0402 (0.0450) converged in 2 iterations.
+25. 2.85 with step 0.0411 (0.0450) converged in 2 iterations.
+26. 2.89 with step 0.0419 (0.0450) converged in 2 iterations.
+27. 2.93 with step 0.0425 (0.0450) converged in 2 iterations.
+28. 2.97 with step 0.0430 (0.0450) converged in 2 iterations.
+29. 3.02 with step 0.0433 (0.0450) converged in 2 iterations.
+30. 3.06 with step 0.0436 (0.0450) converged in 2 iterations.
+31. 3.10 with step 0.0439 (0.0450) converged in 1 iterations.
+32. 3.17 with step 0.0623 (0.0637) converged in 2 iterations.
+33. 3.23 with step 0.0626 (0.0637) converged in 2 iterations.
+34. 3.29 with step 0.0628 (0.0637) converged in 1 iterations.
+35. 3.38 with step 0.0891 (0.0901) converged in 2 iterations.
+36. 3.47 with step 0.0893 (0.0901) converged in 2 iterations.
+37. 3.56 with step 0.0895 (0.0901) converged in 1 iterations.
+38. 3.67 with step 0.1120 (0.1126) converged in 2 iterations.
+39. 3.79 with step 0.1122 (0.1126) converged in 1 iterations.
+40. 3.90 with step 0.1123 (0.1126) converged in 1 iterations.
+41. 4.01 with step 0.1124 (0.1126) converged in 1 iterations.</code></pre><h2 id="exd2_plot"><a class="docs-heading-anchor" href="#exd2_plot">Plotting</a><a id="exd2_plot-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">set_theme!(theme_latexfonts())
 fsz = 24;
 fig = Figure(fontsize=fsz);
 
@@ -474,4 +486,4 @@ axislegend(ax, nbanks=3, position=:ct)
 xlims!(Om0, Om1)
 ylims!(0, 3.75)
 
-    fig</code></pre><img src="191f246e.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d1_deflation/">« 1: Deflation to Locate Multiple roots</a><a class="docs-footer-nextpage" href="../d3_normalform/">3: Branch Switching Using Normal Forms »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 27 December 2025 07:04">Saturday 27 December 2025</span>. Using Julia version 1.12.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    fig</code></pre><img src="a381ebaf.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d1_deflation/">« 1: Deflation to Locate Multiple roots</a><a class="docs-footer-nextpage" href="../d3_normalform/">3: Branch Switching Using Normal Forms »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Monday 5 January 2026 17:07">Monday 5 January 2026</span>. Using Julia version 1.12.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
