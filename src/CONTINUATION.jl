@@ -402,7 +402,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     if minDsc ≈ 0
         # eps()^(4//5)
         minDsc = 1e3*mean(abs.(u0[u0.!=0]));  # Quite a heuristic
-        minDsc = 1e-1*sqrt(maximum(abs.(sols[end].u))*sols[end].p); 
+        minDsc = 1e-1*sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p)); 
     end
     
     Dtyp = :none
@@ -498,7 +498,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
                 rat = clamp.((abs.(sols[end].up)./Dsc).^ndxi, 0.5, 2.0);
                 Dsc .*= rat;
 
-                minDsc = 1e-1sqrt(maximum(abs.(sols[end].u))*sols[end].p);
+                minDsc = 1e-1sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
                 Dsc = max.(Dsc, minDsc);
             end
         end
