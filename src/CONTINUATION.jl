@@ -1,3 +1,4 @@
+# * Preamble
 using NonlinearSolve
 using LinearAlgebra
 using Printf
@@ -188,7 +189,8 @@ The function involves very naive autodiff calls. Does not respect or try to dete
 + `Jf::nmTypes=nothing`: Jacobian matrix (for iip evaluation)
 
 """
-function EXTRESFUN!(up, fun, sol0, ds; parm=:arclength, Dsc=ones(eltype(up), length(up)), Ralsc=1.0, dup=nothing, Jf=nothing)
+function EXTRESFUN!(up, fun, sol0, ds; parm=:arclength,
+    Dsc=ones(eltype(up), length(up)), Ralsc=1.0, dup=nothing, Jf=nothing)
     # Extended (Bordered) Residue Function
     
     # Residue Evaluation
@@ -235,7 +237,6 @@ function EXTRESFUN!(up, fun, sol0, ds; parm=:arclength, Dsc=ones(eltype(up), len
         Jf[end, :] .*= Ralsc;
     end
     return nothing;
-    
 end
 
 # *** Scaled EXTRESFUN. Don't Think This is Necessary
@@ -312,20 +313,27 @@ Continuation routine. Solves the bordered problem with residue drawn from `EXTRE
   - 0: Suppress all messages.
   - 1: Display Steps, Continuation Progress.
   - 2: Display Iteration Information for each step also.
- ### For Scaling of Unknowns (recommended to get evenly spaced points on response curve)  
-    
+
+### For Scaling of Unknowns (recommended to get evenly spaced points on response curve)  
+
 - `Dsc::Union{Symbol,Nothing,Vector{Float64}}`   : (default `:none`) "Dscaling" used to scale the unknowns. The arc length constraint is applied in the scaled space (`uₛ=uₚₕ./Dsc`).
-  
+
   - If set to `:auto`, it uses the absolute of the first converged solution as the initial `Dsc` vector. Zero entries are replaced with `minDsc`.
   - If set to `:none`, it fixes Dsc to a vector of ones and doesn't dynamically adapt it. (this forces `DynScale` to `false`).
   - If set to `:ones`, it fixes Dsc to a vector of ones but dynamically continues to scale.
-  
+
 - `DynScale::Bool`                               : (default `true`) Whether or not to dynamically adapt the `Dsc` vector. Each entry is allowed to grow or shrink by a maximum factor of 2 in each step if `true`.
 - `minDsc::Float64`                              : (default eps()^(4//5)=3e-13) Minimum value for Dscale.
- ### For Step Length Adaptation. Currently set as dsₙ = dsₒ * xi, where xi = clamp((itopt/itns)^nxi, xirange[1], xirange[2]).
-- `itopt::Union{Symbol,Int}`                     : (default :auto) Optimal number of  
-- `nxi::Float64`                                 : (default 0.0) Switches off adaptation by default. 
-- `xirange::Vector{Float64}`                     : (default [0.5,2.])
+- `ndxi::Float64`				 : (default 0.5) Dscale update exponent.
+
+### For Step Length Adaptation. Currently set as dsₙ = dsₒ * xi, where xi = clamp((itopt/itns)^nxi, xirange[1], xirange[2]).
+- `itopt::Union{Symbol,Int}`                     : (default :auto) Optimal number of iterations
+- `angopt::Float64`				 : (default deg2rad(20)) Optimal angle change per unit (scaled) arc-length.
+- `nxi::Float64`                                 : (default 0.5) Step length adaptation rate.
+
+### For the Solvers
+- `maxiters::Int`				 : (default 100) Maximum number of iterations that `NonlinearSolve` must attempt.
+- `pkwargs`					 : (default (;abstol=1e-6, reltol=1e-6)) Parameters to be passed to `NonlinearProblem`.
 
 # Returns
 - `vector{myNLsoln}` representing solutions.
@@ -341,17 +349,15 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     Dsc::Union{Symbol,Nothing,Vector{Float64}}=:none,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
-    nxi::Float64=0.5, xirange::Vector{Float64}=[0.5, 2.0],
-    minDsc::Float64=0.,
-    pkwargs=(;abstol=1e-6, reltol=1e-6))
+    angopt::Float64=deg2rad(20),
+    nxi::Float64=0.5, 
+    minDsc::Float64=0., ndxi::Float64=0.5,
+    pkwargs=(;abstol=1e-6, reltol=1e-6),
+    maxiters::Int=100)
     
     # Continuation Routine
     if dpbnds === nothing
         dpbnds = [dp/5, 5dp];
-    end
-    if minDsc ≈ 0
-        # eps()^(4//5)
-        minDsc = 1e3*mean(abs.(u0[u0.!=0]));  # Quite a heuristic
     end
 
     # Temporary Variables
@@ -375,7 +381,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         display(md"");
         display(md"# Correcting the Initial Point")
     end
-    solp0 = solve(prob0, show_trace=Val(verbosity>0));
+    solp0 = solve(prob0, show_trace=Val(verbosity>0), maxiters=maxiters);
     if fun.jac !== nothing
         fun.jac(J, solp0.u, ps[1]);
     else
@@ -393,30 +399,36 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     sols[end].dupds .*= sign(sols[end].dupds[end]*(ps[2]-ps[1]));
     push!(its, solp0.stats.nsteps)
 
+    if minDsc ≈ 0
+        # eps()^(4//5)
+        minDsc = 1e3*mean(abs.(u0[u0.!=0]));  # Quite a heuristic
+        minDsc = 1e-1*sqrt(maximum(abs.(sols[end].u))*sols[end].p); 
+    end
+    
+    Dtyp = :none
     if Dsc==:auto
-        # minDsc = minimum(abs.(sols[end].up[sols[end].up.!=0]))/100;
         Dsc = max.(abs.(sols[end].up), minDsc);
-
-        # Dsc = abs.(sols[end].up);
-        # Dsc[isapprox.(sols[end].up, 0.0, atol=eps()^(4/5))] .= 1.0;
-
-        # un = abs.(normalize(sols[end].up[1:end-1]));
-        # pn = abs(sols[end].up[end]);
+        Dtyp = :auto;
     elseif Dsc==:none
         Dsc = ones(length(sols[end].up));
         DynScale = false;
     elseif Dsc==:ones
-        Dsc = ones(length(sols[end].up));        
+        Dsc = ones(length(sols[end].up));
+        Dtyp = :ones;
+    elseif Dsc==:jac
+        Dsc = norm.(eachcol(Jf[1:N,:]));
+        Dtyp = :jac;
     end
 
     # Recontextualize dp (such that first step is as requested)
     ds = dp/Dsc[end]*normalize(sols[end].dupds./Dsc)[end]*sign(ps[2]-ps[1]);
     push!(dss,  ds);
     push!(xis,  1.0);
-    dsbnds = dpbnds/dp*ds;
+
+    dsbnds = ds/dp .*dpbnds;
 
     # Setup Extended Problem
-    exfun = NonlinearFunction((du,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
+    exfun = NonlinearFunction((du,up,p)-> EXTRESFUN!(up, fun, p[1], p[2];
         parm=parm, Dsc=p[3], dup=du, Ralsc=p[4]),
         jac=(J,up,p)->EXTRESFUN!(up, fun, p[1], p[2];
             parm=parm, Dsc=p[3], Jf=J, Ralsc=p[4]));
@@ -433,7 +445,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         
         prob_ = NonlinearProblem(exfun, up0_, (sols[end], dss[end], Dsc, Ralsc_);
             pkwargs...);
-        solp_ = solve(prob_);
+        solp_ = solve(prob_, maxiters=maxiters);
         # itopt = max(solp_.stats.nsteps, 3);
         itopt = solp_.stats.nsteps;
     else
@@ -460,7 +472,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
 
         # Constrained Corrector
         prob = remake(prob_; u0=up0, p=(sols[end], dss[end], Dsc, Ralsc));
-        solp = solve(prob);
+        solp = solve(prob, maxiters=maxiters);
         prob.f.jac(Jf, solp.u, prob.p);
 
         # Push to storers
@@ -477,18 +489,32 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
                              its[end]))
         end
 
-        # Step Length Adaptation
-        push!(xis, clamp((itopt/its[end])^nxi, xirange[1], xirange[2]));
-        push!(dss, clamp(xis[end]dss[end], dsbnds[1], dsbnds[2]));
-
         # Dynamical Scaling of Dsc
         if DynScale # Rescale
-            rat = clamp.(abs.(sols[end].up)./Dsc, 0.5, 2.0);
-            Dsc .*= rat;
-            Dsc = max.(Dsc, minDsc);
+            if Dtyp==:jac
+                rat = clamp.((norm.(eachcol(Jf[1:N,:]))./Dsc).^ndxi, 0.5, 2.0);
+                Dsc .*= rat;
+            else
+                rat = clamp.((abs.(sols[end].up)./Dsc).^ndxi, 0.5, 2.0);
+                Dsc .*= rat;
 
-            # Dsc[isapprox.(Dsc, 0.0, atol=eps()^(4//5))] .= 1.0;
+                minDsc = 1e-1sqrt(maximum(abs.(sols[end].u))*sols[end].p);
+                Dsc = max.(Dsc, minDsc);
+            end
         end
+
+        # Step Length Adaptation
+        itxi = clamp((itopt/its[end])^nxi, 0.5, 2.0);
+
+        ninds = findall(sols[end-1].dupds.!=0);
+        ninds = findall(abs.(sols[end].up-sols[end-1].up).>=1e-2minDsc);
+        achng = acos(normalize(ones(length(ninds)))'*
+                     normalize(sols[end-1].dupds[ninds]./
+                               (sols[end].up-sols[end-1].up)[ninds]))/dss[end];
+        tgxi = clamp((angopt/achng)^nxi, 0.5, 2.0);
+        
+        push!(xis, tgxi);        
+        push!(dss, clamp(xis[end]dss[end], dsbnds[1], dsbnds[2]));
     end
 
     if verbosity>0
