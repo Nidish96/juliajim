@@ -30,27 +30,7 @@ ell = 1.0;
 ρA = rho*w*h;
 EI = Ey*w*h^3/12;
 
-# Cubic Spring
-β = 500.0;  # Nonlinearity
-fnl = (t, u, ud) -> return β.*u.^3, 3β.*u.^2, zeros(size(u));
-typ = :Inst;
-
-# Stiffened String
-Ts = 1e2;
-ls = 0.10;
-fnl = (t, u, ud) -> return Ts.*u./sqrt.(ls^2 .+u.^2),
-    Ts*ls^2 ./sqrt.(ls^2 .+u.^2).^3, zeros(size(u));
-typ = :Inst;
-
-# Frictional Support
-kt = 500;
-fs = 1e-2kt;
-fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
-    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
-        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
-end
-typ = :Hyst;
-
+# ### Build Finite Element Modela
 Ne = 10;  # Number of elements
 Nn = Ne+1;  # Number of nodes
 Xn = range(0, ell, Nn);
@@ -86,7 +66,30 @@ Zts = [0.2e-2, 0.1e-2];
 ab = [1 ./2Wn[1:2] Wn[1:2]/2]\Zts;
 Cb = ab[1]*Mb + ab[2]*Kb;
 
-# Setup Nonlinearity
+# ### Choose and Setup Nonlinearity
+# You can try out this example with any of the following nonlinearities. The setup is to have a tip nonlinearity either as a Cubic spring, (axially) stiffened string, or a frictional damper.
+
+# Cubic Spring
+β = 500.0;  # Nonlinearity
+fnl = (t, u, ud) -> return β.*u.^3, 3β.*u.^2, zeros(size(u));
+typ = :Inst;
+
+# Stiffened String
+Ts = 1e2;
+ls = 0.10;
+fnl = (t, u, ud) -> return Ts.*u./sqrt.(ls^2 .+u.^2),
+    Ts*ls^2 ./sqrt.(ls^2 .+u.^2).^3, zeros(size(u));
+typ = :Inst;
+
+# Frictional Support
+kt = 500;
+fs = 1e-2kt;
+fnl = (t,u,up,fp)-> if all(abs.(fp+kt*(u-up)).<fs)
+    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
+        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
+end
+typ = :Hyst;
+
 mdl = MDOFGEN(Mb, Cb, Kb);
 mdl = ADDNL(mdl, typ, fnl, Float64.(Lb[end-1:end-1,:]));
 
@@ -114,8 +117,6 @@ fun(Fa) = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; R=r),
     paramjac=(Jp,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdw=Jp));
 
 # ## Forced Response Continuation
-Famp = 8.0  # 0.5, 1.0, 2.0, 4.0, 8.0, 16.0
-
 # Continuation: The main parameters that can be changed are the step size (`dOm` here) and the `angopt` parameter. 
 #
 # `angopt` represents the desired angle between the secant and the tangent in a scaled space. Smaller angles represent that the secant is close to the tangent, i.e., the response curve is approximately a straight line. 
@@ -168,7 +169,7 @@ end #src
 
 ax = Axis(fig[1, 1], xlabel="Excitation Frequency (rad/s)",
     ylabel="Response (m)", yscale=log10);
-for (Famp, Uh, sols, stab) in zip(Famps, Uhs, solss, stabs)
+for (Famp, Uh, sols, stab) in zip(Famps[1:ii], Uhs[1:ii], solss[1:ii], stabs[1:ii])
     scatterlines!(ax, sols.p./(stab.==0), norm.(Uh)/Famp, label="F = $Famp")
     scatterlines!(ax, sols.p./(stab.!=0), norm.(Uh)/Famp)
 end
