@@ -346,10 +346,10 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     parm::Symbol=:arclength, nmax::Int64=1000,
     dpbnds::Union{Nothing,Vector{Float64}}=nothing,
     save_jacs::Bool=false, verbosity::Int=1,
-    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:none,
+    Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
-    angopt::Float64=deg2rad(20),
+    angopt::Float64=deg2rad(5),
     nxi::Float64=0.5, 
     minDsc::Float64=0., ndxi::Float64=0.5,
     pkwargs=(;abstol=1e-6, reltol=1e-6),
@@ -402,7 +402,9 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     if minDsc ≈ 0
         # eps()^(4//5)
         minDsc = 1e3*mean(abs.(u0[u0.!=0]));  # Quite a heuristic
-        minDsc = 1e-1*sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p)); 
+        minDsc = 1e-1*sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
+
+        minDsc = 1e-2*sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p)); 
     end
     
     Dtyp = :none
@@ -482,13 +484,6 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         # Fix New Tangent Sign
         sols[end].dupds .*= sign((tgt./Dsc)'normalize(sols[end].dupds./Dsc));
 
-        # Print out Message
-        if verbosity>0
-            println(@sprintf("%d. %.2f with step %.4f (%.4f) converged in %d iterations.",
-                             length(sols), sols[end].up[end], dss[end]tgt[end], dss[end],
-                             its[end]))
-        end
-
         # Dynamical Scaling of Dsc
         if DynScale # Rescale
             if Dtyp==:jac
@@ -498,7 +493,10 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
                 rat = clamp.((abs.(sols[end].up)./Dsc).^ndxi, 0.5, 2.0);
                 Dsc .*= rat;
 
-                minDsc = 1e-1sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
+                minDsc_ = 1e-2sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
+                # minDsc_ = 1e-1maximum(abs.(sols[end].up-sols[end-1].up))/dss[end];
+                minDsc *= clamp((minDsc_/minDsc)^ndxi, 0.5, 2.0);
+                # minDsc = minDsc_;
                 Dsc = max.(Dsc, minDsc);
             end
         end
@@ -508,13 +506,25 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
 
         ninds = findall(sols[end-1].dupds.!=0);
         ninds = findall(abs.(sols[end].up-sols[end-1].up).>=1e-2minDsc);
-        achng = acos(normalize(ones(length(ninds)))'*
-                     normalize(sols[end-1].dupds[ninds]./
-                               (sols[end].up-sols[end-1].up)[ninds]))/dss[end];
+        achng = acos(clamp(normalize(ones(length(ninds)))'*
+                           normalize(sols[end-1].dupds[ninds]./
+                                     (sols[end].up-sols[end-1].up)[ninds]), -1,1))/
+                dss[end];
         tgxi = clamp((angopt/achng)^nxi, 0.5, 2.0);
         
-        push!(xis, tgxi);        
+        push!(xis, tgxi);
+
+        # dsbnds = abs.(dss[end]/(sols[end].p-sols[end-1].p) .* dpbnds);
+        # println("dsbnds: $dsbnds\n")
+        
         push!(dss, clamp(xis[end]dss[end], dsbnds[1], dsbnds[2]));
+
+        # Print out Message
+        if verbosity>0
+            println(@sprintf("%d. %.2f with step %.4f (%.4f) converged in %d iterations. %f Δα.",
+                             length(sols), sols[end].up[end], dss[end-1]tgt[end], dss[end-1],
+                             its[end], achng))
+        end        
     end
 
     if verbosity>0

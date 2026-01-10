@@ -98,7 +98,7 @@ Famp = 1.0;
 
 # Continuation
 cpars = (nmax=200, Dsc=:auto, angopt=deg2rad(20));
-dOm = 2.5;
+dOm = 5.0;
 sols, its, dss, xis, Dsc = CONTINUATE(U0_(Famp), fun(Famp), [Om0, Om1], dOm; cpars...);
 
 set_theme!(theme_black())
