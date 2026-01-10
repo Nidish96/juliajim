@@ -55,8 +55,8 @@ Iter    	f(u) inf-norm       	Step 2-norm
 Final   	1.11022302e-16
 ----------------------</code></pre><h2 id="exd2_cont"><a class="docs-heading-anchor" href="#exd2_cont">Continuation</a><a id="exd2_cont-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_cont" title="Permalink"></a></h2><p>Just like in other examples we call the <a href="../reference/#juliajim.CONTINUATION.CONTINUATE-Tuple{Vector{Float64}, Any, Vector{Float64}, Float64}"><code>CONTINUATE</code></a> utility to obtain the periodic forced response.</p><pre><code class="language-julia hljs">Om0 = 0.1;
 Om1 = 4.0;
-dOm = 0.4;
-cpars = (parm=:arclength, nmax=100, save_jacs=true);
+dOm = 0.1;
+cpars = (parm=:arclength, nmax=200, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">
 Algorithm: NewtonRaphson(
@@ -79,80 +79,192 @@ Iter    	f(u) inf-norm       	Step 2-norm
 1       	9.39503268e-13      	1.40930725e-05
 Final   	9.39503268e-13
 ----------------------
-2. 0.50 with step 0.3999 (0.4000) converged in 2 iterations.
-3. 0.90 with step 0.3990 (0.4000) converged in 2 iterations.
-4. 1.28 with step 0.3939 (0.4000) converged in 3 iterations.
-5. 1.54 with step 0.2966 (0.3266) converged in 3 iterations.
-6. 1.68 with step 0.1724 (0.2666) converged in 3 iterations.
-7. 1.75 with step 0.0832 (0.2177) converged in 2 iterations.
-8. 1.79 with step 0.0540 (0.2177) converged in 2 iterations.
-9. 1.82 with step 0.0368 (0.2177) converged in 2 iterations.
-10. 1.85 with step 0.0263 (0.2177) converged in 2 iterations.
-11. 1.86 with step 0.0196 (0.2177) converged in 3 iterations.
-12. 1.87 with step 0.0124 (0.1778) converged in 2 iterations.
-13. 1.88 with step 0.0104 (0.1778) converged in 2 iterations.
-14. 1.89 with step 0.0091 (0.1778) converged in 2 iterations.
-15. 1.90 with step 0.0081 (0.1778) converged in 2 iterations.
-16. 1.91 with step 0.0074 (0.1778) converged in 2 iterations.
-17. 1.91 with step 0.0070 (0.1778) converged in 2 iterations.
-18. 1.92 with step 0.0066 (0.1778) converged in 2 iterations.
-19. 1.93 with step 0.0063 (0.1778) converged in 2 iterations.
-20. 1.93 with step 0.0062 (0.1778) converged in 2 iterations.
-21. 1.94 with step 0.0060 (0.1778) converged in 2 iterations.
-22. 1.94 with step 0.0059 (0.1778) converged in 2 iterations.
-23. 1.95 with step 0.0058 (0.1778) converged in 2 iterations.
-24. 1.96 with step 0.0058 (0.1778) converged in 2 iterations.
-25. 1.96 with step 0.0057 (0.1778) converged in 2 iterations.
-26. 1.97 with step 0.0057 (0.1778) converged in 2 iterations.
-27. 1.97 with step 0.0057 (0.1778) converged in 2 iterations.
-28. 1.98 with step 0.0056 (0.1778) converged in 2 iterations.
-29. 1.98 with step 0.0056 (0.1778) converged in 2 iterations.
-30. 1.99 with step 0.0056 (0.1778) converged in 2 iterations.
-31. 2.00 with step 0.0056 (0.1778) converged in 2 iterations.
-32. 2.00 with step 0.0056 (0.1778) converged in 2 iterations.
-33. 2.01 with step 0.0056 (0.1778) converged in 2 iterations.
-34. 2.01 with step 0.0056 (0.1778) converged in 2 iterations.
-35. 2.02 with step 0.0056 (0.1778) converged in 2 iterations.
-36. 2.02 with step 0.0056 (0.1778) converged in 2 iterations.
-37. 2.03 with step 0.0057 (0.1778) converged in 2 iterations.
-38. 2.04 with step 0.0057 (0.1778) converged in 2 iterations.
-39. 2.04 with step 0.0057 (0.1778) converged in 2 iterations.
-40. 2.05 with step 0.0058 (0.1778) converged in 2 iterations.
-41. 2.05 with step 0.0058 (0.1778) converged in 2 iterations.
-42. 2.06 with step 0.0059 (0.1778) converged in 2 iterations.
-43. 2.06 with step 0.0059 (0.1778) converged in 2 iterations.
-44. 2.07 with step 0.0061 (0.1778) converged in 2 iterations.
-45. 2.08 with step 0.0062 (0.1778) converged in 2 iterations.
-46. 2.08 with step 0.0064 (0.1778) converged in 2 iterations.
-47. 2.09 with step 0.0066 (0.1778) converged in 2 iterations.
-48. 2.10 with step 0.0070 (0.1778) converged in 2 iterations.
-49. 2.11 with step 0.0074 (0.1778) converged in 2 iterations.
-50. 2.11 with step 0.0081 (0.1778) converged in 2 iterations.
-51. 2.12 with step 0.0090 (0.1778) converged in 2 iterations.
-52. 2.13 with step 0.0103 (0.1778) converged in 2 iterations.
-53. 2.15 with step 0.0122 (0.1778) converged in 2 iterations.
-54. 2.16 with step 0.0149 (0.1778) converged in 2 iterations.
-55. 2.19 with step 0.0186 (0.1778) converged in 2 iterations.
-56. 2.21 with step 0.0239 (0.1778) converged in 2 iterations.
-57. 2.25 with step 0.0316 (0.1778) converged in 2 iterations.
-58. 2.30 with step 0.0432 (0.1778) converged in 2 iterations.
-59. 2.38 with step 0.0611 (0.1778) converged in 2 iterations.
-60. 2.48 with step 0.0879 (0.1778) converged in 3 iterations.
-61. 2.59 with step 0.0991 (0.1451) converged in 3 iterations.
-62. 2.69 with step 0.0968 (0.1185) converged in 2 iterations.
-63. 2.80 with step 0.1055 (0.1185) converged in 2 iterations.
-64. 2.91 with step 0.1108 (0.1185) converged in 2 iterations.
-65. 3.03 with step 0.1138 (0.1185) converged in 2 iterations.
-66. 3.14 with step 0.1156 (0.1185) converged in 2 iterations.
-67. 3.26 with step 0.1166 (0.1185) converged in 2 iterations.
-68. 3.38 with step 0.1172 (0.1185) converged in 2 iterations.
-69. 3.50 with step 0.1176 (0.1185) converged in 2 iterations.
-70. 3.61 with step 0.1179 (0.1185) converged in 1 iterations.
-71. 3.78 with step 0.1670 (0.1676) converged in 2 iterations.
-72. 3.95 with step 0.1672 (0.1676) converged in 1 iterations.
-73. 4.18 with step 0.2366 (0.2370) converged in 2 iterations.</code></pre><p>Obtain Harmonics</p><pre><code class="language-julia hljs">uh = zeros(Complex, maximum(h)+1, length(sols));
+2. 0.20 with step 0.0995 (0.9973) converged in 1 iterations. 0.174321 Δα.
+3. 0.30 with step 0.0992 (0.7056) converged in 1 iterations. 0.141516 Δα.
+4. 0.41 with step 0.1129 (0.5541) converged in 1 iterations. 0.246105 Δα.
+5. 0.51 with step 0.0945 (0.3299) converged in 2 iterations. 0.504365 Δα.
+6. 0.58 with step 0.0740 (0.1995) converged in 2 iterations. 1.042860 Δα.
+7. 0.63 with step 0.0810 (0.1995) converged in 4 iterations. 2.221189 Δα.
+8. 0.65 with step 0.0277 (0.1995) converged in 3 iterations. 1.753649 Δα.
+9. 0.65 with step 0.0090 (0.1995) converged in 2 iterations. 1.178945 Δα.
+10. 0.66 with step 0.0042 (0.1995) converged in 1 iterations. 0.871690 Δα.
+11. 0.66 with step 0.0024 (0.1995) converged in 1 iterations. 0.635156 Δα.
+12. 0.66 with step 0.0016 (0.1995) converged in 1 iterations. 0.498195 Δα.
+13. 0.66 with step 0.0011 (0.1995) converged in 1 iterations. 0.398947 Δα.
+14. 0.66 with step 0.0009 (0.1995) converged in 1 iterations. 0.350754 Δα.
+15. 0.66 with step 0.0007 (0.1995) converged in 1 iterations. 0.398098 Δα.
+16. 0.66 with step 0.0005 (0.1995) converged in 1 iterations. 0.714219 Δα.
+17. 0.66 with step 0.0005 (0.1995) converged in 1 iterations. 0.205065 Δα.
+18. 0.66 with step 0.0005 (0.1995) converged in 1 iterations. 1.515080 Δα.
+19. 0.67 with step 0.0005 (0.1995) converged in 1 iterations. 0.779384 Δα.
+20. 0.67 with step 0.0004 (0.1995) converged in 1 iterations. 0.577623 Δα.
+21. 0.67 with step 0.0003 (0.1995) converged in 1 iterations. 0.420874 Δα.
+22. 0.67 with step 0.0003 (0.1995) converged in 1 iterations. 0.367493 Δα.
+23. 0.67 with step 0.0002 (0.1995) converged in 1 iterations. 0.432834 Δα.
+24. 0.67 with step 0.0002 (0.1995) converged in 1 iterations. 0.624583 Δα.
+25. 0.67 with step 0.0002 (0.1995) converged in 1 iterations. 1.266978 Δα.
+26. 0.67 with step 0.0002 (0.1995) converged in 1 iterations. 0.003093 Δα.
+27. 0.67 with step 0.0004 (0.3989) converged in 1 iterations. 0.709250 Δα.
+28. 0.67 with step 0.0002 (0.1995) converged in 1 iterations. 0.431457 Δα.
+29. 0.67 with step 0.0003 (0.1995) converged in 1 iterations. 0.393431 Δα.
+30. 0.67 with step 0.0003 (0.1995) converged in 1 iterations. 0.461506 Δα.
+31. 0.67 with step 0.0004 (0.1995) converged in 1 iterations. 0.708178 Δα.
+32. 0.67 with step 0.0005 (0.1995) converged in 1 iterations. 1.698077 Δα.
+33. 0.67 with step 0.0006 (0.1995) converged in 1 iterations. 3.519532 Δα.
+34. 0.67 with step 0.0007 (0.1995) converged in 1 iterations. 0.666653 Δα.
+35. 0.67 with step 0.0007 (0.1995) converged in 1 iterations. 0.416071 Δα.
+36. 0.67 with step 0.0009 (0.1995) converged in 1 iterations. 0.472233 Δα.
+37. 0.67 with step 0.0013 (0.1995) converged in 1 iterations. 0.589903 Δα.
+38. 0.68 with step 0.0018 (0.1995) converged in 1 iterations. 0.746587 Δα.
+39. 0.68 with step 0.0030 (0.1995) converged in 1 iterations. 1.039093 Δα.
+40. 0.69 with step 0.0058 (0.1995) converged in 2 iterations. 1.530029 Δα.
+41. 0.73 with step 0.0160 (0.1995) converged in 3 iterations. 2.881982 Δα.
+42. 0.85 with step 0.0896 (0.1995) converged in 4 iterations. 2.699098 Δα.
+43. 0.98 with step 0.1302 (0.1995) converged in 2 iterations. 1.839109 Δα.
+44. 1.10 with step 0.1310 (0.1995) converged in 2 iterations. 0.359518 Δα.
+45. 1.21 with step 0.1244 (0.1995) converged in 2 iterations. 0.360154 Δα.
+46. 1.31 with step 0.1126 (0.1995) converged in 2 iterations. 0.340554 Δα.
+47. 1.40 with step 0.0998 (0.1995) converged in 2 iterations. 0.310860 Δα.
+48. 1.48 with step 0.0895 (0.1995) converged in 2 iterations. 0.553118 Δα.
+49. 1.56 with step 0.0840 (0.1995) converged in 3 iterations. 1.216245 Δα.
+50. 1.63 with step 0.0824 (0.1995) converged in 4 iterations. 3.423149 Δα.
+51. 1.66 with step 0.0481 (0.1995) converged in 3 iterations. 0.865016 Δα.
+52. 1.68 with step 0.0265 (0.1995) converged in 2 iterations. 0.471491 Δα.
+53. 1.70 with step 0.0179 (0.1995) converged in 2 iterations. 0.326775 Δα.
+54. 1.71 with step 0.0134 (0.1995) converged in 2 iterations. 0.251318 Δα.
+55. 1.72 with step 0.0107 (0.1995) converged in 2 iterations. 0.204691 Δα.
+56. 1.73 with step 0.0088 (0.1995) converged in 2 iterations. 0.172895 Δα.
+57. 1.74 with step 0.0075 (0.1995) converged in 2 iterations. 0.169304 Δα.
+58. 1.74 with step 0.0065 (0.1995) converged in 2 iterations. 0.149245 Δα.
+59. 1.75 with step 0.0057 (0.1995) converged in 2 iterations. 0.133499 Δα.
+60. 1.75 with step 0.0054 (0.1995) converged in 2 iterations. 0.127471 Δα.
+61. 1.76 with step 0.0054 (0.1995) converged in 2 iterations. 0.128246 Δα.
+62. 1.76 with step 0.0055 (0.1995) converged in 2 iterations. 0.117027 Δα.
+63. 1.77 with step 0.0056 (0.1995) converged in 2 iterations. 0.120902 Δα.
+64. 1.77 with step 0.0058 (0.1995) converged in 2 iterations. 0.124932 Δα.
+65. 1.78 with step 0.0059 (0.1995) converged in 2 iterations. 0.128820 Δα.
+66. 1.78 with step 0.0060 (0.1995) converged in 2 iterations. 0.132422 Δα.
+67. 1.79 with step 0.0060 (0.1995) converged in 2 iterations. 0.135661 Δα.
+68. 1.80 with step 0.0061 (0.1995) converged in 2 iterations. 0.138489 Δα.
+69. 1.80 with step 0.0061 (0.1995) converged in 2 iterations. 0.140872 Δα.
+70. 1.81 with step 0.0061 (0.1995) converged in 2 iterations. 0.142783 Δα.
+71. 1.81 with step 0.0061 (0.1995) converged in 2 iterations. 0.192779 Δα.
+72. 1.82 with step 0.0061 (0.1995) converged in 2 iterations. 0.195052 Δα.
+73. 1.82 with step 0.0061 (0.1995) converged in 2 iterations. 0.197108 Δα.
+74. 1.83 with step 0.0060 (0.1995) converged in 2 iterations. 0.199180 Δα.
+75. 1.83 with step 0.0060 (0.1995) converged in 2 iterations. 0.201754 Δα.
+76. 1.84 with step 0.0059 (0.1995) converged in 2 iterations. 0.205869 Δα.
+77. 1.85 with step 0.0059 (0.1995) converged in 2 iterations. 0.213811 Δα.
+78. 1.85 with step 0.0058 (0.1995) converged in 2 iterations. 0.230798 Δα.
+79. 1.86 with step 0.0058 (0.1995) converged in 2 iterations. 0.269465 Δα.
+80. 1.86 with step 0.0057 (0.1995) converged in 2 iterations. 0.364250 Δα.
+81. 1.87 with step 0.0056 (0.1995) converged in 2 iterations. 0.645000 Δα.
+82. 1.87 with step 0.0056 (0.1995) converged in 2 iterations. 0.220071 Δα.
+83. 1.88 with step 0.0055 (0.1995) converged in 2 iterations. 1.606055 Δα.
+84. 1.88 with step 0.0055 (0.1995) converged in 2 iterations. 0.768009 Δα.
+85. 1.89 with step 0.0054 (0.1995) converged in 2 iterations. 0.602903 Δα.
+86. 1.89 with step 0.0053 (0.1995) converged in 2 iterations. 0.633085 Δα.
+87. 1.90 with step 0.0052 (0.1995) converged in 2 iterations. 0.989729 Δα.
+88. 1.90 with step 0.0051 (0.1995) converged in 2 iterations. 9.712900 Δα.
+89. 1.91 with step 0.0049 (0.1995) converged in 2 iterations. 1.162200 Δα.
+90. 1.91 with step 0.0048 (0.1995) converged in 2 iterations. 0.844227 Δα.
+91. 1.92 with step 0.0046 (0.1995) converged in 2 iterations. 1.582446 Δα.
+92. 1.92 with step 0.0044 (0.1995) converged in 2 iterations. 2.635599 Δα.
+93. 1.92 with step 0.0042 (0.1995) converged in 2 iterations. 0.745167 Δα.
+94. 1.93 with step 0.0041 (0.1995) converged in 2 iterations. 0.440398 Δα.
+95. 1.93 with step 0.0039 (0.1995) converged in 2 iterations. 0.322069 Δα.
+96. 1.94 with step 0.0040 (0.1995) converged in 2 iterations. 0.273810 Δα.
+97. 1.94 with step 0.0040 (0.1995) converged in 2 iterations. 0.259650 Δα.
+98. 1.94 with step 0.0039 (0.1995) converged in 2 iterations. 0.276101 Δα.
+99. 1.95 with step 0.0039 (0.1995) converged in 2 iterations. 0.329490 Δα.
+100. 1.95 with step 0.0038 (0.1995) converged in 2 iterations. 0.454985 Δα.
+101. 1.96 with step 0.0037 (0.1995) converged in 2 iterations. 0.809410 Δα.
+102. 1.96 with step 0.0036 (0.1995) converged in 2 iterations. 0.110967 Δα.
+103. 1.96 with step 0.0036 (0.1995) converged in 2 iterations. 1.266852 Δα.
+104. 1.97 with step 0.0035 (0.1995) converged in 2 iterations. 0.585043 Δα.
+105. 1.97 with step 0.0035 (0.1995) converged in 2 iterations. 0.395502 Δα.
+106. 1.97 with step 0.0035 (0.1995) converged in 2 iterations. 0.313331 Δα.
+107. 1.98 with step 0.0034 (0.1995) converged in 2 iterations. 0.273257 Δα.
+108. 1.98 with step 0.0033 (0.1995) converged in 2 iterations. 0.255384 Δα.
+109. 1.98 with step 0.0030 (0.1995) converged in 2 iterations. 0.250474 Δα.
+110. 1.99 with step 0.0028 (0.1995) converged in 2 iterations. 0.254137 Δα.
+111. 1.99 with step 0.0025 (0.1995) converged in 1 iterations. 0.267621 Δα.
+112. 1.99 with step 0.0022 (0.1995) converged in 1 iterations. 0.284716 Δα.
+113. 1.99 with step 0.0018 (0.1995) converged in 1 iterations. 0.304111 Δα.
+114. 1.99 with step 0.0015 (0.1995) converged in 1 iterations. 0.325805 Δα.
+115. 1.99 with step 0.0012 (0.1995) converged in 1 iterations. 0.351518 Δα.
+116. 2.00 with step 0.0010 (0.1995) converged in 1 iterations. 0.418174 Δα.
+117. 2.00 with step 0.0007 (0.1995) converged in 1 iterations. 0.492028 Δα.
+118. 2.00 with step 0.0006 (0.1995) converged in 1 iterations. 0.002217 Δα.
+119. 2.00 with step 0.0008 (0.3989) converged in 1 iterations. 0.001222 Δα.
+120. 2.00 with step 0.0010 (0.7978) converged in 1 iterations. 0.433044 Δα.
+121. 2.00 with step 0.0003 (0.3989) converged in 1 iterations. 0.000078 Δα.
+122. 2.00 with step 0.0006 (0.7978) converged in 1 iterations. 0.094328 Δα.
+123. 2.00 with step 0.0007 (0.7674) converged in 1 iterations. 0.085202 Δα.
+124. 2.00 with step 0.0010 (0.7766) converged in 1 iterations. 0.089374 Δα.
+125. 2.00 with step 0.0015 (0.7674) converged in 1 iterations. 0.096335 Δα.
+126. 2.01 with step 0.0021 (0.7304) converged in 1 iterations. 0.152252 Δα.
+127. 2.01 with step 0.0024 (0.5530) converged in 1 iterations. 0.152434 Δα.
+128. 2.01 with step 0.0025 (0.4184) converged in 2 iterations. 0.160063 Δα.
+129. 2.01 with step 0.0024 (0.3089) converged in 2 iterations. 0.170163 Δα.
+130. 2.01 with step 0.0022 (0.2212) converged in 1 iterations. 0.181507 Δα.
+131. 2.02 with step 0.0023 (0.1995) converged in 1 iterations. 0.192370 Δα.
+132. 2.02 with step 0.0026 (0.1995) converged in 2 iterations. 0.203103 Δα.
+133. 2.02 with step 0.0029 (0.1995) converged in 2 iterations. 0.217658 Δα.
+134. 2.03 with step 0.0031 (0.1995) converged in 2 iterations. 0.240444 Δα.
+135. 2.03 with step 0.0033 (0.1995) converged in 2 iterations. 0.276239 Δα.
+136. 2.03 with step 0.0034 (0.1995) converged in 2 iterations. 0.350453 Δα.
+137. 2.04 with step 0.0036 (0.1995) converged in 2 iterations. 0.507534 Δα.
+138. 2.04 with step 0.0037 (0.1995) converged in 2 iterations. 0.969125 Δα.
+139. 2.04 with step 0.0038 (0.1995) converged in 2 iterations. 0.114570 Δα.
+140. 2.05 with step 0.0039 (0.1995) converged in 2 iterations. 1.037392 Δα.
+141. 2.05 with step 0.0041 (0.1995) converged in 2 iterations. 0.527557 Δα.
+142. 2.06 with step 0.0042 (0.1995) converged in 2 iterations. 0.375207 Δα.
+143. 2.06 with step 0.0044 (0.1995) converged in 2 iterations. 0.323664 Δα.
+144. 2.07 with step 0.0046 (0.1995) converged in 2 iterations. 0.328263 Δα.
+145. 2.07 with step 0.0046 (0.1995) converged in 2 iterations. 0.379359 Δα.
+146. 2.08 with step 0.0045 (0.1995) converged in 2 iterations. 0.505615 Δα.
+147. 2.08 with step 0.0047 (0.1995) converged in 2 iterations. 0.968744 Δα.
+148. 2.09 with step 0.0050 (0.1995) converged in 2 iterations. 0.395024 Δα.
+149. 2.09 with step 0.0053 (0.1995) converged in 2 iterations. 1.245902 Δα.
+150. 2.10 with step 0.0056 (0.1995) converged in 2 iterations. 2.114345 Δα.
+151. 2.10 with step 0.0060 (0.1995) converged in 2 iterations. 1.875671 Δα.
+152. 2.11 with step 0.0063 (0.1995) converged in 2 iterations. 0.850159 Δα.
+153. 2.12 with step 0.0066 (0.1995) converged in 2 iterations. 0.824288 Δα.
+154. 2.12 with step 0.0069 (0.1995) converged in 2 iterations. 1.359144 Δα.
+155. 2.13 with step 0.0072 (0.1995) converged in 2 iterations. 0.331377 Δα.
+156. 2.14 with step 0.0074 (0.1995) converged in 2 iterations. 0.784642 Δα.
+157. 2.15 with step 0.0076 (0.1995) converged in 2 iterations. 0.447719 Δα.
+158. 2.16 with step 0.0078 (0.1995) converged in 2 iterations. 0.370245 Δα.
+159. 2.17 with step 0.0079 (0.1995) converged in 2 iterations. 0.349757 Δα.
+160. 2.18 with step 0.0080 (0.1995) converged in 2 iterations. 0.342322 Δα.
+161. 2.18 with step 0.0081 (0.1995) converged in 2 iterations. 0.336022 Δα.
+162. 2.19 with step 0.0080 (0.1995) converged in 2 iterations. 0.327348 Δα.
+163. 2.20 with step 0.0079 (0.1995) converged in 2 iterations. 0.234621 Δα.
+164. 2.21 with step 0.0076 (0.1995) converged in 2 iterations. 0.222320 Δα.
+165. 2.22 with step 0.0072 (0.1995) converged in 2 iterations. 0.206652 Δα.
+166. 2.23 with step 0.0067 (0.1995) converged in 2 iterations. 0.188117 Δα.
+167. 2.23 with step 0.0061 (0.1995) converged in 2 iterations. 0.188462 Δα.
+168. 2.24 with step 0.0054 (0.1995) converged in 2 iterations. 0.163828 Δα.
+169. 2.25 with step 0.0055 (0.1995) converged in 2 iterations. 0.166985 Δα.
+170. 2.25 with step 0.0064 (0.1995) converged in 2 iterations. 0.195067 Δα.
+171. 2.26 with step 0.0075 (0.1995) converged in 2 iterations. 0.235616 Δα.
+172. 2.27 with step 0.0093 (0.1995) converged in 2 iterations. 0.299220 Δα.
+173. 2.29 with step 0.0120 (0.1995) converged in 2 iterations. 0.413744 Δα.
+174. 2.31 with step 0.0172 (0.1995) converged in 2 iterations. 0.590508 Δα.
+175. 2.36 with step 0.0300 (0.1995) converged in 3 iterations. 1.663867 Δα.
+176. 2.45 with step 0.0729 (0.1995) converged in 3 iterations. 3.638437 Δα.
+177. 2.53 with step 0.0754 (0.1995) converged in 2 iterations. 0.440112 Δα.
+178. 2.62 with step 0.0814 (0.1995) converged in 2 iterations. 0.342684 Δα.
+179. 2.73 with step 0.0957 (0.1995) converged in 2 iterations. 0.395330 Δα.
+180. 2.87 with step 0.1171 (0.1995) converged in 2 iterations. 0.452736 Δα.
+181. 3.05 with step 0.1457 (0.1995) converged in 2 iterations. 0.501365 Δα.
+182. 3.27 with step 0.1808 (0.1995) converged in 2 iterations. 0.535010 Δα.
+183. 3.53 with step 0.2210 (0.1995) converged in 2 iterations. 0.551266 Δα.
+184. 3.84 with step 0.2645 (0.1995) converged in 2 iterations. 0.552736 Δα.
+185. 4.20 with step 0.3107 (0.1995) converged in 2 iterations. 0.544677 Δα.</code></pre><p>Obtain Harmonics</p><pre><code class="language-julia hljs">uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[[inds0; hinds], :] = hcat([[up[zinds];up[rinds,:]+1im*up[iinds,:]] for up in sols.up]...);
-Oms = [up[end] for up in sols.up];</code></pre><h3 id="Stability-Analysis"><a class="docs-heading-anchor" href="#Stability-Analysis">Stability Analysis</a><a id="Stability-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Stability-Analysis" title="Permalink"></a></h3><p>We now use an averaging formulation to obtain the stability coefficients based on just the first harmonics. This will work if the response is dominantly single harmonic.</p><pre><code class="language-julia hljs">E0, _ = HARMONICSTIFFNESS(0., -2mdl.M, 0, 1, h);
+Oms = sols.p;</code></pre><h3 id="Stability-Analysis"><a class="docs-heading-anchor" href="#Stability-Analysis">Stability Analysis</a><a id="Stability-Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Stability-Analysis" title="Permalink"></a></h3><p>We now use an averaging formulation to obtain the stability coefficients based on just the first harmonics. This will work if the response is dominantly single harmonic.</p><pre><code class="language-julia hljs">E0, _ = HARMONICSTIFFNESS(0., -2mdl.M, 0, 1, h);
 E0 = collect(E0);
 stab = zeros(length(Oms));
 for (i,(J,Om)) in enumerate(zip(sols.J, Oms))
@@ -231,8 +343,8 @@ Wselfs = [];</code></pre><p>We loop over the two detected bifurcation points</p>
     ### Continue away from the bifurcation point
     Om0b = Oms[bifi];
     Om1b = (dxis[bi]&lt;0) ? Om0 : Om1;
-    dOmb = 0.2;
-    cparsb = (parm=:arclength, nmax=100, save_jacs=true);
+    dOmb = 0.8;
+    cparsb = (parm=:arclength, nmax=500, save_jacs=true, angopt=deg2rad(10));
 
     solsb, _, _, _, _ = CONTINUATE(solq.u, funq, [Om0b, Om1b], dOmb; cparsb...);
     # Prepend previous point &amp; expand constraint
@@ -263,15 +375,13 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	2.74324712e-01      	1.00000000e+00
-1       	2.37721922e+00      	8.79693034e-01
-2       	6.66794766e-01      	1.89389940e-01
-3       	4.95056588e-01      	1.26110914e-01
-4       	1.22594686e-02      	2.07557118e-02
-5       	2.58972407e-05      	9.93024336e-04
-6       	4.26687169e-10      	1.77127223e-06
-7       	1.31241492e-15      	1.32874682e-11
-Final   	1.31241492e-15
+0       	3.67121523e-01      	8.15952912e+00
+1       	5.13820424e-01      	6.58706132e-01
+2       	6.06795725e-02      	9.35812471e-02
+3       	2.22102719e-03      	9.07041060e-03
+4       	3.68727371e-07      	1.74724324e-04
+5       	9.04680438e-14      	6.15189799e-08
+Final   	9.04680438e-14
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -290,11 +400,11 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	2.74324712e-01      	NaN
-1       	4.14480092e-01      	1.97444792e+00
-2       	1.59223021e-04      	1.43328242e-01
-3       	1.95991844e-10      	3.20911519e-04
-4       	2.22044605e-16      	1.67848668e-06
+0       	3.67121523e-01      	NaN
+1       	5.91554585e-01      	2.54406543e+00
+2       	1.48406085e-04      	3.42672109e-01
+3       	3.85398830e-11      	6.19707365e-05
+4       	2.22044605e-16      	7.56920299e-07
 Final   	2.22044605e-16
 ----------------------
 
@@ -314,50 +424,423 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.31241492e-15      	NaN
-1       	1.31105719e-15      	4.94992053e-16
-Final   	1.31105719e-15
+0       	9.04680438e-14      	0.00000000e+00
+1       	8.51124815e-16      	6.40692876e-15
+Final   	8.51124815e-16
 ----------------------
-2. 1.54 with step -0.0032 (0.0253) converged in 2 iterations.
-3. 1.54 with step -0.0037 (0.0253) converged in 2 iterations.
-4. 1.53 with step -0.0042 (0.0253) converged in 2 iterations.
-5. 1.53 with step -0.0047 (0.0253) converged in 2 iterations.
-6. 1.52 with step -0.0052 (0.0253) converged in 2 iterations.
-7. 1.52 with step -0.0058 (0.0253) converged in 2 iterations.
-8. 1.51 with step -0.0064 (0.0253) converged in 2 iterations.
-9. 1.50 with step -0.0070 (0.0253) converged in 2 iterations.
-10. 1.49 with step -0.0077 (0.0253) converged in 2 iterations.
-11. 1.48 with step -0.0084 (0.0253) converged in 1 iterations.
-12. 1.47 with step -0.0129 (0.0357) converged in 2 iterations.
-13. 1.46 with step -0.0145 (0.0357) converged in 2 iterations.
-14. 1.44 with step -0.0161 (0.0357) converged in 2 iterations.
-15. 1.42 with step -0.0178 (0.0357) converged in 2 iterations.
-16. 1.40 with step -0.0196 (0.0357) converged in 2 iterations.
-17. 1.38 with step -0.0214 (0.0357) converged in 2 iterations.
-18. 1.35 with step -0.0231 (0.0357) converged in 2 iterations.
-19. 1.33 with step -0.0248 (0.0357) converged in 2 iterations.
-20. 1.30 with step -0.0263 (0.0357) converged in 2 iterations.
-21. 1.27 with step -0.0278 (0.0357) converged in 2 iterations.
-22. 1.24 with step -0.0290 (0.0357) converged in 2 iterations.
-23. 1.21 with step -0.0301 (0.0357) converged in 2 iterations.
-24. 1.18 with step -0.0310 (0.0357) converged in 2 iterations.
-25. 1.15 with step -0.0318 (0.0357) converged in 2 iterations.
-26. 1.12 with step -0.0325 (0.0357) converged in 2 iterations.
-27. 1.08 with step -0.0330 (0.0357) converged in 2 iterations.
-28. 1.05 with step -0.0335 (0.0357) converged in 1 iterations.
-29. 1.00 with step -0.0479 (0.0505) converged in 2 iterations.
-30. 0.95 with step -0.0485 (0.0505) converged in 2 iterations.
-31. 0.90 with step -0.0489 (0.0505) converged in 2 iterations.
-32. 0.85 with step -0.0493 (0.0505) converged in 1 iterations.
-33. 0.78 with step -0.0701 (0.0715) converged in 2 iterations.
-34. 0.71 with step -0.0705 (0.0715) converged in 2 iterations.
-35. 0.64 with step -0.0707 (0.0715) converged in 2 iterations.
-36. 0.57 with step -0.0709 (0.0715) converged in 2 iterations.
-37. 0.50 with step -0.0711 (0.0715) converged in 1 iterations.
-38. 0.40 with step -0.1007 (0.1011) converged in 2 iterations.
-39. 0.30 with step -0.1009 (0.1011) converged in 1 iterations.
-40. 0.17 with step -0.1262 (0.1264) converged in 2 iterations.
-41. 0.04 with step -0.1263 (0.1264) converged in 2 iterations.
+2. 1.47 with step -0.0086 (0.0560) converged in 2 iterations. 0.455560 Δα.
+3. 1.47 with step -0.0060 (0.0347) converged in 1 iterations. 0.436748 Δα.
+4. 1.46 with step -0.0041 (0.0219) converged in 1 iterations. 0.383227 Δα.
+5. 1.46 with step -0.0029 (0.0148) converged in 1 iterations. 0.391326 Δα.
+6. 1.46 with step -0.0023 (0.0112) converged in 1 iterations. 0.397787 Δα.
+7. 1.46 with step -0.0024 (0.0112) converged in 1 iterations. 0.403265 Δα.
+8. 1.45 with step -0.0024 (0.0112) converged in 1 iterations. 0.408402 Δα.
+9. 1.45 with step -0.0025 (0.0112) converged in 1 iterations. 0.413424 Δα.
+10. 1.45 with step -0.0026 (0.0112) converged in 1 iterations. 0.418457 Δα.
+11. 1.45 with step -0.0026 (0.0112) converged in 1 iterations. 0.423564 Δα.
+12. 1.44 with step -0.0027 (0.0112) converged in 1 iterations. 0.428779 Δα.
+13. 1.44 with step -0.0028 (0.0112) converged in 1 iterations. 0.434116 Δα.
+14. 1.44 with step -0.0029 (0.0112) converged in 1 iterations. 0.439582 Δα.
+15. 1.43 with step -0.0030 (0.0112) converged in 1 iterations. 0.445181 Δα.
+16. 1.43 with step -0.0031 (0.0112) converged in 1 iterations. 0.450911 Δα.
+17. 1.43 with step -0.0031 (0.0112) converged in 1 iterations. 0.456771 Δα.
+18. 1.43 with step -0.0032 (0.0112) converged in 1 iterations. 0.462757 Δα.
+19. 1.42 with step -0.0033 (0.0112) converged in 1 iterations. 0.468865 Δα.
+20. 1.42 with step -0.0034 (0.0112) converged in 1 iterations. 0.475087 Δα.
+21. 1.42 with step -0.0035 (0.0112) converged in 1 iterations. 0.481416 Δα.
+22. 1.41 with step -0.0036 (0.0112) converged in 1 iterations. 0.487842 Δα.
+23. 1.41 with step -0.0037 (0.0112) converged in 1 iterations. 0.494355 Δα.
+24. 1.40 with step -0.0038 (0.0112) converged in 1 iterations. 0.500942 Δα.
+25. 1.40 with step -0.0040 (0.0112) converged in 1 iterations. 0.507587 Δα.
+26. 1.40 with step -0.0041 (0.0112) converged in 1 iterations. 0.514275 Δα.
+27. 1.39 with step -0.0042 (0.0112) converged in 1 iterations. 0.520988 Δα.
+28. 1.39 with step -0.0043 (0.0112) converged in 1 iterations. 0.527705 Δα.
+29. 1.38 with step -0.0044 (0.0112) converged in 1 iterations. 0.534405 Δα.
+30. 1.38 with step -0.0046 (0.0112) converged in 1 iterations. 0.541065 Δα.
+31. 1.37 with step -0.0047 (0.0112) converged in 1 iterations. 0.547659 Δα.
+32. 1.37 with step -0.0048 (0.0112) converged in 1 iterations. 0.554162 Δα.
+33. 1.36 with step -0.0050 (0.0112) converged in 1 iterations. 0.560548 Δα.
+34. 1.36 with step -0.0051 (0.0112) converged in 1 iterations. 0.566787 Δα.
+35. 1.35 with step -0.0052 (0.0112) converged in 1 iterations. 0.572854 Δα.
+36. 1.35 with step -0.0054 (0.0112) converged in 1 iterations. 0.578719 Δα.
+37. 1.34 with step -0.0055 (0.0112) converged in 1 iterations. 0.584357 Δα.
+38. 1.34 with step -0.0056 (0.0112) converged in 1 iterations. 0.589742 Δα.
+39. 1.33 with step -0.0058 (0.0112) converged in 1 iterations. 0.594849 Δα.
+40. 1.32 with step -0.0059 (0.0112) converged in 1 iterations. 0.599656 Δα.
+41. 1.32 with step -0.0060 (0.0112) converged in 1 iterations. 0.604143 Δα.
+42. 1.31 with step -0.0062 (0.0112) converged in 1 iterations. 0.608293 Δα.
+43. 1.31 with step -0.0063 (0.0112) converged in 1 iterations. 0.612092 Δα.
+44. 1.30 with step -0.0064 (0.0112) converged in 1 iterations. 0.615528 Δα.
+45. 1.29 with step -0.0066 (0.0112) converged in 1 iterations. 0.618594 Δα.
+46. 1.29 with step -0.0067 (0.0112) converged in 1 iterations. 0.621286 Δα.
+47. 1.28 with step -0.0068 (0.0112) converged in 1 iterations. 0.623600 Δα.
+48. 1.27 with step -0.0069 (0.0112) converged in 1 iterations. 0.625539 Δα.
+49. 1.26 with step -0.0071 (0.0112) converged in 1 iterations. 0.627106 Δα.
+50. 1.26 with step -0.0072 (0.0112) converged in 1 iterations. 0.628309 Δα.
+51. 1.25 with step -0.0073 (0.0112) converged in 1 iterations. 0.629155 Δα.
+52. 1.24 with step -0.0074 (0.0112) converged in 1 iterations. 0.629655 Δα.
+53. 1.23 with step -0.0075 (0.0112) converged in 1 iterations. 0.629821 Δα.
+54. 1.23 with step -0.0076 (0.0112) converged in 1 iterations. 0.629666 Δα.
+55. 1.22 with step -0.0077 (0.0112) converged in 1 iterations. 0.629204 Δα.
+56. 1.21 with step -0.0078 (0.0112) converged in 1 iterations. 0.628448 Δα.
+57. 1.20 with step -0.0079 (0.0112) converged in 1 iterations. 0.627413 Δα.
+58. 1.20 with step -0.0080 (0.0112) converged in 1 iterations. 0.626115 Δα.
+59. 1.19 with step -0.0081 (0.0112) converged in 1 iterations. 0.624566 Δα.
+60. 1.18 with step -0.0081 (0.0112) converged in 1 iterations. 0.622782 Δα.
+61. 1.17 with step -0.0082 (0.0112) converged in 1 iterations. 0.620776 Δα.
+62. 1.16 with step -0.0083 (0.0112) converged in 1 iterations. 0.618561 Δα.
+63. 1.15 with step -0.0084 (0.0112) converged in 1 iterations. 0.616150 Δα.
+64. 1.15 with step -0.0084 (0.0112) converged in 1 iterations. 0.613554 Δα.
+65. 1.14 with step -0.0085 (0.0112) converged in 1 iterations. 0.610786 Δα.
+66. 1.13 with step -0.0086 (0.0112) converged in 1 iterations. 0.607855 Δα.
+67. 1.12 with step -0.0086 (0.0112) converged in 1 iterations. 0.604772 Δα.
+68. 1.11 with step -0.0087 (0.0112) converged in 1 iterations. 0.601546 Δα.
+69. 1.10 with step -0.0087 (0.0112) converged in 1 iterations. 0.598187 Δα.
+70. 1.09 with step -0.0087 (0.0112) converged in 1 iterations. 0.594703 Δα.
+71. 1.08 with step -0.0088 (0.0112) converged in 1 iterations. 0.591102 Δα.
+72. 1.08 with step -0.0088 (0.0112) converged in 1 iterations. 0.587393 Δα.
+73. 1.07 with step -0.0089 (0.0112) converged in 1 iterations. 0.583582 Δα.
+74. 1.06 with step -0.0089 (0.0112) converged in 1 iterations. 0.579676 Δα.
+75. 1.05 with step -0.0089 (0.0112) converged in 1 iterations. 0.575683 Δα.
+76. 1.04 with step -0.0089 (0.0112) converged in 1 iterations. 0.571608 Δα.
+77. 1.03 with step -0.0089 (0.0112) converged in 1 iterations. 0.567459 Δα.
+78. 1.02 with step -0.0090 (0.0112) converged in 1 iterations. 0.563241 Δα.
+79. 1.01 with step -0.0090 (0.0112) converged in 1 iterations. 0.558961 Δα.
+80. 1.00 with step -0.0090 (0.0112) converged in 1 iterations. 0.554623 Δα.
+81. 1.00 with step -0.0090 (0.0112) converged in 1 iterations. 0.550235 Δα.
+82. 0.99 with step -0.0090 (0.0112) converged in 1 iterations. 0.545801 Δα.
+83. 0.98 with step -0.0090 (0.0112) converged in 1 iterations. 0.541326 Δα.
+84. 0.97 with step -0.0090 (0.0112) converged in 1 iterations. 0.536817 Δα.
+85. 0.96 with step -0.0090 (0.0112) converged in 1 iterations. 0.532279 Δα.
+86. 0.95 with step -0.0090 (0.0112) converged in 1 iterations. 0.527715 Δα.
+87. 0.94 with step -0.0089 (0.0112) converged in 1 iterations. 0.523131 Δα.
+88. 0.93 with step -0.0089 (0.0112) converged in 1 iterations. 0.518532 Δα.
+89. 0.92 with step -0.0089 (0.0112) converged in 1 iterations. 0.513923 Δα.
+90. 0.91 with step -0.0089 (0.0112) converged in 1 iterations. 0.509306 Δα.
+91. 0.91 with step -0.0088 (0.0112) converged in 1 iterations. 0.504686 Δα.
+92. 0.90 with step -0.0088 (0.0112) converged in 1 iterations. 0.500068 Δα.
+93. 0.89 with step -0.0088 (0.0112) converged in 1 iterations. 0.495452 Δα.
+94. 0.88 with step -0.0088 (0.0112) converged in 1 iterations. 0.490844 Δα.
+95. 0.87 with step -0.0087 (0.0112) converged in 1 iterations. 0.486244 Δα.
+96. 0.86 with step -0.0087 (0.0112) converged in 1 iterations. 0.481653 Δα.
+97. 0.85 with step -0.0086 (0.0112) converged in 1 iterations. 0.477073 Δα.
+98. 0.84 with step -0.0086 (0.0112) converged in 1 iterations. 0.472502 Δα.
+99. 0.84 with step -0.0085 (0.0112) converged in 1 iterations. 0.467938 Δα.
+100. 0.83 with step -0.0085 (0.0112) converged in 1 iterations. 0.463375 Δα.
+101. 0.82 with step -0.0084 (0.0112) converged in 1 iterations. 0.458805 Δα.
+102. 0.81 with step -0.0084 (0.0112) converged in 1 iterations. 0.454217 Δα.
+103. 0.80 with step -0.0083 (0.0112) converged in 1 iterations. 0.449589 Δα.
+104. 0.79 with step -0.0083 (0.0112) converged in 1 iterations. 0.444893 Δα.
+105. 0.79 with step -0.0082 (0.0112) converged in 1 iterations. 0.440084 Δα.
+106. 0.78 with step -0.0081 (0.0112) converged in 1 iterations. 0.435096 Δα.
+107. 0.77 with step -0.0081 (0.0112) converged in 1 iterations. 0.429824 Δα.
+108. 0.76 with step -0.0080 (0.0112) converged in 1 iterations. 0.424110 Δα.
+109. 0.75 with step -0.0079 (0.0112) converged in 1 iterations. 0.417699 Δα.
+110. 0.75 with step -0.0078 (0.0112) converged in 1 iterations. 0.410192 Δα.
+111. 0.74 with step -0.0076 (0.0112) converged in 1 iterations. 0.400957 Δα.
+112. 0.73 with step -0.0074 (0.0112) converged in 1 iterations. 0.389023 Δα.
+113. 0.72 with step -0.0072 (0.0112) converged in 1 iterations. 0.373000 Δα.
+114. 0.72 with step -0.0068 (0.0112) converged in 1 iterations. 0.351228 Δα.
+115. 0.71 with step -0.0063 (0.0112) converged in 1 iterations. 0.322490 Δα.
+116. 0.71 with step -0.0057 (0.0112) converged in 1 iterations. 0.287372 Δα.
+117. 0.70 with step -0.0050 (0.0112) converged in 1 iterations. 0.249039 Δα.
+118. 0.70 with step -0.0043 (0.0112) converged in 1 iterations. 0.211833 Δα.
+119. 0.69 with step -0.0036 (0.0112) converged in 1 iterations. 0.178966 Δα.
+120. 0.69 with step -0.0030 (0.0112) converged in 1 iterations. 3.877801 Δα.
+121. 0.69 with step -0.0025 (0.0112) converged in 1 iterations. 3.557492 Δα.
+122. 0.69 with step -0.0021 (0.0112) converged in 1 iterations. 3.263477 Δα.
+123. 0.69 with step -0.0018 (0.0112) converged in 1 iterations. 2.999161 Δα.
+124. 0.68 with step -0.0015 (0.0112) converged in 1 iterations. 3.002679 Δα.
+125. 0.68 with step -0.0013 (0.0112) converged in 1 iterations. 2.772663 Δα.
+126. 0.68 with step -0.0011 (0.0112) converged in 1 iterations. 2.723583 Δα.
+127. 0.68 with step -0.0010 (0.0112) converged in 1 iterations. 2.527779 Δα.
+128. 0.68 with step -0.0009 (0.0112) converged in 1 iterations. 2.351438 Δα.
+129. 0.68 with step -0.0008 (0.0112) converged in 1 iterations. 0.000000 Δα.
+130. 0.68 with step -0.0014 (0.0224) converged in 1 iterations. 2.718884 Δα.
+131. 0.68 with step -0.0006 (0.0112) converged in 1 iterations. 0.000000 Δα.
+132. 0.68 with step -0.0010 (0.0224) converged in 1 iterations. 2.269444 Δα.
+133. 0.68 with step -0.0004 (0.0112) converged in 1 iterations. 0.000000 Δα.
+134. 0.68 with step -0.0008 (0.0224) converged in 1 iterations. 1.968877 Δα.
+135. 0.68 with step -0.0003 (0.0112) converged in 1 iterations. 0.000000 Δα.
+136. 0.67 with step -0.0006 (0.0224) converged in 1 iterations. 1.729987 Δα.
+137. 0.67 with step -0.0003 (0.0112) converged in 1 iterations. 0.000000 Δα.
+138. 0.67 with step -0.0005 (0.0224) converged in 1 iterations. 1.537278 Δα.
+139. 0.67 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+140. 0.67 with step -0.0004 (0.0224) converged in 1 iterations. 1.381663 Δα.
+141. 0.67 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+142. 0.67 with step -0.0004 (0.0224) converged in 1 iterations. 1.258722 Δα.
+143. 0.67 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+144. 0.67 with step -0.0003 (0.0224) converged in 1 iterations. 1.168113 Δα.
+145. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000001 Δα.
+146. 0.67 with step -0.0003 (0.0224) converged in 1 iterations. 1.113816 Δα.
+147. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+148. 0.67 with step -0.0003 (0.0224) converged in 1 iterations. 1.105057 Δα.
+149. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+150. 0.67 with step -0.0002 (0.0224) converged in 1 iterations. 1.020530 Δα.
+151. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+152. 0.67 with step -0.0002 (0.0224) converged in 1 iterations. 0.924273 Δα.
+153. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+154. 0.67 with step -0.0002 (0.0224) converged in 1 iterations. 0.835386 Δα.
+155. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000001 Δα.
+156. 0.67 with step -0.0002 (0.0224) converged in 1 iterations. 0.752560 Δα.
+157. 0.67 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+158. 0.67 with step -0.0002 (0.0224) converged in 1 iterations. 0.674715 Δα.
+159. 0.67 with step -0.0001 (0.0114) converged in 1 iterations. 0.000000 Δα.
+160. 0.67 with step -0.0001 (0.0228) converged in 1 iterations. 0.600207 Δα.
+161. 0.67 with step -0.0001 (0.0123) converged in 1 iterations. 0.000001 Δα.
+162. 0.67 with step -0.0001 (0.0246) converged in 1 iterations. 0.525320 Δα.
+163. 0.67 with step -0.0001 (0.0142) converged in 1 iterations. 0.000000 Δα.
+164. 0.67 with step -0.0002 (0.0283) converged in 1 iterations. 0.444614 Δα.
+165. 0.67 with step -0.0001 (0.0177) converged in 1 iterations. 0.000000 Δα.
+166. 0.67 with step -0.0002 (0.0355) converged in 1 iterations. 0.350007 Δα.
+167. 0.67 with step -0.0001 (0.0251) converged in 1 iterations. 0.000000 Δα.
+168. 0.67 with step -0.0002 (0.0501) converged in 1 iterations. 1.716981 Δα.
+169. 0.67 with step -0.0001 (0.0251) converged in 1 iterations. 0.000000 Δα.
+170. 0.67 with step -0.0002 (0.0501) converged in 1 iterations. 1.210498 Δα.
+171. 0.67 with step -0.0001 (0.0251) converged in 1 iterations. 1.125367 Δα.
+172. 0.67 with step -0.0000 (0.0125) converged in 1 iterations. 0.000000 Δα.
+173. 0.67 with step -0.0001 (0.0251) converged in 1 iterations. 1.058406 Δα.
+174. 0.67 with step -0.0000 (0.0125) converged in 1 iterations. 125.336069 Δα.
+175. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+176. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+177. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+178. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+179. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+180. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+181. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+182. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+183. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+184. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+185. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+186. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+187. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+188. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+189. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+190. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+191. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+192. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+193. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+194. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 0.000001 Δα.
+195. 0.67 with step -0.0001 (0.0224) converged in 1 iterations. 0.000001 Δα.
+196. 0.67 with step -0.0001 (0.0448) converged in 1 iterations. 1.272706 Δα.
+197. 0.67 with step -0.0001 (0.0224) converged in 1 iterations. 0.000000 Δα.
+198. 0.67 with step -0.0001 (0.0448) converged in 1 iterations. 0.195729 Δα.
+199. 0.67 with step -0.0001 (0.0423) converged in 1 iterations. 0.000000 Δα.
+200. 0.67 with step -0.0002 (0.0846) converged in 1 iterations. 0.042728 Δα.
+201. 0.67 with step -0.0005 (0.1692) converged in 1 iterations. 2.365983 Δα.
+202. 0.67 with step -0.0002 (0.0846) converged in 1 iterations. 1.032808 Δα.
+203. 0.67 with step -0.0001 (0.0423) converged in 1 iterations. 0.865275 Δα.
+204. 0.67 with step -0.0001 (0.0212) converged in 1 iterations. 1.016231 Δα.
+205. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+206. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+207. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+208. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+209. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+210. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+211. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+212. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+213. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+214. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+215. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+216. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+217. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+218. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+219. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+220. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+221. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 140.261029 Δα.
+222. 0.67 with step -0.0000 (0.0112) converged in 1 iterations. 0.000000 Δα.
+223. 0.67 with step -0.0001 (0.0224) converged in 1 iterations. 0.000000 Δα.
+224. 0.66 with step -0.0002 (0.0448) converged in 1 iterations. 1.438704 Δα.
+225. 0.66 with step -0.0001 (0.0224) converged in 1 iterations. 0.000000 Δα.
+226. 0.66 with step -0.0002 (0.0448) converged in 1 iterations. 2.135753 Δα.
+227. 0.66 with step -0.0001 (0.0224) converged in 1 iterations. 0.000000 Δα.
+228. 0.66 with step -0.0002 (0.0448) converged in 1 iterations. 0.366206 Δα.
+229. 0.66 with step -0.0001 (0.0309) converged in 1 iterations. 0.443000 Δα.
+230. 0.66 with step -0.0001 (0.0194) converged in 1 iterations. 0.000000 Δα.
+231. 0.66 with step -0.0002 (0.0388) converged in 1 iterations. 0.545209 Δα.
+232. 0.66 with step -0.0001 (0.0220) converged in 1 iterations. 0.613991 Δα.
+233. 0.66 with step -0.0001 (0.0117) converged in 1 iterations. 0.000000 Δα.
+234. 0.66 with step -0.0001 (0.0234) converged in 1 iterations. 0.685141 Δα.
+235. 0.66 with step -0.0001 (0.0118) converged in 1 iterations. 0.000000 Δα.
+236. 0.66 with step -0.0002 (0.0236) converged in 1 iterations. 0.765213 Δα.
+237. 0.66 with step -0.0001 (0.0118) converged in 1 iterations. 0.000000 Δα.
+238. 0.66 with step -0.0002 (0.0236) converged in 1 iterations. 0.851071 Δα.
+239. 0.66 with step -0.0001 (0.0118) converged in 1 iterations. 0.000000 Δα.
+240. 0.66 with step -0.0002 (0.0236) converged in 1 iterations. 0.943628 Δα.
+241. 0.66 with step -0.0001 (0.0118) converged in 1 iterations. 0.000000 Δα.
+242. 0.66 with step -0.0002 (0.0236) converged in 1 iterations. 1.075728 Δα.
+243. 0.66 with step -0.0001 (0.0118) converged in 1 iterations. 1.102597 Δα.
+244. 0.66 with step -0.0001 (0.0112) converged in 1 iterations. 140.261029 Δα.
+245. 0.66 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+246. 0.66 with step -0.0002 (0.0224) converged in 1 iterations. 1.099071 Δα.
+247. 0.66 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+248. 0.66 with step -0.0003 (0.0224) converged in 1 iterations. 1.160901 Δα.
+249. 0.66 with step -0.0001 (0.0112) converged in 1 iterations. 0.000000 Δα.
+250. 0.66 with step -0.0003 (0.0224) converged in 1 iterations. 1.250581 Δα.
+251. 0.66 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+252. 0.66 with step -0.0004 (0.0224) converged in 1 iterations. 1.366308 Δα.
+253. 0.66 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+254. 0.66 with step -0.0004 (0.0224) converged in 1 iterations. 1.509156 Δα.
+255. 0.66 with step -0.0002 (0.0112) converged in 1 iterations. 0.000000 Δα.
+256. 0.66 with step -0.0005 (0.0224) converged in 1 iterations. 1.683042 Δα.
+257. 0.66 with step -0.0003 (0.0112) converged in 1 iterations. 0.000000 Δα.
+258. 0.66 with step -0.0006 (0.0224) converged in 1 iterations. 1.895229 Δα.
+259. 0.66 with step -0.0003 (0.0112) converged in 1 iterations. 0.000000 Δα.
+260. 0.66 with step -0.0007 (0.0224) converged in 1 iterations. 2.157592 Δα.
+261. 0.66 with step -0.0004 (0.0112) converged in 1 iterations. 1.620609 Δα.
+262. 0.66 with step -0.0005 (0.0112) converged in 1 iterations. 1.710507 Δα.
+263. 0.66 with step -0.0005 (0.0112) converged in 1 iterations. 1.816392 Δα.
+264. 0.65 with step -0.0006 (0.0112) converged in 1 iterations. 1.930469 Δα.
+265. 0.65 with step -0.0006 (0.0112) converged in 1 iterations. 2.053924 Δα.
+266. 0.65 with step -0.0007 (0.0112) converged in 1 iterations. 2.188140 Δα.
+267. 0.65 with step -0.0008 (0.0112) converged in 1 iterations. 2.334731 Δα.
+268. 0.65 with step -0.0008 (0.0112) converged in 1 iterations. 2.495582 Δα.
+269. 0.65 with step -0.0009 (0.0112) converged in 1 iterations. 2.672859 Δα.
+270. 0.65 with step -0.0011 (0.0112) converged in 1 iterations. 2.707588 Δα.
+271. 0.65 with step -0.0012 (0.0112) converged in 1 iterations. 2.913452 Δα.
+272. 0.65 with step -0.0014 (0.0112) converged in 1 iterations. 3.142037 Δα.
+273. 0.65 with step -0.0016 (0.0112) converged in 1 iterations. 3.116085 Δα.
+274. 0.64 with step -0.0019 (0.0112) converged in 1 iterations. 3.372437 Δα.
+275. 0.64 with step -0.0022 (0.0112) converged in 1 iterations. 3.647262 Δα.
+276. 0.64 with step -0.0026 (0.0112) converged in 1 iterations. 3.929324 Δα.
+277. 0.63 with step -0.0031 (0.0112) converged in 1 iterations. 0.183720 Δα.
+278. 0.63 with step -0.0036 (0.0112) converged in 1 iterations. 0.213589 Δα.
+279. 0.63 with step -0.0042 (0.0112) converged in 1 iterations. 0.244712 Δα.
+280. 0.62 with step -0.0048 (0.0112) converged in 1 iterations. 0.273637 Δα.
+281. 0.62 with step -0.0053 (0.0112) converged in 1 iterations. 0.297330 Δα.
+282. 0.61 with step -0.0057 (0.0112) converged in 1 iterations. 0.314615 Δα.
+283. 0.60 with step -0.0060 (0.0112) converged in 1 iterations. 0.326111 Δα.
+284. 0.60 with step -0.0061 (0.0112) converged in 1 iterations. 0.333184 Δα.
+285. 0.59 with step -0.0062 (0.0112) converged in 1 iterations. 0.337164 Δα.
+286. 0.58 with step -0.0063 (0.0112) converged in 1 iterations. 0.339075 Δα.
+287. 0.58 with step -0.0063 (0.0112) converged in 1 iterations. 0.339625 Δα.
+288. 0.57 with step -0.0062 (0.0112) converged in 1 iterations. 0.339286 Δα.
+289. 0.57 with step -0.0062 (0.0112) converged in 1 iterations. 0.338368 Δα.
+290. 0.56 with step -0.0062 (0.0112) converged in 1 iterations. 0.337070 Δα.
+291. 0.55 with step -0.0061 (0.0112) converged in 1 iterations. 0.335526 Δα.
+292. 0.55 with step -0.0061 (0.0112) converged in 1 iterations. 0.333823 Δα.
+293. 0.54 with step -0.0060 (0.0112) converged in 1 iterations. 0.332020 Δα.
+294. 0.54 with step -0.0060 (0.0112) converged in 1 iterations. 0.330158 Δα.
+295. 0.53 with step -0.0059 (0.0112) converged in 1 iterations. 0.328263 Δα.
+296. 0.52 with step -0.0059 (0.0112) converged in 1 iterations. 0.326355 Δα.
+297. 0.52 with step -0.0058 (0.0112) converged in 1 iterations. 0.324449 Δα.
+298. 0.51 with step -0.0057 (0.0112) converged in 1 iterations. 0.322553 Δα.
+299. 0.51 with step -0.0057 (0.0112) converged in 1 iterations. 0.320674 Δα.
+300. 0.50 with step -0.0056 (0.0112) converged in 1 iterations. 0.318818 Δα.
+301. 0.50 with step -0.0056 (0.0112) converged in 1 iterations. 0.316988 Δα.
+302. 0.49 with step -0.0055 (0.0112) converged in 1 iterations. 0.315186 Δα.
+303. 0.48 with step -0.0054 (0.0112) converged in 1 iterations. 0.313414 Δα.
+304. 0.48 with step -0.0054 (0.0112) converged in 1 iterations. 0.311672 Δα.
+305. 0.47 with step -0.0053 (0.0112) converged in 1 iterations. 0.309963 Δα.
+306. 0.47 with step -0.0053 (0.0112) converged in 1 iterations. 0.308286 Δα.
+307. 0.46 with step -0.0052 (0.0112) converged in 1 iterations. 0.306640 Δα.
+308. 0.46 with step -0.0052 (0.0112) converged in 1 iterations. 0.305027 Δα.
+309. 0.45 with step -0.0051 (0.0112) converged in 1 iterations. 0.303446 Δα.
+310. 0.45 with step -0.0050 (0.0112) converged in 1 iterations. 0.301897 Δα.
+311. 0.44 with step -0.0050 (0.0112) converged in 1 iterations. 0.300379 Δα.
+312. 0.44 with step -0.0049 (0.0112) converged in 1 iterations. 0.298891 Δα.
+313. 0.43 with step -0.0049 (0.0112) converged in 1 iterations. 0.297434 Δα.
+314. 0.43 with step -0.0048 (0.0112) converged in 1 iterations. 0.296007 Δα.
+315. 0.42 with step -0.0048 (0.0112) converged in 1 iterations. 0.294609 Δα.
+316. 0.42 with step -0.0047 (0.0112) converged in 1 iterations. 0.293239 Δα.
+317. 0.41 with step -0.0047 (0.0112) converged in 1 iterations. 0.291897 Δα.
+318. 0.41 with step -0.0046 (0.0112) converged in 1 iterations. 0.290583 Δα.
+319. 0.40 with step -0.0046 (0.0112) converged in 1 iterations. 0.289295 Δα.
+320. 0.40 with step -0.0045 (0.0112) converged in 1 iterations. 0.288033 Δα.
+321. 0.40 with step -0.0045 (0.0112) converged in 1 iterations. 0.286797 Δα.
+322. 0.39 with step -0.0044 (0.0112) converged in 1 iterations. 0.285586 Δα.
+323. 0.39 with step -0.0044 (0.0112) converged in 1 iterations. 0.284398 Δα.
+324. 0.38 with step -0.0043 (0.0112) converged in 1 iterations. 0.283235 Δα.
+325. 0.38 with step -0.0043 (0.0112) converged in 1 iterations. 0.282094 Δα.
+326. 0.37 with step -0.0042 (0.0112) converged in 1 iterations. 0.280975 Δα.
+327. 0.37 with step -0.0042 (0.0112) converged in 1 iterations. 0.279879 Δα.
+328. 0.37 with step -0.0041 (0.0112) converged in 1 iterations. 0.278803 Δα.
+329. 0.36 with step -0.0041 (0.0112) converged in 1 iterations. 0.277748 Δα.
+330. 0.36 with step -0.0040 (0.0112) converged in 1 iterations. 0.276712 Δα.
+331. 0.35 with step -0.0040 (0.0112) converged in 1 iterations. 0.275696 Δα.
+332. 0.35 with step -0.0039 (0.0112) converged in 1 iterations. 0.274699 Δα.
+333. 0.35 with step -0.0039 (0.0112) converged in 1 iterations. 0.273720 Δα.
+334. 0.34 with step -0.0039 (0.0112) converged in 1 iterations. 0.272758 Δα.
+335. 0.34 with step -0.0038 (0.0112) converged in 1 iterations. 0.271814 Δα.
+336. 0.33 with step -0.0038 (0.0112) converged in 1 iterations. 0.270886 Δα.
+337. 0.33 with step -0.0037 (0.0112) converged in 1 iterations. 0.269974 Δα.
+338. 0.33 with step -0.0037 (0.0112) converged in 1 iterations. 0.269077 Δα.
+339. 0.32 with step -0.0036 (0.0112) converged in 1 iterations. 0.268196 Δα.
+340. 0.32 with step -0.0036 (0.0112) converged in 1 iterations. 0.267328 Δα.
+341. 0.32 with step -0.0036 (0.0112) converged in 1 iterations. 0.266475 Δα.
+342. 0.31 with step -0.0035 (0.0112) converged in 1 iterations. 0.265635 Δα.
+343. 0.31 with step -0.0035 (0.0112) converged in 1 iterations. 0.264808 Δα.
+344. 0.31 with step -0.0034 (0.0112) converged in 1 iterations. 0.263993 Δα.
+345. 0.30 with step -0.0034 (0.0112) converged in 1 iterations. 0.263190 Δα.
+346. 0.30 with step -0.0034 (0.0112) converged in 1 iterations. 0.262399 Δα.
+347. 0.30 with step -0.0033 (0.0112) converged in 1 iterations. 0.261618 Δα.
+348. 0.29 with step -0.0033 (0.0112) converged in 1 iterations. 0.260848 Δα.
+349. 0.29 with step -0.0032 (0.0112) converged in 1 iterations. 0.260089 Δα.
+350. 0.29 with step -0.0032 (0.0112) converged in 1 iterations. 0.268632 Δα.
+351. 0.28 with step -0.0032 (0.0112) converged in 1 iterations. 0.267988 Δα.
+352. 0.28 with step -0.0031 (0.0112) converged in 1 iterations. 0.267349 Δα.
+353. 0.28 with step -0.0031 (0.0112) converged in 1 iterations. 0.266715 Δα.
+354. 0.27 with step -0.0031 (0.0112) converged in 1 iterations. 0.266085 Δα.
+355. 0.27 with step -0.0030 (0.0112) converged in 1 iterations. 0.265459 Δα.
+356. 0.27 with step -0.0030 (0.0112) converged in 1 iterations. 0.264837 Δα.
+357. 0.26 with step -0.0029 (0.0112) converged in 1 iterations. 0.264217 Δα.
+358. 0.26 with step -0.0029 (0.0112) converged in 1 iterations. 0.263601 Δα.
+359. 0.26 with step -0.0029 (0.0112) converged in 1 iterations. 0.262986 Δα.
+360. 0.26 with step -0.0028 (0.0112) converged in 1 iterations. 0.262374 Δα.
+361. 0.25 with step -0.0028 (0.0112) converged in 1 iterations. 0.261763 Δα.
+362. 0.25 with step -0.0028 (0.0112) converged in 1 iterations. 0.261153 Δα.
+363. 0.25 with step -0.0027 (0.0112) converged in 1 iterations. 0.260545 Δα.
+364. 0.24 with step -0.0027 (0.0112) converged in 1 iterations. 0.259937 Δα.
+365. 0.24 with step -0.0027 (0.0112) converged in 1 iterations. 0.259329 Δα.
+366. 0.24 with step -0.0026 (0.0112) converged in 1 iterations. 0.258720 Δα.
+367. 0.24 with step -0.0026 (0.0112) converged in 1 iterations. 0.258112 Δα.
+368. 0.23 with step -0.0026 (0.0112) converged in 1 iterations. 0.257502 Δα.
+369. 0.23 with step -0.0026 (0.0112) converged in 1 iterations. 0.256892 Δα.
+370. 0.23 with step -0.0025 (0.0112) converged in 1 iterations. 0.256280 Δα.
+371. 0.23 with step -0.0025 (0.0112) converged in 1 iterations. 0.255665 Δα.
+372. 0.22 with step -0.0025 (0.0112) converged in 1 iterations. 0.255049 Δα.
+373. 0.22 with step -0.0024 (0.0112) converged in 1 iterations. 0.254430 Δα.
+374. 0.22 with step -0.0024 (0.0112) converged in 1 iterations. 0.253809 Δα.
+375. 0.22 with step -0.0024 (0.0112) converged in 1 iterations. 0.000000 Δα.
+376. 0.21 with step -0.0047 (0.0224) converged in 1 iterations. 0.241916 Δα.
+377. 0.21 with step -0.0039 (0.0190) converged in 1 iterations. 0.252816 Δα.
+378. 0.21 with step -0.0032 (0.0158) converged in 1 iterations. 0.251877 Δα.
+379. 0.20 with step -0.0026 (0.0132) converged in 1 iterations. 0.250627 Δα.
+380. 0.20 with step -0.0022 (0.0112) converged in 1 iterations. 0.000000 Δα.
+381. 0.20 with step -0.0043 (0.0224) converged in 1 iterations. 0.237562 Δα.
+382. 0.19 with step -0.0036 (0.0192) converged in 1 iterations. 0.248127 Δα.
+383. 0.19 with step -0.0030 (0.0161) converged in 1 iterations. 0.247017 Δα.
+384. 0.19 with step -0.0024 (0.0135) converged in 1 iterations. 0.000001 Δα.
+385. 0.18 with step -0.0048 (0.0271) converged in 1 iterations. 0.233732 Δα.
+386. 0.18 with step -0.0040 (0.0234) converged in 1 iterations. 0.244047 Δα.
+387. 0.18 with step -0.0033 (0.0198) converged in 1 iterations. 0.242616 Δα.
+388. 0.17 with step -0.0027 (0.0168) converged in 1 iterations. 0.240919 Δα.
+389. 0.17 with step -0.0023 (0.0143) converged in 1 iterations. 0.000000 Δα.
+390. 0.17 with step -0.0045 (0.0286) converged in 1 iterations. 0.227452 Δα.
+391. 0.16 with step -0.0038 (0.0250) converged in 1 iterations. 0.236946 Δα.
+392. 0.16 with step -0.0032 (0.0215) converged in 1 iterations. 0.235242 Δα.
+393. 0.16 with step -0.0027 (0.0185) converged in 1 iterations. 0.000000 Δα.
+394. 0.15 with step -0.0052 (0.0370) converged in 1 iterations. 0.621541 Δα.
+395. 0.15 with step -0.0027 (0.0196) converged in 1 iterations. 0.000000 Δα.
+396. 0.14 with step -0.0052 (0.0392) converged in 1 iterations. 0.611263 Δα.
+397. 0.14 with step -0.0027 (0.0209) converged in 1 iterations. 0.000001 Δα.
+398. 0.14 with step -0.0051 (0.0419) converged in 1 iterations. 0.598455 Δα.
+399. 0.13 with step -0.0027 (0.0226) converged in 1 iterations. 0.000000 Δα.
+400. 0.13 with step -0.0051 (0.0453) converged in 1 iterations. 0.556863 Δα.
+401. 0.13 with step -0.0027 (0.0253) converged in 1 iterations. 0.395289 Δα.
+402. 0.12 with step -0.0017 (0.0168) converged in 1 iterations. 0.000000 Δα.
+403. 0.12 with step -0.0034 (0.0337) converged in 1 iterations. 0.531674 Δα.
+404. 0.12 with step -0.0019 (0.0193) converged in 1 iterations. 0.000000 Δα.
+405. 0.11 with step -0.0036 (0.0386) converged in 1 iterations. 0.517826 Δα.
+406. 0.11 with step -0.0020 (0.0224) converged in 1 iterations. 0.367793 Δα.
+407. 0.11 with step -0.0013 (0.0154) converged in 1 iterations. 0.000000 Δα.
+408. 0.11 with step -0.0026 (0.0309) converged in 1 iterations. 0.358806 Δα.
+409. 0.11 with step -0.0018 (0.0215) converged in 1 iterations. 0.353104 Δα.
+410. 0.11 with step -0.0012 (0.0151) converged in 1 iterations. 0.000001 Δα.
+411. 0.10 with step -0.0024 (0.0303) converged in 1 iterations. 0.345043 Δα.
+412. 0.10 with step -0.0016 (0.0215) converged in 1 iterations. 0.339648 Δα.
+413. 0.10 with step -0.0011 (0.0154) converged in 1 iterations. 0.000000 Δα.
+414. 0.10 with step -0.0022 (0.0309) converged in 1 iterations. 0.331765 Δα.
 
 Algorithm: NewtonRaphson(
     descent = NewtonDescent(),
@@ -375,15 +858,13 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.19949781e-01      	2.44845661e-02
-1       	3.57329495e+00      	8.50479327e-01
-2       	1.50841143e+00      	9.92192320e-02
-3       	7.38530106e-02      	4.86705387e-02
-4       	1.44373704e-02      	2.27196843e-02
-5       	1.02437126e-04      	1.04384384e-03
-6       	1.89557772e-10      	3.85094377e-06
-7       	1.79483716e-15      	1.44870467e-10
-Final   	1.79483716e-15
+0       	1.63976531e-01      	1.00000000e+00
+1       	2.60706613e-01      	5.33288742e-01
+2       	4.98338743e-02      	7.13019806e-02
+3       	2.10151365e-04      	7.67415330e-03
+4       	1.45505008e-07      	1.88175458e-04
+5       	1.63791948e-14      	4.14508905e-08
+Final   	1.63791948e-14
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -402,12 +883,12 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	2.11049557e-01      	1.99997164e+00
-1       	9.86366454e-01      	2.06015711e+00
-2       	5.17066673e-04      	6.41802281e-02
-3       	4.87344383e-09      	2.04408878e-04
-4       	1.38777878e-17      	1.81401108e-07
-Final   	1.38777878e-17
+0       	2.04746182e-01      	1.87361989e-11
+1       	1.46927020e+00      	2.51090524e+00
+2       	3.72144547e-04      	5.51226933e-02
+3       	1.23844180e-09      	1.17899625e-04
+4       	2.22044605e-16      	1.52055864e-05
+Final   	2.22044605e-16
 ----------------------
 
 Algorithm: NewtonRaphson(
@@ -426,64 +907,450 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.79483716e-15      	0.00000000e+00
-1       	1.79483716e-15      	6.22115380e-16
-Final   	1.79483716e-15
+0       	1.63791948e-14      	6.53510071e+01
+1       	1.05573672e-15      	3.53055516e-15
+Final   	1.05573672e-15
 ----------------------
-2. 2.38 with step 0.0025 (0.0225) converged in 2 iterations.
-3. 2.38 with step 0.0028 (0.0225) converged in 2 iterations.
-4. 2.38 with step 0.0031 (0.0225) converged in 2 iterations.
-5. 2.39 with step 0.0034 (0.0225) converged in 1 iterations.
-6. 2.39 with step 0.0052 (0.0318) converged in 2 iterations.
-7. 2.40 with step 0.0059 (0.0318) converged in 2 iterations.
-8. 2.41 with step 0.0066 (0.0318) converged in 2 iterations.
-9. 2.41 with step 0.0073 (0.0318) converged in 2 iterations.
-10. 2.42 with step 0.0082 (0.0318) converged in 2 iterations.
-11. 2.43 with step 0.0090 (0.0318) converged in 2 iterations.
-12. 2.44 with step 0.0100 (0.0318) converged in 1 iterations.
-13. 2.46 with step 0.0156 (0.0450) converged in 2 iterations.
-14. 2.48 with step 0.0179 (0.0450) converged in 2 iterations.
-15. 2.50 with step 0.0203 (0.0450) converged in 2 iterations.
-16. 2.53 with step 0.0230 (0.0450) converged in 2 iterations.
-17. 2.55 with step 0.0257 (0.0450) converged in 2 iterations.
-18. 2.58 with step 0.0284 (0.0450) converged in 2 iterations.
-19. 2.61 with step 0.0311 (0.0450) converged in 2 iterations.
-20. 2.65 with step 0.0335 (0.0450) converged in 2 iterations.
-21. 2.69 with step 0.0357 (0.0450) converged in 2 iterations.
-22. 2.72 with step 0.0375 (0.0450) converged in 2 iterations.
-23. 2.76 with step 0.0390 (0.0450) converged in 2 iterations.
-24. 2.80 with step 0.0402 (0.0450) converged in 2 iterations.
-25. 2.85 with step 0.0411 (0.0450) converged in 2 iterations.
-26. 2.89 with step 0.0419 (0.0450) converged in 2 iterations.
-27. 2.93 with step 0.0425 (0.0450) converged in 2 iterations.
-28. 2.97 with step 0.0430 (0.0450) converged in 2 iterations.
-29. 3.02 with step 0.0433 (0.0450) converged in 2 iterations.
-30. 3.06 with step 0.0436 (0.0450) converged in 2 iterations.
-31. 3.10 with step 0.0439 (0.0450) converged in 1 iterations.
-32. 3.17 with step 0.0623 (0.0637) converged in 2 iterations.
-33. 3.23 with step 0.0626 (0.0637) converged in 2 iterations.
-34. 3.29 with step 0.0628 (0.0637) converged in 1 iterations.
-35. 3.38 with step 0.0891 (0.0901) converged in 2 iterations.
-36. 3.47 with step 0.0893 (0.0901) converged in 2 iterations.
-37. 3.56 with step 0.0895 (0.0901) converged in 1 iterations.
-38. 3.67 with step 0.1120 (0.1126) converged in 2 iterations.
-39. 3.79 with step 0.1122 (0.1126) converged in 1 iterations.
-40. 3.90 with step 0.1123 (0.1126) converged in 1 iterations.
-41. 4.01 with step 0.1124 (0.1126) converged in 1 iterations.</code></pre><h2 id="exd2_plot"><a class="docs-heading-anchor" href="#exd2_plot">Plotting</a><a id="exd2_plot-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">set_theme!(theme_latexfonts())
+2. 2.45 with step 0.0042 (0.0236) converged in 1 iterations. 0.566189 Δα.
+3. 2.45 with step 0.0024 (0.0131) converged in 1 iterations. 0.422379 Δα.
+4. 2.45 with step 0.0016 (0.0084) converged in 1 iterations. 0.427102 Δα.
+5. 2.45 with step 0.0011 (0.0054) converged in 1 iterations. 0.430607 Δα.
+6. 2.46 with step 0.0009 (0.0047) converged in 1 iterations. 0.433287 Δα.
+7. 2.46 with step 0.0009 (0.0047) converged in 1 iterations. 0.435686 Δα.
+8. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.437989 Δα.
+9. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.440252 Δα.
+10. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.442502 Δα.
+11. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.444754 Δα.
+12. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.447012 Δα.
+13. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.449282 Δα.
+14. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.451562 Δα.
+15. 2.46 with step 0.0010 (0.0047) converged in 1 iterations. 0.453855 Δα.
+16. 2.47 with step 0.0010 (0.0047) converged in 1 iterations. 0.456158 Δα.
+17. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.458473 Δα.
+18. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.460798 Δα.
+19. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.463131 Δα.
+20. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.465474 Δα.
+21. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.467824 Δα.
+22. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.470180 Δα.
+23. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.472542 Δα.
+24. 2.47 with step 0.0011 (0.0047) converged in 1 iterations. 0.474909 Δα.
+25. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.477279 Δα.
+26. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.479652 Δα.
+27. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.482026 Δα.
+28. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.484399 Δα.
+29. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.486772 Δα.
+30. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.489143 Δα.
+31. 2.48 with step 0.0012 (0.0047) converged in 1 iterations. 0.491509 Δα.
+32. 2.48 with step 0.0013 (0.0047) converged in 1 iterations. 0.493871 Δα.
+33. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.496226 Δα.
+34. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.498574 Δα.
+35. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.500913 Δα.
+36. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.503241 Δα.
+37. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.505557 Δα.
+38. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.507860 Δα.
+39. 2.49 with step 0.0013 (0.0047) converged in 1 iterations. 0.510149 Δα.
+40. 2.49 with step 0.0014 (0.0047) converged in 1 iterations. 0.512421 Δα.
+41. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.514675 Δα.
+42. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.516911 Δα.
+43. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.519126 Δα.
+44. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.521319 Δα.
+45. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.523488 Δα.
+46. 2.50 with step 0.0014 (0.0047) converged in 1 iterations. 0.525633 Δα.
+47. 2.50 with step 0.0015 (0.0047) converged in 1 iterations. 0.527752 Δα.
+48. 2.51 with step 0.0015 (0.0047) converged in 1 iterations. 0.529843 Δα.
+49. 2.51 with step 0.0015 (0.0047) converged in 1 iterations. 0.531906 Δα.
+50. 2.51 with step 0.0015 (0.0047) converged in 1 iterations. 0.533938 Δα.
+51. 2.51 with step 0.0015 (0.0047) converged in 1 iterations. 0.535939 Δα.
+52. 2.51 with step 0.0015 (0.0047) converged in 1 iterations. 0.537908 Δα.
+53. 2.51 with step 0.0016 (0.0047) converged in 1 iterations. 0.539843 Δα.
+54. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.541743 Δα.
+55. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.543607 Δα.
+56. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.545434 Δα.
+57. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.547223 Δα.
+58. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.548973 Δα.
+59. 2.52 with step 0.0016 (0.0047) converged in 1 iterations. 0.550684 Δα.
+60. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.552354 Δα.
+61. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.553984 Δα.
+62. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.555571 Δα.
+63. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.557117 Δα.
+64. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.558619 Δα.
+65. 2.53 with step 0.0017 (0.0047) converged in 1 iterations. 0.560079 Δα.
+66. 2.54 with step 0.0017 (0.0047) converged in 1 iterations. 0.561495 Δα.
+67. 2.54 with step 0.0018 (0.0047) converged in 1 iterations. 0.562868 Δα.
+68. 2.54 with step 0.0018 (0.0047) converged in 1 iterations. 0.564196 Δα.
+69. 2.54 with step 0.0018 (0.0047) converged in 1 iterations. 0.565481 Δα.
+70. 2.54 with step 0.0018 (0.0047) converged in 1 iterations. 0.566721 Δα.
+71. 2.54 with step 0.0018 (0.0047) converged in 1 iterations. 0.567917 Δα.
+72. 2.55 with step 0.0018 (0.0047) converged in 1 iterations. 0.569070 Δα.
+73. 2.55 with step 0.0018 (0.0047) converged in 1 iterations. 0.570178 Δα.
+74. 2.55 with step 0.0019 (0.0047) converged in 1 iterations. 0.571244 Δα.
+75. 2.55 with step 0.0019 (0.0047) converged in 1 iterations. 0.572265 Δα.
+76. 2.55 with step 0.0019 (0.0047) converged in 1 iterations. 0.573244 Δα.
+77. 2.56 with step 0.0019 (0.0047) converged in 1 iterations. 0.574181 Δα.
+78. 2.56 with step 0.0019 (0.0047) converged in 1 iterations. 0.575075 Δα.
+79. 2.56 with step 0.0019 (0.0047) converged in 1 iterations. 0.575928 Δα.
+80. 2.56 with step 0.0019 (0.0047) converged in 1 iterations. 0.576740 Δα.
+81. 2.56 with step 0.0019 (0.0047) converged in 1 iterations. 0.577511 Δα.
+82. 2.57 with step 0.0020 (0.0047) converged in 1 iterations. 0.578243 Δα.
+83. 2.57 with step 0.0020 (0.0047) converged in 1 iterations. 0.578936 Δα.
+84. 2.57 with step 0.0020 (0.0047) converged in 1 iterations. 0.579590 Δα.
+85. 2.57 with step 0.0020 (0.0047) converged in 1 iterations. 0.580207 Δα.
+86. 2.57 with step 0.0020 (0.0047) converged in 1 iterations. 0.580787 Δα.
+87. 2.58 with step 0.0020 (0.0047) converged in 1 iterations. 0.581331 Δα.
+88. 2.58 with step 0.0020 (0.0047) converged in 1 iterations. 0.581841 Δα.
+89. 2.58 with step 0.0021 (0.0047) converged in 1 iterations. 0.582315 Δα.
+90. 2.58 with step 0.0021 (0.0047) converged in 1 iterations. 0.582757 Δα.
+91. 2.58 with step 0.0021 (0.0047) converged in 1 iterations. 0.583166 Δα.
+92. 2.59 with step 0.0021 (0.0047) converged in 1 iterations. 0.583543 Δα.
+93. 2.59 with step 0.0021 (0.0047) converged in 1 iterations. 0.583890 Δα.
+94. 2.59 with step 0.0021 (0.0047) converged in 1 iterations. 0.584207 Δα.
+95. 2.59 with step 0.0021 (0.0047) converged in 1 iterations. 0.584495 Δα.
+96. 2.59 with step 0.0021 (0.0047) converged in 1 iterations. 0.584755 Δα.
+97. 2.60 with step 0.0022 (0.0047) converged in 1 iterations. 0.584988 Δα.
+98. 2.60 with step 0.0022 (0.0047) converged in 1 iterations. 0.585194 Δα.
+99. 2.60 with step 0.0022 (0.0047) converged in 1 iterations. 0.585376 Δα.
+100. 2.60 with step 0.0022 (0.0047) converged in 1 iterations. 0.585533 Δα.
+101. 2.61 with step 0.0022 (0.0047) converged in 1 iterations. 0.585667 Δα.
+102. 2.61 with step 0.0022 (0.0047) converged in 1 iterations. 0.585778 Δα.
+103. 2.61 with step 0.0022 (0.0047) converged in 1 iterations. 0.585868 Δα.
+104. 2.61 with step 0.0022 (0.0047) converged in 1 iterations. 0.585937 Δα.
+105. 2.61 with step 0.0022 (0.0047) converged in 1 iterations. 0.585985 Δα.
+106. 2.62 with step 0.0023 (0.0047) converged in 1 iterations. 0.586015 Δα.
+107. 2.62 with step 0.0023 (0.0047) converged in 1 iterations. 0.586026 Δα.
+108. 2.62 with step 0.0023 (0.0047) converged in 1 iterations. 0.586019 Δα.
+109. 2.62 with step 0.0023 (0.0047) converged in 1 iterations. 0.585996 Δα.
+110. 2.63 with step 0.0023 (0.0047) converged in 1 iterations. 0.585956 Δα.
+111. 2.63 with step 0.0023 (0.0047) converged in 1 iterations. 0.585901 Δα.
+112. 2.63 with step 0.0023 (0.0047) converged in 1 iterations. 0.585832 Δα.
+113. 2.63 with step 0.0023 (0.0047) converged in 1 iterations. 0.585748 Δα.
+114. 2.64 with step 0.0024 (0.0047) converged in 1 iterations. 0.585651 Δα.
+115. 2.64 with step 0.0024 (0.0047) converged in 1 iterations. 0.585542 Δα.
+116. 2.64 with step 0.0024 (0.0047) converged in 1 iterations. 0.585420 Δα.
+117. 2.64 with step 0.0024 (0.0047) converged in 1 iterations. 0.585288 Δα.
+118. 2.64 with step 0.0024 (0.0047) converged in 1 iterations. 0.585144 Δα.
+119. 2.65 with step 0.0024 (0.0047) converged in 1 iterations. 0.584990 Δα.
+120. 2.65 with step 0.0024 (0.0047) converged in 1 iterations. 0.584826 Δα.
+121. 2.65 with step 0.0024 (0.0047) converged in 1 iterations. 0.584654 Δα.
+122. 2.65 with step 0.0024 (0.0047) converged in 1 iterations. 0.584472 Δα.
+123. 2.66 with step 0.0025 (0.0047) converged in 1 iterations. 0.584283 Δα.
+124. 2.66 with step 0.0025 (0.0047) converged in 1 iterations. 0.584085 Δα.
+125. 2.66 with step 0.0025 (0.0047) converged in 1 iterations. 0.583881 Δα.
+126. 2.66 with step 0.0025 (0.0047) converged in 1 iterations. 0.583670 Δα.
+127. 2.67 with step 0.0025 (0.0047) converged in 1 iterations. 0.583452 Δα.
+128. 2.67 with step 0.0025 (0.0047) converged in 1 iterations. 0.583228 Δα.
+129. 2.67 with step 0.0025 (0.0047) converged in 1 iterations. 0.582999 Δα.
+130. 2.67 with step 0.0025 (0.0047) converged in 1 iterations. 0.582765 Δα.
+131. 2.68 with step 0.0025 (0.0047) converged in 1 iterations. 0.582525 Δα.
+132. 2.68 with step 0.0025 (0.0047) converged in 1 iterations. 0.582282 Δα.
+133. 2.68 with step 0.0026 (0.0047) converged in 1 iterations. 0.582034 Δα.
+134. 2.68 with step 0.0026 (0.0047) converged in 1 iterations. 0.581782 Δα.
+135. 2.69 with step 0.0026 (0.0047) converged in 1 iterations. 0.581526 Δα.
+136. 2.69 with step 0.0026 (0.0047) converged in 1 iterations. 0.581267 Δα.
+137. 2.69 with step 0.0026 (0.0047) converged in 1 iterations. 0.581005 Δα.
+138. 2.70 with step 0.0026 (0.0047) converged in 1 iterations. 0.580740 Δα.
+139. 2.70 with step 0.0026 (0.0047) converged in 1 iterations. 0.580473 Δα.
+140. 2.70 with step 0.0026 (0.0047) converged in 1 iterations. 0.580203 Δα.
+141. 2.70 with step 0.0026 (0.0047) converged in 1 iterations. 0.579931 Δα.
+142. 2.71 with step 0.0027 (0.0047) converged in 1 iterations. 0.579657 Δα.
+143. 2.71 with step 0.0027 (0.0047) converged in 1 iterations. 0.579381 Δα.
+144. 2.71 with step 0.0027 (0.0047) converged in 1 iterations. 0.579103 Δα.
+145. 2.71 with step 0.0027 (0.0047) converged in 1 iterations. 0.578825 Δα.
+146. 2.72 with step 0.0027 (0.0047) converged in 1 iterations. 0.578544 Δα.
+147. 2.72 with step 0.0027 (0.0047) converged in 1 iterations. 0.578263 Δα.
+148. 2.72 with step 0.0027 (0.0047) converged in 1 iterations. 0.577981 Δα.
+149. 2.72 with step 0.0027 (0.0047) converged in 1 iterations. 0.577698 Δα.
+150. 2.73 with step 0.0027 (0.0047) converged in 1 iterations. 0.577414 Δα.
+151. 2.73 with step 0.0028 (0.0047) converged in 1 iterations. 0.577130 Δα.
+152. 2.73 with step 0.0028 (0.0047) converged in 1 iterations. 0.576845 Δα.
+153. 2.74 with step 0.0028 (0.0047) converged in 1 iterations. 0.576560 Δα.
+154. 2.74 with step 0.0028 (0.0047) converged in 1 iterations. 0.576274 Δα.
+155. 2.74 with step 0.0028 (0.0047) converged in 1 iterations. 0.575988 Δα.
+156. 2.74 with step 0.0028 (0.0047) converged in 1 iterations. 0.575703 Δα.
+157. 2.75 with step 0.0028 (0.0047) converged in 1 iterations. 0.575417 Δα.
+158. 2.75 with step 0.0028 (0.0047) converged in 1 iterations. 0.575131 Δα.
+159. 2.75 with step 0.0028 (0.0047) converged in 1 iterations. 0.574845 Δα.
+160. 2.76 with step 0.0029 (0.0047) converged in 1 iterations. 0.574559 Δα.
+161. 2.76 with step 0.0029 (0.0047) converged in 1 iterations. 0.574274 Δα.
+162. 2.76 with step 0.0029 (0.0047) converged in 1 iterations. 0.573989 Δα.
+163. 2.76 with step 0.0029 (0.0047) converged in 1 iterations. 0.573704 Δα.
+164. 2.77 with step 0.0029 (0.0047) converged in 1 iterations. 0.573419 Δα.
+165. 2.77 with step 0.0029 (0.0047) converged in 1 iterations. 0.573135 Δα.
+166. 2.77 with step 0.0029 (0.0047) converged in 1 iterations. 0.572852 Δα.
+167. 2.78 with step 0.0029 (0.0047) converged in 1 iterations. 0.572568 Δα.
+168. 2.78 with step 0.0029 (0.0047) converged in 1 iterations. 0.572286 Δα.
+169. 2.78 with step 0.0030 (0.0047) converged in 1 iterations. 0.572003 Δα.
+170. 2.79 with step 0.0030 (0.0047) converged in 1 iterations. 0.571722 Δα.
+171. 2.79 with step 0.0030 (0.0047) converged in 1 iterations. 0.571441 Δα.
+172. 2.79 with step 0.0030 (0.0047) converged in 1 iterations. 0.571160 Δα.
+173. 2.79 with step 0.0030 (0.0047) converged in 1 iterations. 0.570880 Δα.
+174. 2.80 with step 0.0030 (0.0047) converged in 1 iterations. 0.570601 Δα.
+175. 2.80 with step 0.0030 (0.0047) converged in 1 iterations. 0.570322 Δα.
+176. 2.80 with step 0.0030 (0.0047) converged in 1 iterations. 0.570044 Δα.
+177. 2.81 with step 0.0030 (0.0047) converged in 1 iterations. 0.569766 Δα.
+178. 2.81 with step 0.0031 (0.0047) converged in 1 iterations. 0.569490 Δα.
+179. 2.81 with step 0.0031 (0.0047) converged in 1 iterations. 0.569213 Δα.
+180. 2.82 with step 0.0031 (0.0047) converged in 1 iterations. 0.568938 Δα.
+181. 2.82 with step 0.0031 (0.0047) converged in 1 iterations. 0.568663 Δα.
+182. 2.82 with step 0.0031 (0.0047) converged in 1 iterations. 0.568389 Δα.
+183. 2.82 with step 0.0031 (0.0047) converged in 1 iterations. 0.568115 Δα.
+184. 2.83 with step 0.0031 (0.0047) converged in 1 iterations. 0.567842 Δα.
+185. 2.83 with step 0.0031 (0.0047) converged in 1 iterations. 0.567570 Δα.
+186. 2.83 with step 0.0032 (0.0047) converged in 1 iterations. 0.567298 Δα.
+187. 2.84 with step 0.0032 (0.0047) converged in 1 iterations. 0.567027 Δα.
+188. 2.84 with step 0.0032 (0.0047) converged in 1 iterations. 0.566757 Δα.
+189. 2.84 with step 0.0032 (0.0047) converged in 1 iterations. 0.566487 Δα.
+190. 2.85 with step 0.0032 (0.0047) converged in 1 iterations. 0.566218 Δα.
+191. 2.85 with step 0.0032 (0.0047) converged in 1 iterations. 0.565949 Δα.
+192. 2.85 with step 0.0032 (0.0047) converged in 1 iterations. 0.565681 Δα.
+193. 2.86 with step 0.0032 (0.0047) converged in 1 iterations. 0.565414 Δα.
+194. 2.86 with step 0.0032 (0.0047) converged in 1 iterations. 0.565147 Δα.
+195. 2.86 with step 0.0033 (0.0047) converged in 1 iterations. 0.564881 Δα.
+196. 2.87 with step 0.0033 (0.0047) converged in 1 iterations. 0.564615 Δα.
+197. 2.87 with step 0.0033 (0.0047) converged in 1 iterations. 0.564350 Δα.
+198. 2.87 with step 0.0033 (0.0047) converged in 1 iterations. 0.564085 Δα.
+199. 2.88 with step 0.0033 (0.0047) converged in 1 iterations. 0.563821 Δα.
+200. 2.88 with step 0.0033 (0.0047) converged in 1 iterations. 0.563558 Δα.
+201. 2.88 with step 0.0033 (0.0047) converged in 1 iterations. 0.563295 Δα.
+202. 2.89 with step 0.0033 (0.0047) converged in 1 iterations. 0.563032 Δα.
+203. 2.89 with step 0.0034 (0.0047) converged in 1 iterations. 0.562770 Δα.
+204. 2.89 with step 0.0034 (0.0047) converged in 1 iterations. 0.562509 Δα.
+205. 2.90 with step 0.0034 (0.0047) converged in 1 iterations. 0.562248 Δα.
+206. 2.90 with step 0.0034 (0.0047) converged in 1 iterations. 0.561987 Δα.
+207. 2.90 with step 0.0034 (0.0047) converged in 1 iterations. 0.561727 Δα.
+208. 2.91 with step 0.0034 (0.0047) converged in 1 iterations. 0.561467 Δα.
+209. 2.91 with step 0.0034 (0.0047) converged in 1 iterations. 0.561208 Δα.
+210. 2.91 with step 0.0034 (0.0047) converged in 1 iterations. 0.560949 Δα.
+211. 2.92 with step 0.0034 (0.0047) converged in 1 iterations. 0.560690 Δα.
+212. 2.92 with step 0.0035 (0.0047) converged in 1 iterations. 0.560432 Δα.
+213. 2.92 with step 0.0035 (0.0047) converged in 1 iterations. 0.560174 Δα.
+214. 2.93 with step 0.0035 (0.0047) converged in 1 iterations. 0.559917 Δα.
+215. 2.93 with step 0.0035 (0.0047) converged in 1 iterations. 0.559660 Δα.
+216. 2.93 with step 0.0035 (0.0047) converged in 1 iterations. 0.559403 Δα.
+217. 2.94 with step 0.0035 (0.0047) converged in 1 iterations. 0.559147 Δα.
+218. 2.94 with step 0.0035 (0.0047) converged in 1 iterations. 0.558891 Δα.
+219. 2.95 with step 0.0035 (0.0047) converged in 1 iterations. 0.558635 Δα.
+220. 2.95 with step 0.0036 (0.0047) converged in 1 iterations. 0.558380 Δα.
+221. 2.95 with step 0.0036 (0.0047) converged in 1 iterations. 0.558125 Δα.
+222. 2.96 with step 0.0036 (0.0047) converged in 1 iterations. 0.557870 Δα.
+223. 2.96 with step 0.0036 (0.0047) converged in 1 iterations. 0.557616 Δα.
+224. 2.96 with step 0.0036 (0.0047) converged in 1 iterations. 0.557362 Δα.
+225. 2.97 with step 0.0036 (0.0047) converged in 1 iterations. 0.557108 Δα.
+226. 2.97 with step 0.0036 (0.0047) converged in 1 iterations. 0.556855 Δα.
+227. 2.97 with step 0.0036 (0.0047) converged in 1 iterations. 0.556601 Δα.
+228. 2.98 with step 0.0037 (0.0047) converged in 1 iterations. 0.556348 Δα.
+229. 2.98 with step 0.0037 (0.0047) converged in 1 iterations. 0.556096 Δα.
+230. 2.99 with step 0.0037 (0.0047) converged in 1 iterations. 0.555843 Δα.
+231. 2.99 with step 0.0037 (0.0047) converged in 1 iterations. 0.555591 Δα.
+232. 2.99 with step 0.0037 (0.0047) converged in 1 iterations. 0.555339 Δα.
+233. 3.00 with step 0.0037 (0.0047) converged in 1 iterations. 0.555087 Δα.
+234. 3.00 with step 0.0037 (0.0047) converged in 1 iterations. 0.554836 Δα.
+235. 3.00 with step 0.0037 (0.0047) converged in 1 iterations. 0.554584 Δα.
+236. 3.01 with step 0.0038 (0.0047) converged in 1 iterations. 0.554333 Δα.
+237. 3.01 with step 0.0038 (0.0047) converged in 1 iterations. 0.554083 Δα.
+238. 3.02 with step 0.0038 (0.0047) converged in 1 iterations. 0.553832 Δα.
+239. 3.02 with step 0.0038 (0.0047) converged in 1 iterations. 0.553582 Δα.
+240. 3.02 with step 0.0038 (0.0047) converged in 1 iterations. 0.553331 Δα.
+241. 3.03 with step 0.0038 (0.0047) converged in 1 iterations. 0.553081 Δα.
+242. 3.03 with step 0.0038 (0.0047) converged in 1 iterations. 0.552832 Δα.
+243. 3.03 with step 0.0038 (0.0047) converged in 1 iterations. 0.552582 Δα.
+244. 3.04 with step 0.0039 (0.0047) converged in 1 iterations. 0.552333 Δα.
+245. 3.04 with step 0.0039 (0.0047) converged in 1 iterations. 0.552084 Δα.
+246. 3.05 with step 0.0039 (0.0047) converged in 1 iterations. 0.551835 Δα.
+247. 3.05 with step 0.0039 (0.0047) converged in 1 iterations. 0.551586 Δα.
+248. 3.05 with step 0.0039 (0.0047) converged in 1 iterations. 0.551337 Δα.
+249. 3.06 with step 0.0039 (0.0047) converged in 1 iterations. 0.551089 Δα.
+250. 3.06 with step 0.0039 (0.0047) converged in 1 iterations. 0.550841 Δα.
+251. 3.07 with step 0.0039 (0.0047) converged in 1 iterations. 0.550593 Δα.
+252. 3.07 with step 0.0040 (0.0047) converged in 1 iterations. 0.550345 Δα.
+253. 3.07 with step 0.0040 (0.0047) converged in 1 iterations. 0.550098 Δα.
+254. 3.08 with step 0.0040 (0.0047) converged in 1 iterations. 0.549850 Δα.
+255. 3.08 with step 0.0040 (0.0047) converged in 1 iterations. 0.549603 Δα.
+256. 3.09 with step 0.0040 (0.0047) converged in 1 iterations. 0.549356 Δα.
+257. 3.09 with step 0.0040 (0.0047) converged in 1 iterations. 0.549109 Δα.
+258. 3.09 with step 0.0040 (0.0047) converged in 1 iterations. 0.548863 Δα.
+259. 3.10 with step 0.0041 (0.0047) converged in 1 iterations. 0.548616 Δα.
+260. 3.10 with step 0.0041 (0.0047) converged in 1 iterations. 0.548370 Δα.
+261. 3.11 with step 0.0041 (0.0047) converged in 1 iterations. 0.548124 Δα.
+262. 3.11 with step 0.0041 (0.0047) converged in 1 iterations. 0.547878 Δα.
+263. 3.11 with step 0.0041 (0.0047) converged in 1 iterations. 0.547632 Δα.
+264. 3.12 with step 0.0041 (0.0047) converged in 1 iterations. 0.547387 Δα.
+265. 3.12 with step 0.0041 (0.0047) converged in 1 iterations. 0.547142 Δα.
+266. 3.13 with step 0.0041 (0.0047) converged in 1 iterations. 0.546897 Δα.
+267. 3.13 with step 0.0042 (0.0047) converged in 1 iterations. 0.546652 Δα.
+268. 3.14 with step 0.0042 (0.0047) converged in 1 iterations. 0.546407 Δα.
+269. 3.14 with step 0.0042 (0.0047) converged in 1 iterations. 0.546163 Δα.
+270. 3.14 with step 0.0042 (0.0047) converged in 1 iterations. 0.545919 Δα.
+271. 3.15 with step 0.0042 (0.0047) converged in 1 iterations. 0.545675 Δα.
+272. 3.15 with step 0.0042 (0.0047) converged in 1 iterations. 0.545431 Δα.
+273. 3.16 with step 0.0042 (0.0047) converged in 1 iterations. 0.545188 Δα.
+274. 3.16 with step 0.0042 (0.0047) converged in 1 iterations. 0.544944 Δα.
+275. 3.16 with step 0.0043 (0.0047) converged in 1 iterations. 0.544701 Δα.
+276. 3.17 with step 0.0043 (0.0047) converged in 1 iterations. 0.544458 Δα.
+277. 3.17 with step 0.0043 (0.0047) converged in 1 iterations. 0.544216 Δα.
+278. 3.18 with step 0.0043 (0.0047) converged in 1 iterations. 0.543973 Δα.
+279. 3.18 with step 0.0043 (0.0047) converged in 1 iterations. 0.543731 Δα.
+280. 3.19 with step 0.0043 (0.0047) converged in 1 iterations. 0.543489 Δα.
+281. 3.19 with step 0.0043 (0.0047) converged in 1 iterations. 0.543247 Δα.
+282. 3.20 with step 0.0044 (0.0047) converged in 1 iterations. 0.543006 Δα.
+283. 3.20 with step 0.0044 (0.0047) converged in 1 iterations. 0.542765 Δα.
+284. 3.20 with step 0.0044 (0.0047) converged in 1 iterations. 0.542524 Δα.
+285. 3.21 with step 0.0044 (0.0047) converged in 1 iterations. 0.542283 Δα.
+286. 3.21 with step 0.0044 (0.0047) converged in 1 iterations. 0.542043 Δα.
+287. 3.22 with step 0.0044 (0.0047) converged in 1 iterations. 0.541803 Δα.
+288. 3.22 with step 0.0044 (0.0047) converged in 1 iterations. 0.541563 Δα.
+289. 3.23 with step 0.0045 (0.0047) converged in 1 iterations. 0.541323 Δα.
+290. 3.23 with step 0.0045 (0.0047) converged in 1 iterations. 0.403557 Δα.
+291. 3.24 with step 0.0045 (0.0047) converged in 1 iterations. 0.403416 Δα.
+292. 3.24 with step 0.0045 (0.0047) converged in 1 iterations. 0.403274 Δα.
+293. 3.24 with step 0.0045 (0.0047) converged in 1 iterations. 0.403132 Δα.
+294. 3.25 with step 0.0045 (0.0047) converged in 1 iterations. 0.402989 Δα.
+295. 3.25 with step 0.0045 (0.0047) converged in 1 iterations. 0.402846 Δα.
+296. 3.26 with step 0.0046 (0.0047) converged in 1 iterations. 0.402702 Δα.
+297. 3.26 with step 0.0046 (0.0047) converged in 1 iterations. 0.402557 Δα.
+298. 3.27 with step 0.0046 (0.0047) converged in 1 iterations. 0.402412 Δα.
+299. 3.27 with step 0.0046 (0.0047) converged in 1 iterations. 0.402267 Δα.
+300. 3.28 with step 0.0046 (0.0047) converged in 1 iterations. 0.402121 Δα.
+301. 3.28 with step 0.0046 (0.0047) converged in 1 iterations. 0.401974 Δα.
+302. 3.29 with step 0.0046 (0.0047) converged in 1 iterations. 0.401827 Δα.
+303. 3.29 with step 0.0046 (0.0047) converged in 1 iterations. 0.401680 Δα.
+304. 3.29 with step 0.0047 (0.0047) converged in 1 iterations. 0.401532 Δα.
+305. 3.30 with step 0.0047 (0.0047) converged in 1 iterations. 0.401384 Δα.
+306. 3.30 with step 0.0047 (0.0047) converged in 1 iterations. 0.401235 Δα.
+307. 3.31 with step 0.0047 (0.0047) converged in 1 iterations. 0.401086 Δα.
+308. 3.31 with step 0.0047 (0.0047) converged in 1 iterations. 0.400937 Δα.
+309. 3.32 with step 0.0047 (0.0047) converged in 1 iterations. 0.400787 Δα.
+310. 3.32 with step 0.0047 (0.0047) converged in 1 iterations. 0.400637 Δα.
+311. 3.33 with step 0.0048 (0.0047) converged in 1 iterations. 0.400486 Δα.
+312. 3.33 with step 0.0048 (0.0047) converged in 1 iterations. 0.400335 Δα.
+313. 3.34 with step 0.0048 (0.0047) converged in 1 iterations. 0.400184 Δα.
+314. 3.34 with step 0.0048 (0.0047) converged in 1 iterations. 0.400032 Δα.
+315. 3.35 with step 0.0048 (0.0047) converged in 1 iterations. 0.399880 Δα.
+316. 3.35 with step 0.0048 (0.0047) converged in 1 iterations. 0.399728 Δα.
+317. 3.36 with step 0.0048 (0.0047) converged in 1 iterations. 0.399575 Δα.
+318. 3.36 with step 0.0049 (0.0047) converged in 1 iterations. 0.399423 Δα.
+319. 3.37 with step 0.0049 (0.0047) converged in 1 iterations. 0.399269 Δα.
+320. 3.37 with step 0.0049 (0.0047) converged in 1 iterations. 0.399116 Δα.
+321. 3.38 with step 0.0049 (0.0047) converged in 1 iterations. 0.398962 Δα.
+322. 3.38 with step 0.0049 (0.0047) converged in 1 iterations. 0.398808 Δα.
+323. 3.39 with step 0.0049 (0.0047) converged in 1 iterations. 0.398654 Δα.
+324. 3.39 with step 0.0049 (0.0047) converged in 1 iterations. 0.398499 Δα.
+325. 3.40 with step 0.0050 (0.0047) converged in 1 iterations. 0.398345 Δα.
+326. 3.40 with step 0.0050 (0.0047) converged in 1 iterations. 0.398190 Δα.
+327. 3.41 with step 0.0050 (0.0047) converged in 1 iterations. 0.398035 Δα.
+328. 3.41 with step 0.0050 (0.0047) converged in 1 iterations. 0.397879 Δα.
+329. 3.42 with step 0.0050 (0.0047) converged in 1 iterations. 0.397724 Δα.
+330. 3.42 with step 0.0050 (0.0047) converged in 1 iterations. 0.397568 Δα.
+331. 3.43 with step 0.0051 (0.0047) converged in 1 iterations. 0.397412 Δα.
+332. 3.43 with step 0.0051 (0.0047) converged in 1 iterations. 0.397256 Δα.
+333. 3.44 with step 0.0051 (0.0047) converged in 1 iterations. 0.397100 Δα.
+334. 3.44 with step 0.0051 (0.0047) converged in 1 iterations. 0.396943 Δα.
+335. 3.45 with step 0.0051 (0.0047) converged in 1 iterations. 0.396786 Δα.
+336. 3.45 with step 0.0051 (0.0047) converged in 1 iterations. 0.396630 Δα.
+337. 3.46 with step 0.0051 (0.0047) converged in 1 iterations. 0.396473 Δα.
+338. 3.46 with step 0.0052 (0.0047) converged in 1 iterations. 0.396316 Δα.
+339. 3.47 with step 0.0052 (0.0047) converged in 1 iterations. 0.396159 Δα.
+340. 3.47 with step 0.0052 (0.0047) converged in 1 iterations. 0.396001 Δα.
+341. 3.48 with step 0.0052 (0.0047) converged in 1 iterations. 0.395844 Δα.
+342. 3.48 with step 0.0052 (0.0047) converged in 1 iterations. 0.395686 Δα.
+343. 3.49 with step 0.0052 (0.0047) converged in 1 iterations. 0.395529 Δα.
+344. 3.49 with step 0.0052 (0.0047) converged in 1 iterations. 0.395371 Δα.
+345. 3.50 with step 0.0053 (0.0047) converged in 1 iterations. 0.395214 Δα.
+346. 3.50 with step 0.0053 (0.0047) converged in 1 iterations. 0.395056 Δα.
+347. 3.51 with step 0.0053 (0.0047) converged in 1 iterations. 0.394898 Δα.
+348. 3.52 with step 0.0053 (0.0047) converged in 1 iterations. 0.394740 Δα.
+349. 3.52 with step 0.0053 (0.0047) converged in 1 iterations. 0.394582 Δα.
+350. 3.53 with step 0.0053 (0.0047) converged in 1 iterations. 0.394424 Δα.
+351. 3.53 with step 0.0054 (0.0047) converged in 1 iterations. 0.394266 Δα.
+352. 3.54 with step 0.0054 (0.0047) converged in 1 iterations. 0.394108 Δα.
+353. 3.54 with step 0.0054 (0.0047) converged in 1 iterations. 0.393950 Δα.
+354. 3.55 with step 0.0054 (0.0047) converged in 1 iterations. 0.393792 Δα.
+355. 3.55 with step 0.0054 (0.0047) converged in 1 iterations. 0.393633 Δα.
+356. 3.56 with step 0.0054 (0.0047) converged in 1 iterations. 0.393475 Δα.
+357. 3.56 with step 0.0054 (0.0047) converged in 1 iterations. 0.393317 Δα.
+358. 3.57 with step 0.0055 (0.0047) converged in 1 iterations. 0.393159 Δα.
+359. 3.57 with step 0.0055 (0.0047) converged in 1 iterations. 0.393001 Δα.
+360. 3.58 with step 0.0055 (0.0047) converged in 1 iterations. 0.392843 Δα.
+361. 3.59 with step 0.0055 (0.0047) converged in 1 iterations. 0.392685 Δα.
+362. 3.59 with step 0.0055 (0.0047) converged in 1 iterations. 0.392526 Δα.
+363. 3.60 with step 0.0055 (0.0047) converged in 1 iterations. 0.392368 Δα.
+364. 3.60 with step 0.0056 (0.0047) converged in 1 iterations. 0.392210 Δα.
+365. 3.61 with step 0.0056 (0.0047) converged in 1 iterations. 0.392052 Δα.
+366. 3.61 with step 0.0056 (0.0047) converged in 1 iterations. 0.391894 Δα.
+367. 3.62 with step 0.0056 (0.0047) converged in 1 iterations. 0.391737 Δα.
+368. 3.62 with step 0.0056 (0.0047) converged in 1 iterations. 0.391579 Δα.
+369. 3.63 with step 0.0056 (0.0047) converged in 1 iterations. 0.391421 Δα.
+370. 3.64 with step 0.0056 (0.0047) converged in 1 iterations. 0.391263 Δα.
+371. 3.64 with step 0.0057 (0.0047) converged in 1 iterations. 0.391106 Δα.
+372. 3.65 with step 0.0057 (0.0047) converged in 1 iterations. 0.390948 Δα.
+373. 3.65 with step 0.0057 (0.0047) converged in 1 iterations. 0.390791 Δα.
+374. 3.66 with step 0.0057 (0.0047) converged in 1 iterations. 0.390633 Δα.
+375. 3.66 with step 0.0057 (0.0047) converged in 1 iterations. 0.390476 Δα.
+376. 3.67 with step 0.0057 (0.0047) converged in 1 iterations. 0.390319 Δα.
+377. 3.68 with step 0.0058 (0.0047) converged in 1 iterations. 0.390162 Δα.
+378. 3.68 with step 0.0058 (0.0047) converged in 1 iterations. 0.390005 Δα.
+379. 3.69 with step 0.0058 (0.0047) converged in 1 iterations. 0.389848 Δα.
+380. 3.69 with step 0.0058 (0.0047) converged in 1 iterations. 0.389691 Δα.
+381. 3.70 with step 0.0058 (0.0047) converged in 1 iterations. 0.389535 Δα.
+382. 3.71 with step 0.0058 (0.0047) converged in 1 iterations. 0.389378 Δα.
+383. 3.71 with step 0.0059 (0.0047) converged in 1 iterations. 0.389222 Δα.
+384. 3.72 with step 0.0059 (0.0047) converged in 1 iterations. 0.389065 Δα.
+385. 3.72 with step 0.0059 (0.0047) converged in 1 iterations. 0.388909 Δα.
+386. 3.73 with step 0.0059 (0.0047) converged in 1 iterations. 0.388753 Δα.
+387. 3.73 with step 0.0059 (0.0047) converged in 1 iterations. 0.388598 Δα.
+388. 3.74 with step 0.0059 (0.0047) converged in 1 iterations. 0.388442 Δα.
+389. 3.75 with step 0.0060 (0.0047) converged in 1 iterations. 0.388286 Δα.
+390. 3.75 with step 0.0060 (0.0047) converged in 1 iterations. 0.388131 Δα.
+391. 3.76 with step 0.0060 (0.0047) converged in 1 iterations. 0.387976 Δα.
+392. 3.76 with step 0.0060 (0.0047) converged in 1 iterations. 0.387821 Δα.
+393. 3.77 with step 0.0060 (0.0047) converged in 1 iterations. 0.387666 Δα.
+394. 3.78 with step 0.0060 (0.0047) converged in 1 iterations. 0.387511 Δα.
+395. 3.78 with step 0.0061 (0.0047) converged in 1 iterations. 0.387356 Δα.
+396. 3.79 with step 0.0061 (0.0047) converged in 1 iterations. 0.387202 Δα.
+397. 3.80 with step 0.0061 (0.0047) converged in 1 iterations. 0.387048 Δα.
+398. 3.80 with step 0.0061 (0.0047) converged in 1 iterations. 0.386894 Δα.
+399. 3.81 with step 0.0061 (0.0047) converged in 1 iterations. 0.386740 Δα.
+400. 3.81 with step 0.0061 (0.0047) converged in 1 iterations. 0.386586 Δα.
+401. 3.82 with step 0.0062 (0.0047) converged in 1 iterations. 0.386433 Δα.
+402. 3.83 with step 0.0062 (0.0047) converged in 1 iterations. 0.386280 Δα.
+403. 3.83 with step 0.0062 (0.0047) converged in 1 iterations. 0.386126 Δα.
+404. 3.84 with step 0.0062 (0.0047) converged in 1 iterations. 0.385974 Δα.
+405. 3.84 with step 0.0062 (0.0047) converged in 1 iterations. 0.385821 Δα.
+406. 3.85 with step 0.0062 (0.0047) converged in 1 iterations. 0.385668 Δα.
+407. 3.86 with step 0.0063 (0.0047) converged in 1 iterations. 0.385516 Δα.
+408. 3.86 with step 0.0063 (0.0047) converged in 1 iterations. 0.385364 Δα.
+409. 3.87 with step 0.0063 (0.0047) converged in 1 iterations. 0.385212 Δα.
+410. 3.88 with step 0.0063 (0.0047) converged in 1 iterations. 0.385061 Δα.
+411. 3.88 with step 0.0063 (0.0047) converged in 1 iterations. 0.384909 Δα.
+412. 3.89 with step 0.0063 (0.0047) converged in 1 iterations. 0.384758 Δα.
+413. 3.90 with step 0.0064 (0.0047) converged in 1 iterations. 0.384607 Δα.
+414. 3.90 with step 0.0064 (0.0047) converged in 1 iterations. 0.384456 Δα.
+415. 3.91 with step 0.0064 (0.0047) converged in 1 iterations. 0.384306 Δα.
+416. 3.91 with step 0.0064 (0.0047) converged in 1 iterations. 0.384156 Δα.
+417. 3.92 with step 0.0064 (0.0047) converged in 1 iterations. 0.384006 Δα.
+418. 3.93 with step 0.0064 (0.0047) converged in 1 iterations. 0.383856 Δα.
+419. 3.93 with step 0.0065 (0.0047) converged in 1 iterations. 0.383706 Δα.
+420. 3.94 with step 0.0065 (0.0047) converged in 1 iterations. 0.383557 Δα.
+421. 3.95 with step 0.0065 (0.0047) converged in 1 iterations. 0.383408 Δα.
+422. 3.95 with step 0.0065 (0.0047) converged in 1 iterations. 0.383259 Δα.
+423. 3.96 with step 0.0065 (0.0047) converged in 1 iterations. 0.383111 Δα.
+424. 3.97 with step 0.0065 (0.0047) converged in 1 iterations. 0.382962 Δα.
+425. 3.97 with step 0.0066 (0.0047) converged in 1 iterations. 0.382814 Δα.
+426. 3.98 with step 0.0066 (0.0047) converged in 1 iterations. 0.382666 Δα.
+427. 3.99 with step 0.0066 (0.0047) converged in 1 iterations. 0.382519 Δα.
+428. 3.99 with step 0.0066 (0.0047) converged in 1 iterations. 0.382371 Δα.
+429. 4.00 with step 0.0066 (0.0047) converged in 1 iterations. 0.382224 Δα.
+430. 4.01 with step 0.0067 (0.0047) converged in 1 iterations. 0.382078 Δα.</code></pre><h2 id="exd2_plot"><a class="docs-heading-anchor" href="#exd2_plot">Plotting</a><a id="exd2_plot-1"></a><a class="docs-heading-anchor-permalink" href="#exd2_plot" title="Permalink"></a></h2><pre><code class="language-julia hljs">set_theme!(theme_latexfonts())
 fsz = 24;
 fig = Figure(fontsize=fsz);
 
-ax = Axis(fig[1, 1], xlabel=L&quot;Excitation Frequency $\Omega$&quot;, ylabel=&quot;Response&quot;);
+ax = Axis(fig[1, 1], xlabel=L&quot;Excitation Frequency $\Omega$&quot;, ylabel=&quot;Response&quot;,
+    yscale=log10);
 scatterlines!(ax, Oms./(stab.==0), [norm(u) for u in eachcol(uh)], label=&quot;Stable&quot;)
 scatterlines!(ax, Oms./(stab.==2), [norm(u) for u in eachcol(uh)], label=&quot;Unstable&quot;)
 
 for (i, (om,uhb)) in enumerate(zip(Omsb, uhbs))
     scatterlines!(ax, om, [norm(u) for u in eachcol(uhb)],
         label=&quot;Branch $(i)&quot;)
-end
-
-axislegend(ax, nbanks=3, position=:ct)
-xlims!(Om0, Om1)
-ylims!(0, 3.75)
-
-    fig</code></pre><img src="a381ebaf.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d1_deflation/">« 1: Deflation to Locate Multiple roots</a><a class="docs-footer-nextpage" href="../d3_normalform/">3: Branch Switching Using Normal Forms »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Friday 9 January 2026 19:13">Friday 9 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    # scatterlines!(ax, om[2:end], abs.(uhb[12,2:end]),
+    #     label=&quot;Branch $(i)&quot;)
+end</code></pre><p>axislegend(ax, nbanks=3, position=:ct)</p><pre><code class="language-julia hljs">xlims!(Om0, Om1)</code></pre><p>ylims!(0, 3.75)</p><pre><code class="language-julia hljs">    fig</code></pre><img src="cc4d74da.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d1_deflation/">« 1: Deflation to Locate Multiple roots</a><a class="docs-footer-nextpage" href="../d3_normalform/">3: Branch Switching Using Normal Forms »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 10 January 2026 06:25">Saturday 10 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
