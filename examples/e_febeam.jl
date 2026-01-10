@@ -169,7 +169,7 @@ end #src
 
 ax = Axis(fig[1, 1], xlabel="Excitation Frequency (rad/s)",
     ylabel="Response (m)", yscale=log10);
-for (Famp, Uh, sols, stab) in zip(Famps[1:ii], Uhs[1:ii], solss[1:ii], stabs[1:ii])
+for (Famp, Uh, sols, stab) in zip(Famps, Uhs, solss, stabs)
     scatterlines!(ax, sols.p./(stab.==0), norm.(Uh)/Famp, label="F = $Famp")
     scatterlines!(ax, sols.p./(stab.!=0), norm.(Uh)/Famp)
 end
