@@ -204,8 +204,8 @@ scatterlines!(ax, Oms./(stab.==2), [norm(u) for u in eachcol(uh)], label="Unstab
 for (i, (om,uhb)) in enumerate(zip(Omsb, uhbs))
     scatterlines!(ax, om, [norm(u) for u in eachcol(uhb)],
         label="Branch $(i)")
-    # scatterlines!(ax, om[2:end], abs.(uhb[12,2:end]),
-    #     label="Branch $(i)")
+    ## scatterlines!(ax, om[2:end], abs.(uhb[12,2:end]),
+    ##     label="Branch $(i)")
 end
 
 # axislegend(ax, nbanks=3, position=:ct)
