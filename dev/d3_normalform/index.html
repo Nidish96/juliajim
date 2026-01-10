@@ -48,7 +48,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	3.93569199e-05      	1.00000000e+00
+0       	3.93569199e-05      	0.00000000e+00
 1       	9.39503268e-13      	1.40930725e-05
 2       	1.11022302e-16      	2.66616371e-13
 Final   	1.11022302e-16
@@ -74,7 +74,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	3.93569199e-05      	0.00000000e+00
+0       	3.93569199e-05      	1.41421356e-06
 1       	9.39503268e-13      	1.40930725e-05
 Final   	9.39503268e-13
 ----------------------
@@ -356,12 +356,12 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	3.09139649e-01      	1.00000000e+00
+0       	3.09139649e-01      	1.20099539e+01
 1       	3.80034629e-03      	3.84229560e-02
 2       	1.14315920e-05      	8.27424479e-04
 3       	2.93461256e-11      	2.03765315e-06
-4       	1.38982167e-15      	8.59938980e-12
-Final   	1.38982167e-15
+4       	1.39248960e-15      	8.59939019e-12
+Final   	1.39248960e-15
 ----------------------</code></pre><p>We can now verify that the converged solution does indeed have an amplitude that&#39;s almost exactly equal to the normal form prediction.</p><pre><code class="language-julia hljs">[cL[2,:]&#39;*[solq.u; Oms[bifi]], qamp]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">2-element Vector{Float64}:
  0.492270162003128
- 0.49215865732315733</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d2_forcedvdp/">« 2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator</a><a class="docs-footer-nextpage" href="../e_febeam/">E: Finite Element Beam with Nonlinear Support »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 10 January 2026 10:53">Saturday 10 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 0.49215865732462655</code></pre><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d2_forcedvdp/">« 2: Bifurcation Analysis of the Forced Response of a Van der Pol Oscillator</a><a class="docs-footer-nextpage" href="../e_febeam/">E: Finite Element Beam with Nonlinear Support »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 10 January 2026 11:13">Saturday 10 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

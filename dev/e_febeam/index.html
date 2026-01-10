@@ -13,21 +13,7 @@ rho = 2700.;
 w, h = 3*25e-3, 12.5e-3;
 ell = 1.0;
 ρA = rho*w*h;
-EI = Ey*w*h^3/12;</code></pre><p>Cubic Spring</p><pre><code class="language-julia hljs">β = 500.0;  # Nonlinearity
-fnl = (t, u, ud) -&gt; return β.*u.^3, 3β.*u.^2, zeros(size(u));
-typ = :Inst;</code></pre><p>Stiffened String</p><pre><code class="language-julia hljs">Ts = 1e2;
-ls = 0.10;
-fnl = (t, u, ud) -&gt; return Ts.*u./sqrt.(ls^2 .+u.^2),
-    Ts*ls^2 ./sqrt.(ls^2 .+u.^2).^3, zeros(size(u));
-typ = :Inst;</code></pre><p>Frictional Support</p><pre><code class="language-julia hljs">kt = 500;
-fs = 1e-2kt;
-fnl = (t,u,up,fp)-&gt; if all(abs.(fp+kt*(u-up)).&lt;fs)
-    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
-        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
-end
-typ = :Hyst;
-
-Ne = 10;  # Number of elements
+EI = Ey*w*h^3/12;</code></pre><h3 id="Build-Finite-Element-Modela"><a class="docs-heading-anchor" href="#Build-Finite-Element-Modela">Build Finite Element Modela</a><a id="Build-Finite-Element-Modela-1"></a><a class="docs-heading-anchor-permalink" href="#Build-Finite-Element-Modela" title="Permalink"></a></h3><pre><code class="language-julia hljs">Ne = 10;  # Number of elements
 Nn = Ne+1;  # Number of nodes
 Xn = range(0, ell, Nn);
 
@@ -57,7 +43,21 @@ Fb = Lb&#39;F;
 Wn = sqrt.(eigvals(Kb, Mb));
 Zts = [0.2e-2, 0.1e-2];
 ab = [1 ./2Wn[1:2] Wn[1:2]/2]\Zts;
-Cb = ab[1]*Mb + ab[2]*Kb;</code></pre><p>Setup Nonlinearity</p><pre><code class="language-julia hljs">mdl = MDOFGEN(Mb, Cb, Kb);
+Cb = ab[1]*Mb + ab[2]*Kb;</code></pre><h3 id="Choose-and-Setup-Nonlinearity"><a class="docs-heading-anchor" href="#Choose-and-Setup-Nonlinearity">Choose and Setup Nonlinearity</a><a id="Choose-and-Setup-Nonlinearity-1"></a><a class="docs-heading-anchor-permalink" href="#Choose-and-Setup-Nonlinearity" title="Permalink"></a></h3><p>You can try out this example with any of the following nonlinearities. The setup is to have a tip nonlinearity either as a Cubic spring, (axially) stiffened string, or a frictional damper.</p><p>Cubic Spring</p><pre><code class="language-julia hljs">β = 500.0;  # Nonlinearity
+fnl = (t, u, ud) -&gt; return β.*u.^3, 3β.*u.^2, zeros(size(u));
+typ = :Inst;</code></pre><p>Stiffened String</p><pre><code class="language-julia hljs">Ts = 1e2;
+ls = 0.10;
+fnl = (t, u, ud) -&gt; return Ts.*u./sqrt.(ls^2 .+u.^2),
+    Ts*ls^2 ./sqrt.(ls^2 .+u.^2).^3, zeros(size(u));
+typ = :Inst;</code></pre><p>Frictional Support</p><pre><code class="language-julia hljs">kt = 500;
+fs = 1e-2kt;
+fnl = (t,u,up,fp)-&gt; if all(abs.(fp+kt*(u-up)).&lt;fs)
+    return fp+kt*(u-up), kt*ones(size(u)), -kt*ones(size(u)), ones(size(u)); else
+        return fs*sign.(fp+kt*(u-up)), zeros(size(u)), zeros(size(u)), zeros(size(u));
+end
+typ = :Hyst;
+
+mdl = MDOFGEN(Mb, Cb, Kb);
 mdl = ADDNL(mdl, typ, fnl, Float64.(Lb[end-1:end-1,:]));</code></pre><h2 id="Setup-HB"><a class="docs-heading-anchor" href="#Setup-HB">Setup HB</a><a id="Setup-HB-1"></a><a class="docs-heading-anchor-permalink" href="#Setup-HB" title="Permalink"></a></h2><pre><code class="language-julia hljs">h = 0:5;
 N = 256;
 
@@ -72,7 +72,7 @@ Om1 = 450.0;
 dOm = 10.0;</code></pre><p>Linear Initial Guess</p><pre><code class="language-julia hljs">E, _ = HARMONICSTIFFNESS(mdl.M, mdl.C, mdl.K, Om0, h);
 U0_(Fa) = E\ (Fa*Fl);</code></pre><p>Setup nonlinear function</p><pre><code class="language-julia hljs">fun(Fa) = NonlinearFunction((r,u,p)-&gt;HBRESFUN!([u;p], mdl, Fa*Fl, h, N; R=r),
     jac=(J,u,p)-&gt;HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdU=J),
-    paramjac=(Jp,u,p)-&gt;HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdw=Jp));</code></pre><h2 id="Forced-Response-Continuation"><a class="docs-heading-anchor" href="#Forced-Response-Continuation">Forced Response Continuation</a><a id="Forced-Response-Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Forced-Response-Continuation" title="Permalink"></a></h2><pre><code class="language-julia hljs">Famp = 8.0  # 0.5, 1.0, 2.0, 4.0, 8.0, 16.0</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">8.0</code></pre><p>Continuation: The main parameters that can be changed are the step size (<code>dOm</code> here) and the <code>angopt</code> parameter.</p><p><code>angopt</code> represents the desired angle between the secant and the tangent in a scaled space. Smaller angles represent that the secant is close to the tangent, i.e., the response curve is approximately a straight line.</p><p>We scale the vectors by the tangent so that the tangent at the previous point is represented by the orthotropic vector <code>normalize(ones(N))</code>. We exclude those unknowns that are close to zero.</p><pre><code class="language-julia hljs">cpars = (parm=:arclength, nmax=4000, Dsc=:auto, angopt=deg2rad(10), itopt=4);
+    paramjac=(Jp,u,p)-&gt;HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdw=Jp));</code></pre><h2 id="Forced-Response-Continuation"><a class="docs-heading-anchor" href="#Forced-Response-Continuation">Forced Response Continuation</a><a id="Forced-Response-Continuation-1"></a><a class="docs-heading-anchor-permalink" href="#Forced-Response-Continuation" title="Permalink"></a></h2><p>Continuation: The main parameters that can be changed are the step size (<code>dOm</code> here) and the <code>angopt</code> parameter.</p><p><code>angopt</code> represents the desired angle between the secant and the tangent in a scaled space. Smaller angles represent that the secant is close to the tangent, i.e., the response curve is approximately a straight line.</p><p>We scale the vectors by the tangent so that the tangent at the previous point is represented by the orthotropic vector <code>normalize(ones(N))</code>. We exclude those unknowns that are close to zero.</p><pre><code class="language-julia hljs">cpars = (parm=:arclength, nmax=4000, Dsc=:auto, angopt=deg2rad(10), itopt=4);
 
 Om0 = 40.0;
 Om1 = 100.0;
@@ -179,7 +179,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.29045673e-01      	1.59148176e-02
+0       	1.29045673e-01      	0.00000000e+00
 1       	9.74997860e-13      	3.01271691e-04
 Final   	9.74997860e-13
 ----------------------
@@ -264,7 +264,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	2.58091346e-01      	5.76802946e-10
+0       	2.58091346e-01      	0.00000000e+00
 1       	1.94999572e-12      	6.02543382e-04
 Final   	1.94999572e-12
 ----------------------
@@ -487,7 +487,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	1.03236539e+00      	0.00000000e+00
+0       	1.03236539e+00      	4.19389299e+03
 1       	7.79998288e-12      	2.41017353e-03
 Final   	7.79998288e-12
 ----------------------
@@ -734,7 +734,7 @@ Algorithm: NewtonRaphson(
 ----    	-------------       	-----------
 Iter    	f(u) inf-norm       	Step 2-norm
 ----    	-------------       	-----------
-0       	2.06473077e+00      	0.00000000e+00
+0       	2.06473077e+00      	1.57400324e-03
 1       	1.55999658e-11      	4.82034705e-03
 Final   	1.55999658e-11
 ----------------------
@@ -1175,4 +1175,4 @@ xlims!(ax, Om0, Om1)
 ylims!(ax, 3e-4, 1e-1)
 
 Legend(fig[0, 1], ax, nbanks=3, tellheight=true, tellwidth=false)
-    fig</code></pre><img src="7c76e6a3.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d3_normalform/">« 3: Branch Switching Using Normal Forms</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 10 January 2026 10:53">Saturday 10 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    fig</code></pre><img src="7c76e6a3.png" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../d3_normalform/">« 3: Branch Switching Using Normal Forms</a><a class="docs-footer-nextpage" href="../reference/">Reference »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Saturday 10 January 2026 11:13">Saturday 10 January 2026</span>. Using Julia version 1.12.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
