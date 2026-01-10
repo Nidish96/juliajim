@@ -30,7 +30,8 @@ makedocs(;
     doctest = true,
     linkcheck = true,
     authors = "Nidish Narayanaa Balaji <nidish@iitm.ac.in>",
-    repo = "https://github.com/Nidish96/juliajim/blob/{commit}{path}#{line}",
+    # repo = "https://github.com/Nidish96/juliajim/blob/{commit}{path}#{line}",
+    repo = Documenter.Remotes.GitHub("Nidish96", "juliajim"),
     sitename = "juliajim",
     format = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
