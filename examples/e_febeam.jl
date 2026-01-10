@@ -33,6 +33,7 @@ EI = Ey*w*h^3/12;
 # Cubic Spring
 β = 500.0;  # Nonlinearity
 fnl = (t, u, ud) -> return β.*u.^3, 3β.*u.^2, zeros(size(u));
+typ = :Inst;
 
 # Stiffened String
 Ts = 1e2;
