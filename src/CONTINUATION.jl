@@ -349,10 +349,9 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
-
     angopt::Union{Symbol,Float64}=deg2rad(5),
     nxi::Float64=0.5, 
-    minDsc::Float64=0., ndxi::Float64=0.5,
+    minDsc::Float64=0., ndxi::Float64=0.5, nsc::Int=2,
     pkwargs=(;abstol=1e-6, reltol=1e-6),
     maxiters::Int=100)
     
@@ -494,10 +493,12 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
                 rat = clamp.((abs.(sols[end].up)./Dsc).^ndxi, 0.5, 2.0);
                 Dsc .*= rat;
 
-                minDsc_ = 1e-2sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
+                minDsc_ = 1e-1sqrt(maximum(abs.(sols[end].u))*abs(sols[end].p));
                 # minDsc_ = 1e-1maximum(abs.(sols[end].up-sols[end-1].up))/dss[end];
-                minDsc *= clamp((minDsc_/minDsc)^ndxi, 0.5, 2.0);
-                # minDsc = minDsc_;
+
+                # minDsc *= clamp((minDsc_/minDsc)^ndxi, 0.5, 2.0);
+                
+                minDsc = minDsc_;
                 Dsc = max.(Dsc, minDsc);
             end
         end
@@ -506,10 +507,19 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         itxi = clamp((itopt/its[end])^nxi, 0.5, 2.0);
 
         # ninds = findall(sols[end-1].dupds.!=0);
-        ninds = findall(abs.(sols[end-1].dupds).>=1e-3maximum(abs.(sols[end-1].dupds)));
+        ninds = [findall(abs.(sols[end-1].dupds[1:end-1]).>=1e-1maximum(abs.(sols[end-1].dupds[1:end-1]))); length(sols[end].up)];
+        # delu = sols[end].up-sols[end-1].up;
+        # ninds = [findall(abs.(delu[1:end-1]).>.1e-3maximum(abs.(delu[1:end-1]))); length(delu)];
+
+        delu = sols[end].u-sols[end-1].u;
+        ninds = [argmax(abs.(delu)); length(delu)+1];
+
+        sip = sortperm(abs.(delu))[end:-1:1];
+        ninds = [sip[1:min(nsc,length(delu))]; length(delu)+1];
+        
         achng = acos(clamp(normalize(ones(length(ninds)))'*
-                           normalize((sols[end].up-sols[end-1].up)[ninds]./
-                                     sols[end-1].dupds[ninds]), -1,1))/
+                           normalize(sols[end-1].dupds[ninds]./
+                                     (sols[end].up-sols[end-1].up)[ninds]), -1,1))/
                 dss[end];
         
         # ninds = findall(abs.(sols[end].up-sols[end-1].up).>=1e-2minDsc);

@@ -96,12 +96,14 @@ sol = solve(prob, show_trace=Val(true));
 
 # ## [Continuation](@id exc1_cont)
 # [`HBRESFUN!`](@ref juliajim.MDOFUTILS.HBRESFUN!) can also be used in tandem with [`CONTINUATE`](@ref juliajim.CONTINUATION.CONTINUATE) for getting the full forced response. 
+#
+# One good practice for continuation is to "start" the continuation at a point around which not a lot of interesting things are happening. In this case we will start with the high frequency region because the low frequency regime is fraught with superharmonic resonances. 
 
-Om0 = 0.1;
-Om1 = 3;
-dOm = 0.1;
+Om0 = 3.0;
+Om1 = 0.1;
+dOm = 2.5;
 # The `angopt` property can be reduced to get finer resolved curves
-cpars = (parm=:arclength, nmax=2000, Dsc=:auto, angopt=deg2rad(1));
+cpars = (parm=:arclength, nmax=2000, Dsc=:auto, angopt=deg2rad(5), nsc=2);
 
 sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 

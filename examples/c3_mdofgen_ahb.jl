@@ -88,11 +88,13 @@ sol = solve(prob, show_trace=Val(true));
 # ## [Continuation](@id exc3_cont)
 # Now we continue as before with continuation. In fact this piece of code is exactly the same as in [Example C2](@ref ex_c2).
 
-Om0 = 0.1;
-Om1 = 3;
-dOm = 0.2;
+Om0 = 3.0;
+Om1 = 0.1;
+dOm = 0.5;
 
-cpars = (parm=:arclength, nmax=400, Dsc=:none, itopt=4);  # Autoscaling is not working
+## Use the unscaled version if scaling doesn't work.
+## cpars = (parm=:arclength, nmax=2000, Dsc=:none, itopt=4);  # Autoscaling is not working
+cpars = (parm=:arclength, nmax=2000, Dsc=:auto, angopt=deg2rad(30), itopt=4);  # Autoscaling is not working
 sols, its, dss, xis, Dsc = CONTINUATE([U0;1.0], fun, [Om0, Om1], dOm; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols), 2);

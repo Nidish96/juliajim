@@ -114,10 +114,7 @@ sol = solve(prob, show_trace=Val(true), maxiters=100);
 A0 = -1.;
 A1 = 3.;
 da = 0.05;
-cpars = (parm=:arclength, nmax=1000, Dsc=:none, itopt=4, dpbnds=[da/5, 2da]);
-
-da = 0.02;
-cpars = (nmax=1000, Dsc=:auto, angopt=deg2rad(10));
+cpars = (nmax=1000, Dsc=:auto, angopt=deg2rad(30));
 
 sols, its, dss, xis, Dsc = CONTINUATE([U0;W0s[mi];Xis[mi]], fun, [A0, A1], da; cpars...);
 
@@ -177,3 +174,15 @@ if isdefined(Main, :GLMakie) #src
 else #src
     fig
 end #src
+
+
+
+
+
+
+
+
+
+
+
+

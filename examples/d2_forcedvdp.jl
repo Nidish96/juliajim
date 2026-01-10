@@ -172,7 +172,7 @@ for (bi, bifi) in enumerate(bifis)
     Om0b = Oms[bifi];
     Om1b = (dxis[bi]<0) ? Om0 : Om1;
     dOmb = 1.8;
-    cparsb = (parm=:arclength, nmax=500, save_jacs=true);
+    cparsb = (parm=:arclength, nmax=500, save_jacs=true, angopt=deg2rad(30));
 
     solsb, _, _, _, _ = CONTINUATE(solq.u, funq, [Om0b, Om1b], dOmb; cparsb...);
     ## Prepend previous point & expand constraint
@@ -196,21 +196,20 @@ if !isdefined(Main, :scr) && Makie.current_backend()==GLMakie #src
    scr = GLMakie.Screen(); #src
 end #src
 
-ax = Axis(fig[1, 1], xlabel=L"Excitation Frequency $\Omega$", ylabel="Response",
+ax = Axis(fig[1, 1], xlabel=L"Excitation Frequency $\Omega$", ylabel="RMS Response",
     yscale=log10);
-scatterlines!(ax, Oms./(stab.==0), [norm(u) for u in eachcol(uh)], label="Stable")
-scatterlines!(ax, Oms./(stab.==2), [norm(u) for u in eachcol(uh)], label="Unstable")
+scatterlines!(ax, Oms./(stab.==0), [norm(u)/sqrt(2) for u in eachcol(uh)], label="Stable")
+scatterlines!(ax, Oms./(stab.==2), [norm(u)/sqrt(2) for u in eachcol(uh)], label="Unstable")
 
 for (i, (om,uhb)) in enumerate(zip(Omsb, uhbs))
-    scatterlines!(ax, om, [norm(u) for u in eachcol(uhb)],
-        label="Branch $(i)")
+    scatterlines!(ax, om, [norm(u)/sqrt(2) for u in eachcol(uhb)],
+        label="B-$(i)")
     ## scatterlines!(ax, om[2:end], abs.(uhb[12,2:end]),
     ##     label="Branch $(i)")
 end
 
-# axislegend(ax, nbanks=3, position=:ct)
+Legend(fig[2, 1], ax, nbanks=4, position=:cb, tellheight=true, tellwidth=false)
 xlims!(Om0, Om1)
-# ylims!(0, 3.75)
 
 if Makie.current_backend()==GLMakie #src
    display(scr, fig); #src
@@ -218,3 +217,4 @@ else #src
     display(fig) #src
     fig
 end #src
+# Branches B-1 and B-2 are the quasi-periodic branches that we have computed.
