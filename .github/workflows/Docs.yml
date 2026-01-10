@@ -18,6 +18,11 @@ jobs:
           version: "1"
       - name: Use Julia cache
         uses: julia-actions/cache@v2
+	with:
+		cache-name: 'docs-cache'
+		cache-packages: 'true'
+		cache-artifacts: 'true'
+		cache-registries: 'true'
       - name: Install binary dependencies
         run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev
       - name: Install fork of FastTransformsForwardDiff
