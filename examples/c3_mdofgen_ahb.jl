@@ -90,9 +90,9 @@ sol = solve(prob, show_trace=Val(true));
 
 Om0 = 0.1;
 Om1 = 3;
-dOm = 0.1;
+dOm = 0.2;
 
-cpars = (parm=:arclength, nmax=400, Dsc=:none, itopt=4);
+cpars = (parm=:arclength, nmax=400, Dsc=:none, itopt=4);  # Autoscaling is not working
 sols, its, dss, xis, Dsc = CONTINUATE([U0;1.0], fun, [Om0, Om1], dOm; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols), 2);

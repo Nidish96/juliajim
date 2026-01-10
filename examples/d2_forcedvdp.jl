@@ -67,7 +67,7 @@ sol = solve(prob, show_trace=Val(true));
 Om0 = 0.1;
 Om1 = 4.0;
 dOm = 0.1;
-cpars = (parm=:arclength, nmax=200, save_jacs=true);
+cpars = (parm=:arclength, nmax=400, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 
@@ -171,8 +171,8 @@ for (bi, bifi) in enumerate(bifis)
     ### Continue away from the bifurcation point
     Om0b = Oms[bifi];
     Om1b = (dxis[bi]<0) ? Om0 : Om1;
-    dOmb = 0.8;
-    cparsb = (parm=:arclength, nmax=500, save_jacs=true, angopt=deg2rad(10));
+    dOmb = 1.8;
+    cparsb = (parm=:arclength, nmax=500, save_jacs=true);
 
     solsb, _, _, _, _ = CONTINUATE(solq.u, funq, [Om0b, Om1b], dOmb; cparsb...);
     ## Prepend previous point & expand constraint

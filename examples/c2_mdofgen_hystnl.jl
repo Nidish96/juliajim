@@ -99,7 +99,7 @@ sol = solve(prob, show_trace=Val(true));
 Om0 = 0.1;
 Om1 = 3;
 dOm = 0.2;
-cpars = (parm=:arclength, nmax=1000, Dsc=:none);
+cpars = (parm=:arclength, nmax=1000, Dsc=:auto, angopt=deg2rad(1));
 
 sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 

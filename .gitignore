@@ -18,3 +18,4 @@
 /docs/src/c5_mdofgen_newmark.md
 /Manifest.toml
 /examples/.dir-locals.el
+/docs/src/*.md

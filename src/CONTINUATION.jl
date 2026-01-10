@@ -349,7 +349,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
-    angopt::Float64=deg2rad(5),
+    angopt::Union{Symbol,Float64}=deg2rad(5),
     nxi::Float64=0.5, 
     minDsc::Float64=0., ndxi::Float64=0.5,
     pkwargs=(;abstol=1e-6, reltol=1e-6),
@@ -504,15 +504,31 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
         # Step Length Adaptation
         itxi = clamp((itopt/its[end])^nxi, 0.5, 2.0);
 
-        ninds = findall(sols[end-1].dupds.!=0);
-        ninds = findall(abs.(sols[end].up-sols[end-1].up).>=1e-2minDsc);
+        # ninds = findall(sols[end-1].dupds.!=0);
+        ninds = findall(abs.(sols[end-1].dupds).>=1e-3maximum(abs.(sols[end-1].dupds)));
         achng = acos(clamp(normalize(ones(length(ninds)))'*
-                           normalize(sols[end-1].dupds[ninds]./
-                                     (sols[end].up-sols[end-1].up)[ninds]), -1,1))/
+                           normalize((sols[end].up-sols[end-1].up)[ninds]./
+                                     sols[end-1].dupds[ninds]), -1,1))/
                 dss[end];
-        tgxi = clamp((angopt/achng)^nxi, 0.5, 2.0);
         
-        push!(xis, tgxi);
+        # ninds = findall(abs.(sols[end].up-sols[end-1].up).>=1e-2minDsc);
+        # achng = acos(clamp(normalize(ones(length(ninds)))'*
+        #                    normalize(sols[end-1].dupds[ninds]./
+        #                              (sols[end].up-sols[end-1].up)[ninds]), -1,1))/
+        #         dss[end];
+
+        if angopt==:auto
+            angopt = max(achng, 1e-3);
+            println(angopt);
+        end
+        
+        tgxi = clamp((angopt/achng)^nxi, 0.5, 2.0);
+
+        # xxi = sqrt(tgxi*itxi);
+        xxi = 0.5(tgxi+itxi);
+        # xxi = tgxi;
+        
+        push!(xis, xxi);
 
         # dsbnds = abs.(dss[end]/(sols[end].p-sols[end-1].p) .* dpbnds);
         # println("dsbnds: $dsbnds\n")

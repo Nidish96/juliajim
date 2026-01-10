@@ -113,36 +113,51 @@ fun(Fa) = NonlinearFunction((r,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; R=r),
     paramjac=(Jp,u,p)->HBRESFUN!([u;p], mdl, Fa*Fl, h, N; dRdw=Jp));
 
 # ## Forced Response Continuation
-Famp = 8.0  # 0.1, 1.0, 2.0, 4.0, 8.0, 16.0
+Famp = 8.0  # 0.5, 1.0, 2.0, 4.0, 8.0, 16.0
 
-U0 = U0_(Famp);
-prob = NonlinearProblem(fun(Famp), U0, Om0; abstol=1e-6, reltol=1e-6);
-sol = solve(prob, show_trace=Val(true));
-
-# Continuation
-cpars = (parm=:arclength, nmax=2000, Dsc=:auto);
+# Continuation: The main parameters that can be changed are the step size (`dOm` here) and the `angopt` parameter. 
+#
+# `angopt` represents the desired angle between the secant and the tangent in a scaled space. Smaller angles represent that the secant is close to the tangent, i.e., the response curve is approximately a straight line. 
+#
+# We scale the vectors by the tangent so that the tangent at the previous point is represented by the orthotropic vector `normalize(ones(N))`. We exclude those unknowns that are close to zero. 
+cpars = (parm=:arclength, nmax=4000, Dsc=:auto, angopt=deg2rad(10), itopt=4);
 
 Om0 = 40.0;
 Om1 = 100.0;
-dOm = 2.5;
-sols, _, _, _, _ = CONTINUATE(U0, fun(Famp), [Om0, Om1], dOm; cpars...);
+dOm = 5.0;
+solss = [];
+Uhs = [];
+Famps = [0.5, 1., 2., 4., 8., 16.];
+for Famp in Famps
+    sols, _, _, _, _ = CONTINUATE(U0_(Famp), fun(Famp), [Om0, Om1], dOm; cpars...);
 
-Uh = [Lb[end-1,:]'reshape(u, mdl.Ndofs,:) for u in sols.u];
+    Uh = [Lb[end-1,:]'reshape(u, mdl.Ndofs,:) for u in sols.u];
+
+    push!(solss, sols)
+    push!(Uhs, Uh);
+end
 
 # ### Stability Certification
 E0, _ = HARMONICSTIFFNESS(zeros(mdl.Ndofs,mdl.Ndofs), -2mdl.M,
     zeros(mdl.Ndofs, mdl.Ndofs), [1.], h);
 indsh1 = [rinds[1:mdl.Ndofs]; iinds[1:mdl.Ndofs]];
 E0 = collect(E0);
-J = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
-stab = zeros(length(sols));
-for iw in 1:length(sols)
-    fun(Famp).jac(J, sols.u[iw], sols.p[iw])
-    eVs = eigvals(J[indsh1,indsh1], sols.p[iw]*E0[indsh1,indsh1]);
-    stab[iw] = sum(real(eVs).>=0);
+
+stabs = [];
+for (Famp,sols) in zip(Famps,solss)
+    stab = zeros(length(sols));
+    for iw in 1:length(sols)
+        J = zeros(mdl.Ndofs*Nhc, mdl.Ndofs*Nhc);
+        fun(Famp).jac(J, sols.u[iw], sols.p[iw])
+        eVs = eigvals(J[indsh1,indsh1], sols.p[iw]*E0[indsh1,indsh1]);
+        stab[iw] = sum(real(eVs).>=0);
+    end
+    push!(stabs, stab);
 end
 
 # ## Plot Forced Response
+# We now plot out the forced response of the system showing the characteristic frictional softening-dampening behavior.
+
 set_theme!(theme_latexfonts())
 fsz = 18;
 fig = Figure(fontsize=fsz);
@@ -152,10 +167,15 @@ end #src
 
 ax = Axis(fig[1, 1], xlabel="Excitation Frequency (rad/s)",
     ylabel="Response (m)", yscale=log10);
-scatterlines!(ax, sols.p./(stab.==0), norm.(Uh)/Famp)
-scatterlines!(ax, sols.p./(stab.!=0), norm.(Uh)/Famp)
+for (Famp, Uh, sols, stab) in zip(Famps, Uhs, solss, stabs)
+    scatterlines!(ax, sols.p./(stab.==0), norm.(Uh)/Famp, label="F = $Famp")
+    scatterlines!(ax, sols.p./(stab.!=0), norm.(Uh)/Famp)
+end
 
 xlims!(ax, Om0, Om1)
+ylims!(ax, 3e-4, 1e-1)
+
+Legend(fig[0, 1], ax, nbanks=3, tellheight=true, tellwidth=false)
 if Makie.current_backend()==GLMakie #src
    display(scr, fig); #src
 else #src

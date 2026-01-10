@@ -99,10 +99,9 @@ sol = solve(prob, show_trace=Val(true));
 
 Om0 = 0.1;
 Om1 = 3;
-# dOm = 0.01;
-# cpars = (parm=:arclength, nmax=2000, Dsc=:auto, minDsc=1e-5);  # 1e-5
 dOm = 0.1;
-cpars = (parm=:arclength, nmax=2000, Dsc=:none);  # TODO: Needs tuning!!
+# The `angopt` property can be reduced to get finer resolved curves
+cpars = (parm=:arclength, nmax=2000, Dsc=:auto, angopt=deg2rad(1));
 
 sols, its, dss, xis, Dsc = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 

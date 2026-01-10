@@ -85,8 +85,8 @@ Just like in other examples we call the [`CONTINUATE`](@ref juliajim.CONTINUATIO
 ````@example d2_forcedvdp
 Om0 = 0.1;
 Om1 = 4.0;
-dOm = 0.4;
-cpars = (parm=:arclength, nmax=100, save_jacs=true);
+dOm = 0.1;
+cpars = (parm=:arclength, nmax=400, save_jacs=true);
 
 sols, _, _, _, _ = CONTINUATE(Uw0[1:end-1], fun, [Om0, Om1], dOm; cpars...);
 nothing #hide
@@ -97,7 +97,7 @@ Obtain Harmonics
 ````@example d2_forcedvdp
 uh = zeros(Complex, maximum(h)+1, length(sols));
 uh[[inds0; hinds], :] = hcat([[up[zinds];up[rinds,:]+1im*up[iinds,:]] for up in sols.up]...);
-Oms = [up[end] for up in sols.up];
+Oms = sols.p;
 nothing #hide
 ````
 
@@ -208,8 +208,8 @@ for (bi, bifi) in enumerate(bifis)
     ### Continue away from the bifurcation point
     Om0b = Oms[bifi];
     Om1b = (dxis[bi]<0) ? Om0 : Om1;
-    dOmb = 0.2;
-    cparsb = (parm=:arclength, nmax=100, save_jacs=true);
+    dOmb = 1.8;
+    cparsb = (parm=:arclength, nmax=500, save_jacs=true);
 
     solsb, _, _, _, _ = CONTINUATE(solq.u, funq, [Om0b, Om1b], dOmb; cparsb...);
     # Prepend previous point & expand constraint
@@ -233,19 +233,28 @@ set_theme!(theme_latexfonts())
 fsz = 24;
 fig = Figure(fontsize=fsz);
 
-ax = Axis(fig[1, 1], xlabel=L"Excitation Frequency $\Omega$", ylabel="Response");
+ax = Axis(fig[1, 1], xlabel=L"Excitation Frequency $\Omega$", ylabel="Response",
+    yscale=log10);
 scatterlines!(ax, Oms./(stab.==0), [norm(u) for u in eachcol(uh)], label="Stable")
 scatterlines!(ax, Oms./(stab.==2), [norm(u) for u in eachcol(uh)], label="Unstable")
 
 for (i, (om,uhb)) in enumerate(zip(Omsb, uhbs))
     scatterlines!(ax, om, [norm(u) for u in eachcol(uhb)],
         label="Branch $(i)")
+    # scatterlines!(ax, om[2:end], abs.(uhb[12,2:end]),
+    #     label="Branch $(i)")
 end
+````
 
 axislegend(ax, nbanks=3, position=:ct)
+
+````@example d2_forcedvdp
 xlims!(Om0, Om1)
+````
+
 ylims!(0, 3.75)
 
+````@example d2_forcedvdp
     fig
 ````
 

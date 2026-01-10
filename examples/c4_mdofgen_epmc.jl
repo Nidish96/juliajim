@@ -116,6 +116,9 @@ A1 = 3.;
 da = 0.05;
 cpars = (parm=:arclength, nmax=1000, Dsc=:none, itopt=4, dpbnds=[da/5, 2da]);
 
+da = 0.02;
+cpars = (nmax=1000, Dsc=:auto, angopt=deg2rad(10));
+
 sols, its, dss, xis, Dsc = CONTINUATE([U0;W0s[mi];Xis[mi]], fun, [A0, A1], da; cpars...);
 
 uh = zeros(Complex, maximum(h)+1, length(sols), 2);
