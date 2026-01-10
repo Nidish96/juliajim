@@ -349,6 +349,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     Dsc::Union{Symbol,Nothing,Vector{Float64}}=:auto,
     DynScale::Bool=true,
     itopt::Union{Symbol,Int}=:auto,
+
     angopt::Union{Symbol,Float64}=deg2rad(5),
     nxi::Float64=0.5, 
     minDsc::Float64=0., ndxi::Float64=0.5,
@@ -457,7 +458,7 @@ function CONTINUATE(u0::Vector{Float64}, fun, ps::Vector{Float64}, dp::Float64;
     end
 
     if verbosity>0
-        display(md"# Starting Continuation (_itopt = $(itopt), nxi = $(nxi)_)")
+        display(md"# Starting Continuation (_itopt = $(itopt), angopt = $(angopt)_)")
     end
 
     while (sols[end].up[end]*sign(ps[2]-ps[1])<ps[2]*sign(ps[2]-ps[1]) &&
